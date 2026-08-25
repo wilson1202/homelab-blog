@@ -170,9 +170,11 @@ export default defineUserConfig({
      * @see https://theme-plume.vuejs.press/guide/features/encryption/
      */
     // encrypt: {},
-    llmstxt: {
-      locale: '/',
-      // ...其它配置
-    },
+    // 
+    /**
+     * LLMs txt
+     * @see https://theme-plume.vuejs.press/guide/features/llmstxt/
+     */
+    llmstxt: true,
   }),
 })
