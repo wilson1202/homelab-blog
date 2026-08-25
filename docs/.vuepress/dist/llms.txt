@@ -1,0 +1,64 @@
+# Homelab
+
+> 家庭网络与虚拟化实验室 · 路由器 / 虚拟机 / 自托管服务折腾笔记This file contains links to all documentation sections.
+
+## Table of Contents
+
+### RouterOS
+
+- [RouterOS](/router/routeros/index.md)
+- [设置网络接口](/router/routeros/7s1zyj43/index.md)
+- [正版系统激活](/router/routeros/aduf7b9w/index.md)
+- [设置流量整形](/router/routeros/bqq96dqt/index.md)
+- [设置防火墙](/router/routeros/h0yt3eja/index.md)
+- [PVE下安装系统](/router/routeros/h3ab9wo3/index.md)
+- [设置DHCPv4](/router/routeros/hn6upvnt/index.md)
+- [设置定时任务](/router/routeros/hv81v6g2/index.md)
+- [设置DNS](/router/routeros/pw32hqeb/index.md)
+- [设置系统参数](/router/routeros/rva2j67o/index.md)
+- [设置IPv6](/router/routeros/s071nm6j/index.md)
+- [A.命令行配置脚本](/router/routeros/vzh9k7ek/index.md)
+
+### iKuai
+
+- [iKuai](/router/ikuai/index.md)
+
+### OpenWrt
+
+- [OpenWrt](/router/openwrt/index.md)
+
+### ESXi
+
+- [ESXi](/vm/esxi/index.md)
+- [安装 ESXi 虚拟机](/vm/esxi/gs4g39gg/index.md)
+- [ESXi 部署 debian cloud 镜像](/vm/esxi/l9uzsoli/index.md)
+- [ESXi 直通 SATA 控制器](/vm/esxi/m5zuxupu/index.md)
+
+### Proxmox VE
+
+- [Proxmox VE](/vm/pve/index.md)
+
+### Debian
+
+- [Debian](/os/debian/index.md)
+
+### Ubuntu
+
+- [Ubuntu](/os/ubuntu/index.md)
+
+### Windows
+
+- [Windows](/os/windows/index.md)
+
+### Docker
+
+- [Docker](/deploy/docker/index.md)
+
+### Native
+
+- [原生部署](/deploy/native/index.md)
+
+### Others
+
+- [Markdown](/blog/b7vupd2z/index.md)
+- [博客文章 1](/blog/ltsibnhb/index.md)

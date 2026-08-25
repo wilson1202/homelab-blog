@@ -1,0 +1,53 @@
+/**
+ * @see https://theme-plume.vuejs.press/config/navigation/ 查看文档了解配置详情
+ *
+ * Navbar 配置文件，它在 `.vuepress/plume.config.ts` 中被导入。
+ */
+
+import { defineNavbarConfig } from 'vuepress-theme-plume'
+
+export default defineNavbarConfig([
+  // { text: '首页', link: '/' },
+  // { text: '博客', link: '/blog/' },
+  // { text: ' 标签', link: '/blog/tags/' },
+  // { text: '归档', link: '/blog/archives/' },
+
+  {
+    text: '路由器',
+    icon: 'material-symbols:router',
+    items: [
+      { text: 'RouterOS', link: '/router/routeros/README.md', icon: 'simple-icons:mikrotik' },
+      { text: 'iKuai', link: '/router/ikuai/README.md', icon: 'selfhst:ikuai' },
+      { text: 'OpenWrt', link: '/router/openwrt/README.md', icon: 'thesvg-color:openwrt' },
+    ],
+  },
+
+  {
+    text: '虚拟机',
+    icon: 'carbon:virtual-machine',
+    items: [
+      { text: 'ESXi', link: '/vm/esxi/README.md', icon: 'selfhst:vmware-esx' },
+      { text: 'PVE', link: '/vm/pve/README.md', icon: 'selfhst:proxmox' },
+    ],
+  },
+
+  {
+    text: '操作系统',
+    icon: 'ix:operating-system',
+    items: [
+      { text: 'Debian', link: '/os/debian/README.md', icon: 'logos:debian' },
+      { text: 'Ubuntu', link: '/os/ubuntu/README.md', icon: 'logos:ubuntu' },
+      { text: 'Windows', link: '/os/windows/README.md', icon: 'logos:microsoft-windows-icon' },
+    ],
+  },
+
+  {
+    text: '服务部署',
+    icon: 'fa-solid:server',
+    items: [
+      { text: 'Docker', link: '/deploy/docker/README.md', icon: 'selfhst:docker' },
+      { text: 'Native', link: '/deploy/native/README.md', icon: 'emojione:package' },
+    ],
+  },
+
+])
