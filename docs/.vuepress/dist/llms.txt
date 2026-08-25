@@ -26,6 +26,8 @@
 ### OpenWrt
 
 - [OpenWrt](/router/openwrt/index.md)
+- [使用 OpenWrt 官方源码编译固件](/router/openwrt/ko892enj/index.md)
+- [使用 LEDE 源码编译固件](/router/openwrt/pcj1c41r/index.md)
 
 ### ESXi
 
@@ -41,6 +43,8 @@
 ### Debian
 
 - [Debian](/os/debian/index.md)
+- [在 Debian 12 中修改 IP 地址](/os/debian/64i2k4fj/index.md)
+- [允许Root远程SSH登录](/os/debian/c3me4wk0/index.md)
 
 ### Ubuntu
 
@@ -53,10 +57,19 @@
 ### Docker
 
 - [Docker](/deploy/docker/index.md)
+- [MoviePilot](/deploy/docker/doyufl7m/index.md)
+- [Ubuntu Docker 安装](/deploy/docker/ffhlbesz/index.md)
+- [Portainer CE](/deploy/docker/fnezswrv/index.md)
+- [Unblock Netease Music](/deploy/docker/hb9le6ym/index.md)
+- [ZFile](/deploy/docker/myzjggl2/index.md)
+- [Radicale](/deploy/docker/qi566m5t/index.md)
+- [EmbyServer](/deploy/docker/qlwrd527/index.md)
+- [Debian Docker 安装](/deploy/docker/vy0rmlqh/index.md)
 
 ### Native
 
 - [原生部署](/deploy/native/index.md)
+- [rtp2httpd](/deploy/native/zgmszd41/index.md)
 
 ### Others
 

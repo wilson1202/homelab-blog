@@ -80,7 +80,7 @@ export default defineUserConfig({
       // twoslash: true, // 启用 twoslash
       // whitespace: true, // 启用 空格/Tab 高亮
       lineNumbers: false, // 启用行号
-      themes: { light: 'light-plus', dark: 'dark-plus' },
+      themes: { light: 'github-light', dark: 'github-dark' },
     },
 
     /* 文章字数统计、阅读时间，设置为 false 则禁用 */

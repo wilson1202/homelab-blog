@@ -380,6 +380,874 @@ Docker 容器配置笔记。
 ---
 
 ---
+url: /deploy/docker/doyufl7m/index.md
+---
+# MoviePilot
+## 简介
+
+> MoviePilot，NAS媒体库管理工具.
+>
+> Docker Hub：<https://hub.docker.com/r/jxxghp/moviepilot-v2>
+>
+> Github：<https://github.com/jxxghp/MoviePilot>
+>
+> 官方网站：<https://wiki.movie-pilot.org/>
+
+## Compose 配置
+
+```yaml
+version: '3.3'
+services:
+    moviepilot:
+        stdin_open: true
+        container_name: moviepilot-v2
+        hostname: moviepilot-v2
+        networks:
+            - moviepilot
+        ports:
+            - target: 3000  # 容器端口不可改
+              published: 6003  # 宿主机端口可改
+              protocol: tcp
+        volumes:
+            - '/volume2/video:/media'
+            - '/volume1/docker/moviepilot-v2/config:/config'
+            - '/volume1/docker/moviepilot-v2/core:/moviepilot/.cache/ms-playwright'
+            - '/var/run/docker.sock:/var/run/docker.sock:ro'
+        environment:
+            #- 'NGINX_PORT=3000'
+            #- 'PORT=3001'
+            - 'PUID=1026'
+            - 'PGID=100'
+            - 'UMASK=022'
+            - 'TZ=Asia/Shanghai'
+            - 'SUPERUSER=admin'
+            # - 'API_TOKEN=无需手动配置，系统会自动生成。如果需要自定义配置，必须为16位以上的复杂字符串'
+        restart: always
+        image: jxxghp/moviepilot-v2:latest
+
+networks:
+  moviepilot:
+    name: moviepilot
+```
+
+::: info 配置提示
+
+获取用户的UID、GID等信息，使用 `id <用户名>`
+
+```bash{2}
+sa6400@SA6400:/$ id sa6400
+uid=1026(sa6400) gid=100(users) groups=100(users)
+```
+
+:::
+
+## Unraid 配置
+
+| 项目              | 参数                                                         | 备注               |
+| ----------------- | ------------------------------------------------------------ | ------------------ |
+| 名称              | `MoviePilot`                                                 |                    |
+| 概述              | 空                                                           |                    |
+| 额外要求          | 空                                                           |                    |
+| 存储库            | `jxxghp/moviepilot-v2`                                       |                    |
+| 图标链接          | `/mnt/user/Pictures/docker-logos/MoviePilot-icon.png`        |                    |
+| WebUI             | `http://[IP]:[PORT:6003]/`                                   |                    |
+| 额外参数          | 空                                                           |                    |
+| 发布参数          | 空                                                           |                    |
+| CPU 绑定          | 自定义                                                       |                    |
+| 网络类型          | `Bridge`                                                     |                    |
+| Use Tailscale     | 关                                                           |                    |
+| 控制台 shell 命令 | `Shell`                                                      |                    |
+| 特权              | 关                                                           |                    |
+| 端口              | 容器端口：`3000`主机端口：`6003`；连接类型：`TCP` | 前端 UI 端口       |
+| 路径              | 容器路径：`/media`主机路径：`/mnt/user/Videos/`        | 媒体库路径         |
+| 路径              | 容器路径：`/config`主机路径：`/mnt/user/appdata/MoviePilot/config` | 配置文件路径       |
+| 路径              | 容器路径：`/moviepilot/.cache/ms-playwright`主机路径：`/mnt/user/appdata/MoviePilot/core` | 浏览器内核路径     |
+| 路径              | 容器路径：`/var/run/docker.sock`主机路径：`/var/run/docker.sock` | 宿主机docker管理权 |
+| 变量              | 键：`PUID`；值：`1026`                                       | PUID               |
+| 变量              | 键：`PGID`；值：`100`                                        | PGID               |
+| 变量              | 键：`UMASK`；值：`022`                                       | 权限掩码           |
+| 变量              | 键：`TZ`；值：`Asia/Shanghai`                                | 时区               |
+| 变量              | 键：`SUPERUSER`；值：`admin`                                 | 设置超级用户       |
+
+---
+
+---
+url: /deploy/docker/ffhlbesz/index.md
+---
+# Ubuntu Docker 安装
+Docker Engine-Community 支持以下的 Ubuntu 版本：
+
+* Xenial 16.04 (LTS)
+* Bionic 18.04 (LTS)
+* Cosmic 18.10
+* Disco 19.04
+* 其他更新的版本……
+
+Docker Engine - Community 支持上 x86\_64（或 amd64）armhf，arm64，s390x （IBM Z），和 ppc64le（IBM的Power）架构。
+
+## 使用官方安装脚本自动安装
+
+安装命令如下：
+
+```bash
+ curl -fsSL https://test.docker.com -o test-docker.sh
+ sudo sh test-docker.sh
+```
+
+## 手动安装
+
+### 卸载旧版本
+
+Docker 的旧版本被称为 docker，docker.io 或 docker-engine 。如果已安装，请卸载它们：
+
+```bash
+$ sudo apt-get remove docker docker-engine docker.io containerd runc
+```
+
+当前称为 Docker Engine-Community 软件包 docker-ce 。
+
+安装 Docker Engine-Community，以下介绍两种方式。
+
+### 使用 Docker 仓库进行安装
+
+在新主机上首次安装 Docker Engine-Community 之前，需要设置 Docker 仓库。之后，您可以从仓库安装和更新 Docker 。
+
+### 设置仓库
+
+更新 apt 包索引。
+
+```bash
+sudo apt-get update
+```
+
+安装 apt 依赖包，用于通过HTTPS来获取仓库:
+
+```bash
+sudo apt-get install \
+    apt-transport-https \
+    ca-certificates \
+    curl \
+    gnupg-agent \
+    software-properties-common
+```
+
+添加 Docker 的官方 GPG 密钥：
+
+```bash
+curl -fsSL https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+```
+
+使用以下指令设置稳定版仓库
+
+```bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu/ \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+```
+
+### 安装 Docker Engine-Community
+
+更新 apt 包索引。
+
+```bash
+sudo apt-get update
+```
+
+安装最新版本的 Docker Engine-Community 和 containerd ，或者转到下一步安装特定版本：
+
+```bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io
+```
+
+要安装特定版本的 Docker Engine-Community，请在仓库中列出可用版本，然后选择一种安装。列出您的仓库中可用的版本：
+
+```bash
+apt-cache madison docker-ce
+
+  docker-ce | 5:18.09.1~3-0~ubuntu-xenial | https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  xenial/stable amd64 Packages
+  docker-ce | 5:18.09.0~3-0~ubuntu-xenial | https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  xenial/stable amd64 Packages
+  docker-ce | 18.06.1~ce~3-0~ubuntu       | https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  xenial/stable amd64 Packages
+  docker-ce | 18.06.0~ce~3-0~ubuntu       | https://mirrors.ustc.edu.cn/docker-ce/linux/ubuntu  xenial/stable amd64 Packages
+  ...
+```
+
+使用第二列中的版本字符串安装特定版本，例如 5:18.09.1~3-0~ubuntu-xenial。
+
+```bash
+sudo apt-get install docker-ce=<VERSION_STRING> docker-ce-cli=<VERSION_STRING> containerd.io
+```
+
+测试 Docker 是否安装成功，输入以下指令，打印出以下信息则安装成功:
+
+```bash
+sudo docker run hello-world
+
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+1b930d010525: Pull complete                                                                                                                                  Digest: sha256:c3b4ada4687bbaa170745b3e4dd8ac3f194ca95b2d0518b417fb47e5879d9b5f
+Status: Downloaded newer image for hello-world:latest
+
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+```
+
+## 使用 Shell 脚本进行安装
+
+Docker 在 [get.docker.com ](https://get.docker.com/)和 [test.docker.com](https://test.docker.com/) 上提供了方便脚本，用于将快速安装 Docker Engine-Community 的边缘版本和测试版本。脚本的源代码在 docker-install 仓库中。 不建议在生产环境中使用这些脚本，在使用它们之前，您应该了解潜在的风险：
+
+* 脚本需要运行 root 或具有 sudo 特权。因此，在运行脚本之前，应仔细检查和审核脚本。
+* 这些脚本尝试检测 Linux 发行版和版本，并为您配置软件包管理系统。此外，脚本不允许您自定义任何安装参数。从 Docker 的角度或您自己组织的准则和标准的角度来看，这可能导致不支持的配置。
+* 这些脚本将安装软件包管理器的所有依赖项和建议，而无需进行确认。这可能会安装大量软件包，具体取决于主机的当前配置。
+* 该脚本未提供用于指定要安装哪个版本的 Docker 的选项，而是安装了在 edge 通道中发布的最新版本。
+* 如果已使用其他机制将 Docker 安装在主机上，请不要使用便捷脚本。
+
+本示例使用 [get.docker.com ](https://get.docker.com/)上的脚本在 Linux 上安装最新版本的Docker Engine-Community。要安装最新的测试版本，请改用 test.docker.com。在下面的每个命令，取代每次出现 get 用 test。
+
+```bash
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+```
+
+如果要使用 Docker 作为非 root 用户，则应考虑使用类似以下方式将用户添加到 docker 组：
+
+```bash
+sudo usermod -aG docker your-user
+```
+
+## 卸载 docker
+
+删除安装包：
+
+```bash
+sudo apt-get purge docker-ce
+```
+
+删除镜像、容器、配置文件等内容：
+
+```bash
+sudo rm -rf /var/lib/docker
+```
+
+## 参考
+
+[Ubuntu Docker 安装 | 菜鸟教程](https://www.runoob.com/docker/ubuntu-docker-install.html)
+
+---
+
+---
+url: /deploy/docker/fnezswrv/index.md
+---
+# Portainer CE
+## 简介
+
+> Portainer 社区版 (CE)，可以轻松部署并高效管理容器.
+>
+> Docker Hub：<https://hub.docker.com/r/portainer/portainer-ce>
+>
+> Github：<https://github.com/portainer/portainer>
+>
+> 官方网站：<http://portainer.io/>
+
+## 安装
+
+* 安装中文 portaer
+
+  ```bash
+  docker run -d --restart=always --name="portainer" -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /docker/portainer_data:/data 6053537/portainer-ce
+  ```
+
+* 安装原版 portaer
+
+  ```bash
+  docker run -d --restart=always --name="portainer" -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v /docker/portainer_data:/data portainer/portainer-ce:latest
+  ```
+
+---
+
+---
+url: /deploy/docker/hb9le6ym/index.md
+---
+# Unblock Netease Music
+## 简介
+
+> 解锁网易云音乐客户端变灰歌曲
+>
+> Docker Hub：<https://hub.docker.com/r/pan93412/unblock-netease-music-enhanced>
+>
+> Github：<https://github.com/UnblockNeteaseMusic/server>
+
+## Compose 配置
+
+```js
+version: '3.9'
+services:
+    unblock-netease-music-enhanced:
+        entrypoint: /bin/sh
+        command: -c 'ln -sf /app/logs/app.log /app/app.log && node app.js -s'
+        logging:
+            options:
+                max-size: 10m
+        restart: unless-stopped
+        environment:
+            - LOG_LEVEL=debug
+            - ENABLE_FLAC=true
+            - NO_CACHE=true
+            - ENABLE_LOCAL_VIP=true
+            - LOG_FILE=app.log
+        ports:
+            - '18080:8080'
+        volumes:
+            - /docker/unblock-netease/logs:/app/logs:rw
+        image: pan93412/unblock-netease-music-enhanced
+        container_name: unblock-netease-music
+        mem_limit: 256m
+```
+
+::: info 自定义日志位置
+
+创建一个从 `/app/logs/app.log` 到 `/app/app.log` 的符号链接
+
+```js:no-line-numbers
+ln -sf /app/logs/app.log /app/app.log
+```
+
+:::
+
+::: tip 指定歌曲源
+
+```yaml:no-line-numbers
+command: -c 'ln -sf /app/logs/app.log /app/app.log && node app.js -s -o migu'  # [!code word:-o migu]
+```
+
+:::
+
+## Unraid 配置
+
+| 项目              | 参数                                                         | 备注             |
+| ----------------- | ------------------------------------------------------------ | ---------------- |
+| 名称              | `Unblock-Netease-Music`                                      |                  |
+| 概述              | 空                                                           |                  |
+| 额外要求          | 空                                                           |                  |
+| 存储库            | `pan93412/unblock-netease-music-enhanced`                    |                  |
+| 图标链接          | `/mnt/user/Pictures/docker-logos/UnblockNeteaseMusic-icon.png` |                  |
+| WebUI             | 空                                                           |                  |
+| 额外参数          | `--memory=256m --memory-swap=0 --entrypoint /bin/sh`         |                  |
+| 发布参数          | `-c "ln -sf /app/logs/app.log /app/app.log && node app.js -s"` |                  |
+| CPU 绑定          | 自定义                                                       |                  |
+| 网络类型          | `Bridge`                                                     |                  |
+| Use Tailscale     | 关                                                           |                  |
+| 控制台 shell 命令 | `Shell`                                                      |                  |
+| 特权              | 关                                                           |                  |
+| 变量              | 键：`LOG_FILE`；值：`app.log`                                | 日志文件         |
+| 变量              | 键：`LOG_LEVEL`；值：`debug`                                 | 日志输出等级     |
+| 变量              | 键：`ENABLE_FLAC`；值：`true`                                | 激活无损音质     |
+| 变量              | 键：`NO_CACHE`；值：`true`                                   | 停用缓存         |
+| 变量              | 键：`ENABLE_LOCAL_VIP`；值：`svip`                           | 激活本地黑胶会员 |
+| 端口              | 容器端口：`8080`主机端口：`18080`连接类型：`TCP` | 映射端口         |
+| 路径              | 容器路径：`/app/logs`主机路径：`/mnt/user/appdata/unblock-netease-music/logs` | 日志路径         |
+
+::: important 确保『日志路径』目录存在并有正确权限
+
+```bash
+mkdir -p /mnt/user/appdata/unblock-netease-music/logs
+chmod 777 /mnt/user/appdata/unblock-netease-music/logs
+```
+
+:::
+
+---
+
+---
+url: /deploy/docker/myzjggl2/index.md
+---
+# ZFile
+## 简介
+
+> ZFile，最方便快捷的在线目录展示程序，支持将本地文件、FTP、SFTP、S3、OneDrive 等存储在网站上展示并浏览.
+>
+> Docker Hub：<https://hub.docker.com/r/zhaojun1998/zfile>
+>
+> Github：[https://github.com/zfile-dev/zfile⁠](https://github.com/zfile-dev/zfile)
+>
+> 官方网站：[https://www.zfile.vip/⁠](https://www.zfile.vip/)
+
+## Compose 配置
+
+```yaml
+version: '3.3'
+services:
+    zfile:
+        container_name: zfile
+        restart: always
+        ports:
+            - '8080:8080' 
+        volumes:
+            - '/volume1/docker/zfile/db:/root/.zfile-v4/db'
+            - '/volume1/docker/zfile/logs:/root/.zfile-v4/logs'
+            - '/volume2/share/zfile:/data/file'
+            - '/volume1/docker/zfile/application.properties:/root/application.properties' // [!code ++]
+        image: zhaojun1998/zfile:latest
+```
+
+::: info **配置文件映射**
+
+* 需要先在宿主机下载配置文件，然后映射到容器内: 下载 [`application.properties`{.filepath}](https://c.jun6.net/ZFILE/application.properties) 文件到 `/root/zfile/` 目录下, 此目录可自行更改, 命令如:
+
+```bash
+curl -k -o /volume1/docker/zfile/application.properties https://c.jun6.net/ZFILE/application.properties
+```
+
+* 然后增加一个 `-v` 参数 ==（见上面倒数第二行）=={.important}，将此源文件映射到容器内（如修改宿主机的 `application.properties`{.filepath} 为其他路径, 则上面命令也要一起修改）
+
+:::
+
+::: warning
+
+启动容器后无法修改文件映射，需先 `docker rm -f zfile` 删除容器，再重新运行命令.
+
+:::
+
+## Unraid 配置
+
+| 项目              | 参数                                                         | 备注       |
+| ----------------- | ------------------------------------------------------------ | ---------- |
+| 名称              | `ZFile`                                                      |            |
+| 概述              | 空                                                           |            |
+| 额外要求          | 空                                                           |            |
+| 存储库            | `zhaojun1998/zfile`                                          |            |
+| 图标链接          | `/mnt/user/Pictures/docker-logos/ZFile-icon.png`             |            |
+| WebUI             | 空                                                           |            |
+| 额外参数          | 空                                                           |            |
+| 发布参数          | 空                                                           |            |
+| CPU 绑定          | 自定义                                                       |            |
+| 网络类型          | `Bridge`                                                     |            |
+| Use Tailscale     | 关                                                           |            |
+| 控制台 shell 命令 | `Shell`                                                      |            |
+| 特权              | 关                                                           |            |
+| 路径              | 容器路径：`/root/.zfile-v4/db`主机路径：`/mnt/user/appdata/ZFile/db` | 数据库路径 |
+| 路径              | 容器路径：`/root/.zfile-v4/logs`主机路径：`/mnt/user/appdata/ZFile/logs` | 日志路径   |
+| 路径              | 容器路径：`/data/file`主机路径：`/mnt/user/Work/`      | 存储路径   |
+| 端口              | 容器端口：`8080`主机端口：`8080`连接类型：`TCP`  | 映射端口   |
+
+---
+
+---
+url: /deploy/docker/qi566m5t/index.md
+---
+# Radicale
+## 简介
+
+> Docker-Radicale，CalDAV/CardDAV 服务器.
+>
+> Docker Hub：[tomsquest/docker-radicale](https://hub.docker.com/r/tomsquest/docker-radicale)
+>
+> Github：[docker-radicale](https://github.com/tomsquest/docker-radicale)
+
+## Compose 配置
+
+```yaml
+version: "3.9"
+
+services:
+  radicale:
+    image: tomsquest/docker-radicale:latest
+    container_name: radicale
+    ports:
+      - "5232:5232"
+    init: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          pids: 50
+    healthcheck:
+      test: curl -f http://127.0.0.1:5232 || exit 1
+      interval: 30s
+      retries: 3
+    restart: always
+    environment:
+      # 禁用容器尝试 chown 数据目录  // [!code warning]
+      TAKE_FILE_OWNERSHIP: "false"  // [!code warning]
+      UID: 1026
+      GID: 100
+    volumes:
+      - /volume2/Docker/radicale/data:/data
+```
+
+::: note 配置提示
+
+* 本方案禁用容器尝试 `chown` 数据目录，自定义详细配置参照 [Custom User/Group ID for the data volume](https://github.com/tomsquest/docker-radicale?tab=readme-ov-file#custom-usergroup-id-for-the-data-volume)
+
+* 获取用户的UID、GID等信息，使用 `id <用户名>`
+
+  ```bash{2}
+  sa6400@SA6400:/$ id sa6400
+  uid=1000(sa6400) gid=100(users) groups=100(users)
+  ```
+
+:::
+
+## 软件使用
+
+1. 配合 **vCards CN**
+
+   ::: info GitHub 项目地址：[metowolf/vCards](https://github.com/metowolf/vCards)
+
+   :::
+
+   ::: tip [添加 CardDav 服务器 Radicale 输出格式的支持](https://github.com/metowolf/vCards/pull/232)，只需运行：
+
+   ```bash
+   npm run-script radicale
+   ```
+
+   :::
+
+2. **访问网页创建账户**
+
+   网址：`ip:5232` ，并创建 `Username` 为 `cn` 和 `Password` 为 `cn` 的账户
+
+   ![image-20250821184246845](/images/deploy/docker/006.radicale/image-20250821184246845.png)
+
+3. **导入 vcard 通讯录**
+
+   将 radicale 格式的 `.vcf` 文件批量复制到 **Docker** 文件夹
+
+   > 路径：
+   >
+   > ```
+   > /volume2/Docker/radicale/data/collections/collection-root/cn
+   > ```
+
+   ::: info 此处的 cn 为创建用户名后自动生成
+
+   :::
+
+4. **刷新网页查看成果**
+
+   ![image-20250821185712576](/images/deploy/docker/006.radicale/image-20250821185712576.png)
+
+5. **群晖反代服务地址**
+
+   「控制面板」→「登陆门户」→「高级」→「反向代理服务器」→「新增」
+
+   ![image-20250821190844974](/images/deploy/docker/006.radicale/image-20250821190844974.png)
+
+6. **手动订阅 CardDAV 服务**
+
+   * 服务器：`vcards.metowolf.com`
+   * 用户名：`cn`
+   * 密码：`cn`
+
+   ::: tabs
+
+   @tab **iOS**
+   「设置」→「通讯录」→「账户」→「添加账户」→「其他」→「添加 CardDAV 账户」
+
+   参考：[官方文档](https://support.apple.com/zh-cn/guide/iphone/ipha0d932e96/ios)
+
+   @tab **Mac**
+   「通讯录」→「设置」→「账户」→「其他通讯录账户」
+
+   参考：[官方文档](https://support.apple.com/zh-cn/guide/contacts/adrb7e5aaa2a/mac)
+
+   :::
+
+## 添加计划任务
+
+* **群晖计划任务**
+
+  「控制面板」→「任务计划」→「新增」→「计划的任务」→「用户定义的脚本」
+
+  ::: tabs
+
+  @tab **常规**
+
+  任务名称：radicale
+
+  用户账号：user
+
+  \==注：与 docker 使用的 UID、GID 对应用户保持一致=={.important}
+
+  @tab **计划**
+
+  日期：重复-每天
+
+  时间：开始时间-05:00
+
+  @tab **任务计划**
+
+  通知设置：空
+
+  运行命令：`bash /volume2/Docker/radicale/update_radicale.sh`
+
+  :::
+
+---
+
+---
+url: /deploy/docker/qlwrd527/index.md
+---
+# EmbyServer
+## 简介
+
+> EmbyServer，是一个家庭媒体服务器，会自动实时转换和串流媒体，以便在任何设备上播放.
+>
+> Docker Hub：<https://hub.docker.com/r/emby/embyserver>
+>
+> Github：<https://github.com/MediaBrowser/Emby>
+>
+> 官方网站：<https://emby.media/>
+
+## Compose 配置
+
+```yaml
+version: "2.3"
+services:
+  emby:
+    image: emby/embyserver
+    container_name: embyserver
+    environment:
+      - UID=1000
+      - GID=100
+      - GIDLIST=100
+    volumes:
+      - '/volume1/docker/embyserver/programdata:/config'
+      - '/volume2/video:/volume2/video'
+      - '/volume2/aliyun:/volume2/aliyun' // [!code ++]
+    ports:
+      - '8096:8096'
+      - '8920:8920'
+    devices:
+      - /dev/dri:/dev/dri
+    restart: on-failure
+```
+
+::: info 配置提示
+
+* 获取用户的UID、GID等信息，使用 `id <用户名>`
+
+  ```bash{2}
+  sa6400@SA6400:/$ id sa6400
+  uid=1000(sa6400) gid=100(users) groups=100(users)
+  ```
+
+* 播放云盘内容，需要增加挂在云盘目录，如 `/volume2/aliyun`
+
+:::
+
+:::  important 查看是否使用集显硬件加速
+
+```js
+docker exec -it emby /bin/sh
+ls /dev/dri
+card0 renderD128 // [!code warning]
+```
+
+:::
+
+## Unraid 配置
+
+| 项目              | 参数                                                         | 备注       |
+| ----------------- | ------------------------------------------------------------ | ---------- |
+| 名称              | `EmbyServer`                                                 |            |
+| 概述              | 空                                                           |            |
+| 额外要求          | 空                                                           |            |
+| 存储库            | `emby/embyserver`                                            |            |
+| 图标链接          | `/mnt/user/Pictures/docker-logos/EmbyServer-icon.png`        |            |
+| WebUI             | `http://[IP]:[PORT:8096]/`                                   |            |
+| 额外参数          | 空                                                           |            |
+| 发布参数          | 空                                                           |            |
+| CPU 绑定          | 自定义                                                       |            |
+| 网络类型          | `Bridge`                                                     |            |
+| Use Tailscale     | 关                                                           |            |
+| 控制台 shell 命令 | `Shell`                                                      |            |
+| 特权              | 关                                                           |            |
+| 端口              | 容器端口：`8096`主机端口：`8096`连接类型：`TCP`  | 映射端口   |
+| 路径              | 容器路径：`/mnt/Downloads/`主机路径：`/mnt/user/Downloads/` | 下载路径   |
+| 路径              | 容器路径：`/mnt/Videos/`主机路径：`/mnt/user/Videos/`  | 媒体库路径 |
+| 变量              | 键：`UID`；值：`1000`                                        | UID        |
+| 变量              | 键：`GID`；值：`100`                                         | GID        |
+| 变量              | 键：`GIDLIST`；值：`100`                                     | GIDLIST    |
+| 设备              | 值：`/dev/dri/`                                              | 硬件加速   |
+
+:::  important Unraid『INTEL 集显』硬件加速插件
+
+* Intel-GPU-TOP
+* GPU Statistics
+
+:::
+
+---
+
+---
+url: /deploy/docker/vy0rmlqh/index.md
+---
+Docker 支持以下的 64 位 Debian 版本：
+
+* Debian Bookworm 12 （稳定版）
+* Debian Bullseye 11 （旧稳定版）
+
+支持的架构包括 x86\_64（amd64）、armhf、arm64 和 ppc64le。
+
+## 卸载旧版本
+
+如果你之前安装过 Docker Engine 之前，你需要卸载旧版本，避免冲突：
+
+```bash
+for pkg in docker.io docker-doc docker-compose podman-docker containerd runc; do sudo apt-get remove $pkg; done
+```
+
+## 使用官方安装脚本自动安装
+
+安装命令如下：
+
+```bash
+ curl -fsSL https://get.docker.com -o get-docker.sh
+ sudo sh get-docker.sh
+```
+
+## 手动安装
+
+### 1. 更新软件包
+
+首先，更新现有的软件包和包缓存：
+
+```bash
+sudo apt update
+sudo apt upgrade
+```
+
+### 2. 安装依赖包
+
+安装一些需要的依赖包，这些包允许 apt 使用 HTTPS 协议来访问 Docker 仓库：
+
+```bash
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+```
+
+### 3. 添加 Docker 官方 GPG 密钥
+
+使用下面的命令来添加 Docker 官方的 GPG 密钥：
+
+```bash
+sudo curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+```
+
+### 4. 添加 Docker 仓库
+
+添加 Docker 官方的 APT 软件源：
+
+```bash
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian \
+  $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+# 更新
+sudo apt-get update
+```
+
+### 5. 更新 APT 软件包缓存
+
+添加仓库后，更新 APT 包索引：
+
+```bash
+sudo apt update
+```
+
+确保你现在从 Docker 官方仓库安装 Docker 而不是 Debian 默认仓库：
+
+```bash
+apt-cache policy docker-ce
+```
+
+你应该看到它指向 https://download.docker.com/，确保这就是官方的 Docker 仓库。
+
+### 6. 安装 Docker
+
+现在，你可以安装 Docker：
+
+```bash
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+
+### 7. 启动并验证 Docker
+
+启动 Docker 并设置为开机自启：
+
+```bash
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+你可以使用以下命令来验证 Docker 是否安装成功：
+
+```bash
+sudo docker --version
+```
+
+运行以下测试命令确保 Docker 正常工作：
+
+```bash
+sudo docker run hello-world
+```
+
+## 卸载 docker
+
+删除安装包：
+
+```bash
+sudo apt-get purge docker-ce
+```
+
+删除镜像、容器、配置文件等内容：
+
+```bash
+sudo rm -rf /var/lib/docker
+```
+
+## 参考
+
+[Debian Docker 安装 | 菜鸟教程](https://www.runoob.com/docker/debian-docker-install.html)
+
+---
+
+---
 url: /deploy/native/index.md
 ---
 # 原生部署
@@ -393,7 +1261,7 @@ Native
 │   └── yum install xxx
 │
 ├── Binary
-│   ├── 下载 sing-box 二进制
+│   ├── 下载二进制
 │   └── 手动放入 /usr/local/bin
 │
 └── Source
@@ -403,10 +1271,308 @@ Native
 ---
 
 ---
+url: /deploy/native/zgmszd41/index.md
+---
+## 简介
+
+> rtp2httpd - IPTV 流媒体转发服务器
+>
+> 官网：<https://rtp2httpd.com/>
+>
+> Github：<https://github.com/stackia/rtp2httpd>
+
+## 0. 前置
+
+* iptv 是 Debian 13（其他 Debian/Ubuntu 同理）
+* ens224 网卡已由 ESXi 添加（vIPTV vSwitch），确认存在：`ip link show ens224`
+
+## 1. 网卡配置（netplan，持久化）
+
+```bash
+cat > /etc/netplan/99-custom.yaml <<'EOF'
+network:
+  version: 2
+  ethernets:
+    ens192:
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 10.0.0.8/24
+      gateway4: 10.0.0.1
+      nameservers:
+        addresses:
+          - 10.0.0.2
+    ens224:
+      dhcp4: false
+      dhcp6: false
+      addresses:
+        - 172.16.1.1/24
+EOF
+chmod 600 /etc/netplan/99-custom.yaml
+netplan apply
+ip -br addr show ens224    # 应显示 172.16.1.1/24
+```
+
+> \[!IMPORTANT]
+> ens224 **必须有 IPv4 地址**（实测：无 IP 时 join 失败），私有段任意（光猫推流不看源 IP 网段）；**不加网关**
+
+## 2. 获取 rtp2httpd 二进制（三选一）
+
+### 方式 A（推荐）：官方 release 静态二进制
+
+> 最简单，无需任何依赖，自动获取最新版
+
+```bash
+VER=$(curl -s https://api.github.com/repos/stackia/rtp2httpd/releases/latest | grep -oP '"tag_name": *"\K[^"]+')
+curl -L -o /usr/local/bin/rtp2httpd \
+  "https://github.com/stackia/rtp2httpd/releases/download/${VER}/rtp2httpd-${VER#v}-x86_64"
+chmod +x /usr/local/bin/rtp2httpd
+```
+
+> \[!NOTE]
+> 官方 release 的 `rtp2httpd-<版本>-x86_64` 是**完全静态编译**（`ldd` 显示 not a dynamic executable）——任何 Linux 直接跑，**不需要 musl/编译**，版本自动跟随最新（asset 命名规则 = tag 去掉 `v` 前缀 + `-x86_64`）。无 .deb 包，x86\_64 静态二进制即 Debian 可用形态
+
+### 方式 B：从官方镜像提取
+
+> 需要有 docker 的机器，如 Ubuntu
+
+```bash
+docker pull ghcr.io/stackia/rtp2httpd:latest
+docker create --name r2h-tmp ghcr.io/stackia/rtp2httpd:latest
+docker cp r2h-tmp:/usr/local/bin/rtp2httpd ./rtp2httpd
+docker rm r2h-tmp
+scp rtp2httpd root@10.0.0.8:/usr/local/bin/rtp2httpd
+```
+
+### 方式 C：源码编译
+
+> iptv 上直接编，不需要 docker
+
+```bash
+apt update && apt install -y git cmake gcc make
+git clone https://github.com/stackia/rtp2httpd.git /tmp/rtp2httpd-src
+cd /tmp/rtp2httpd-src
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j$(nproc)
+install -m755 build/rtp2httpd /usr/local/bin/rtp2httpd
+```
+
+## 3. 运行依赖 + 启动服务
+
+```bash
+apt install -y musl          # musl 动态链接库（方式 A 的二进制需要；方式 B 编译的可跳过但装了无害）
+chmod +x /usr/local/bin/rtp2httpd
+
+cat > /etc/systemd/system/rtp2httpd.service <<'EOF'
+[Unit]
+Description=rtp2httpd IPTV
+After=network.target
+
+[Service]
+ExecStart=/usr/local/bin/rtp2httpd --noconfig --verbose 2 --listen 0.0.0.0:5140 --maxclients 20 --upstream-interface-multicast ens224
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOF
+systemctl daemon-reload
+systemctl enable --now rtp2httpd
+```
+
+> \[!IMPORTANT]
+> 关键参数：**`--upstream-interface-multicast ens224`**（从光猫网卡发 IGMP join）——漏了它就收不到流（503）
+
+## 4. 验证
+
+```bash
+curl http://127.0.0.1:5140/status                      # 返回状态页 = 服务正常
+curl -o /dev/null -w "%{http_code} %{size_download}\n" \
+  http://127.0.0.1:5140/rtp/239.49.8.19:9614           # 200 + 每秒约 1MB+ = 有流
+# 全屋播放：http://10.0.0.8:5140/rtp/239.49.8.19:9614
+```
+
+---
+
+---
 url: /os/debian/index.md
 ---
 # Debian
 Debian 配置笔记。
+
+---
+
+---
+url: /os/debian/64i2k4fj/index.md
+---
+> 新安装的 Debian 系统，默认一般使用 DHCP 获取 IP 地址，除非在安装过程中，使用了指定的 IP 地址。本文将介绍如何在 Debian 系统中，配置使用静态 IP 地址，配置网关，以及设置 DNS 服务器。
+
+这些配置通过修改配置文件，很容易实现。在 Redhat 系列的 Linux 环境中，我们一般修改网卡的网络配置文件，对应的文件名为 `/etc/sysconfig/network-scripts/ifcfg-eXX`{.fp}，其中  eXX 即为网络设备名。网络设备的列表可以他通过 `ifconfig` 命令获取。同样的，在 Debian 环境下，我们只需要修改网络的配置文件便可以了。相比之下，配置过程要比 Redhat 更为方便，只需要修改 `/etc/network/interfaces`{.fp} 文件。
+
+::: important 以 `root` 权限打开 `/etc/network/interfaces`{.fp}
+
+:::
+
+## Debian 系统设置静态 IP 地址、网关
+
+首选备份原始的网络配置文件
+
+```bash
+sudo cp /etc/network/interfaces  /etc/network/interfacesbak
+```
+
+编辑文件 `/etc/network/interfaces`{.fp}，内容如下：
+
+```ini title="interface"
+# The loopback network interface
+auto lo
+auto eth0  #设置开机自动连接网络
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+iface eth0 inet static   #static表示使用固定IP地址上网，dhcp表示使用动态ip
+address 192.168.9.100    #设置静态ip地址
+netmask 255.255.255.0    #子网掩码
+gateway 192.168.9.254    #网关
+```
+
+使用 Ctrl + O 保存配置，使用 Ctrl + X 退出 **nano** 编辑器。
+
+## 配置 Debian 环境中的 DNS 服务器
+
+这个配置过程与 ::devicon:redhat-wordmark =24px:: 系列的系统是相同的，只需要修改 `/etc/resolv.conf`{.fp} 文件即可，内容如下，
+
+```ini title="resolv.conf"
+nameserver 114.114.114.114   #设置首选dns
+nameserver 8.8.8.8   #设置备用dns
+```
+
+至此，IP地址、网关、DNS配置完成。
+
+重启网络使配置生效：
+
+```bash
+sudo service networking restart
+```
+
+检查新配置是否工作：
+
+```bash
+ping www.debian.cn
+```
+
+::: warning 如果重启网络后，配置并没有生效
+
+1. 请检查是否有书写错误，比如全角和半角字符；
+2. `interfaces`{.fp} 文件中 `auto eth0` 也很关键， `/etc/init.d/networking`{.fp} 根据这个字段判断是否启动某个网卡的网络；
+
+:::
+
+## 参考
+
+[debian 11修改ip地址的方法 - Thenext - 博客园](https://www.cnblogs.com/Thenext/p/16950850.html)
+
+---
+
+---
+url: /os/debian/c3me4wk0/index.md
+---
+# 允许Root远程SSH登录
+在 **Debian 12** 系统中开启允许 SSH 远程 Root 登录的步骤如下：
+
+***
+
+### **步骤 1：修改 SSH 服务端配置**
+
+1. **备份原配置文件**（避免操作失误）：
+
+   ```bash
+   sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+   ```
+
+2. **编辑 SSH 配置文件**：
+
+   ```bash
+   sudo nano /etc/ssh/sshd_config
+   ```
+
+3. **找到并修改以下参数**：
+
+   * 将 `PermitRootLogin` 的值改为 `yes`（如果行首有 `#` 注释符，需删除注释）：
+
+     ```ini
+     PermitRootLogin yes
+     ```
+
+   * 确保允许密码认证（如果禁用密码需同时修改）：
+
+     ```ini
+     PasswordAuthentication yes
+     ```
+
+4. **保存并退出编辑器**（Nano 快捷键：`Ctrl+O` 保存，`Ctrl+X` 退出）。
+
+***
+
+### **步骤 2：重启 SSH 服务**
+
+```bash
+sudo systemctl restart ssh
+```
+
+***
+
+### **步骤 3：验证配置**
+
+1. **检查服务状态**：
+
+   ```bash
+   sudo systemctl status ssh
+   ```
+
+   * 确保服务处于 `active (running)` 状态。
+
+2. **测试远程 Root 登录**（从另一台机器执行）：
+
+   ```bash
+   ssh root@your_server_ip
+   ```
+
+   * 输入 Root 密码，确认能否成功登录。
+
+***
+
+### **步骤 4：配置防火墙放行 SSH**
+
+如果系统启用了防火墙（如 `ufw`），需放行 SSH 端口（默认 `22`）：
+
+```bash
+sudo ufw allow 22/tcp
+sudo ufw reload
+```
+
+***
+
+### **恢复默认配置（禁止 Root 登录）**
+
+1. 将 `PermitRootLogin` 改为 `no` 或 `prohibit-password`：
+
+   ```ini
+   PermitRootLogin prohibit-password
+   ```
+
+2. 重启 SSH 服务：
+
+   ```bash
+   sudo systemctl restart ssh
+   ```
+
+***
+
+### **总结**
+
+* **风险提示**：直接开放 Root 远程登录会增加服务器被暴力破解的风险，建议仅在必要时临时开启。
+* **推荐替代方案**：通过普通用户登录后切换至 Root（`su -` 或 `sudo`）。
 
 ---
 
@@ -439,6 +1605,351 @@ url: /router/openwrt/index.md
 ---
 # OpenWrt
 OpenWrt 配置笔记。
+
+---
+
+---
+url: /router/openwrt/ko892enj/index.md
+---
+## 官方地址
+
+> 源码：<https://github.com/openwrt/openwrt>
+>
+> 固件：[https://downloads.openwrt.org](https://downloads.openwrt.org/)
+
+## 准备工作
+
+### 依赖
+
+以 `root` 用户或者有 `root` 权限的用户执行以下命令
+
+直接抄大佬的环境  [Requirements](https://github.com/immortalwrt/immortalwrt?tab=readme-ov-file#requirements)
+
+```bash
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+  bzip2 ccache clang cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
+  g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 libelf-dev \
+  libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev \
+  libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz mkisofs msmtp nano \
+  ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply python3-docutils \
+  python3-pyelftools qemu-utils re2c rsync scons squashfs-tools subversion swig texinfo uglifyjs \
+  upx-ucl unzip vim wget xmlto xxd zlib1g-dev zstd
+```
+
+或者
+
+```bash
+sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
+```
+
+### 源码
+
+以下命令以普通用户执行，不要用 `root`
+
+* 下载源码
+
+```bash
+git clone -b v24.10.0 --single-branch --depth=1 https://github.com/openwrt/openwrt.git
+```
+
+::: info
+`-b` 指定分支/标签、 `--single-branch` 仅下载单个分支/标签、 `--depth=1` 只下载最新的一次提交
+:::
+
+* 进入目录
+
+```
+cd openwrt
+```
+
+### 自定义时区
+
+```bash
+# 修改时区
+sed -i '/set system.@system\[\-1\].timezone=.*/c\        set system.@system[-1].timezone='\''CST-8'\''' package/base-files/files/bin/config_generate
+# 设置时区名称
+sed -i '/set system.@system\[\-1\].timezone=.*/a\        set system.@system[-1].zonename='\''Asia/Shanghai'\''' package/base-files/files/bin/config_generate
+```
+
+### 自定义IP
+
+默认管理`IP`为 `192.168.1.1` ，可以根据自己的需求进行修改
+
+```bash
+sed -i 's/192.168.1.1/10.0.0.2/g' package/base-files/files/bin/config_generate
+```
+
+### 自定义软件包
+
+* 将软件包仓库地址写入 `feeds.conf.default` 文件中
+  * 添加 [`helloworld`](https://github.com/fw876/helloworld)
+
+    ```bash
+    sed -i "/helloworld/d" "feeds.conf.default"
+    echo "src-git helloworld https://github.com/fw876/helloworld.git" >> "feeds.conf.default"
+    ```
+
+* 拉取软件包
+
+  * ```bash
+    ./scripts/feeds update -a
+    ./scripts/feeds install -a
+    ```
+
+* 使用 `git clone` 下载或升级软件包
+
+  * 升级 [`golang`](https://github.com/kenzok8/golang) ，[`helloworld`](https://github.com/fw876/helloworld) 项目必备
+
+    ```bash
+    rm -rf feeds/packages/lang/golang
+    git clone https://github.com/kenzok8/golang feeds/packages/lang/golang
+    ```
+
+    * 添加 [`luci-theme-argon`](https://github.com/jerrykuku/luci-theme-argon)
+
+    ```bash
+    git clone https://github.com/jerrykuku/luci-theme-argon.git feeds/luci/themes/luci-theme-argon
+    ```
+
+    * 升级 [`openwrt-smartdns`](https://github.com/pymumu/openwrt-smartdns) 和 [`luci-app-smartdns`](https://github.com/pymumu/luci-app-smartdns)
+
+    ```bash
+    rm -rf feeds/packages/net/smartdns
+    git clone https://github.com/pymumu/openwrt-smartdns.git feeds/packages/net/smartdns
+    rm -rf feeds/luci/applications/luci-app-smartdns
+    git clone https://github.com/pymumu/luci-app-smartdns.git feeds/luci/applications/luci-app-smartdns
+    ```
+
+### 菜单配置
+
+执行以下命令打开菜单配置
+
+```bash
+make menuconfig
+```
+
+按照如下配置进行选择，其他未说明的不要动
+
+::: window title="配置"
+
+* `Target System` -> `x86`
+* `Subtarget` -> `x86_64`
+* `Target Images`
+  * < > `tar.gz`
+  * < > `ext4`
+  * < > `Build GRUB images`
+  * (1) `Seconds to wait before booting the default entry`
+  * (256) `Root filesystem partition size`
+* `Base system`
+  * < > `dnsmasq`  # 二选一
+  * <\*> `dnsmasq-full`  # 二选一
+* `Libraries`
+  * < > `libustream-mbedtls`
+  * <\*> `libustream-openssl`  #与 [`helloworld`](https://github.com/fw876/helloworld) 保持一致
+  * < > `libustream-wolfssl`
+* `LuCI`
+  * `Collections`
+    * <\*> `luci`
+  * `Modules`
+    * `Translations`
+      * <\*> `Chinese Simplified`
+    * <\*> `luci-compat`  # [`helloworld`](https://github.com/fw876/helloworld) 勾选
+  * `Applications`
+    * 根据自己的需要选择软件包
+* `Network`
+  * `SSH`
+    * <\*>`openssh-sftp-server`
+  * <\*>`snmpd`
+
+:::
+
+### 预下载
+
+这里会先把编译时要下载的文件下载下来（只是一部分，后面编译阶段还会下载，仍需保持网络畅通）
+
+```bash
+make download -j8 V=s
+```
+
+## 编译
+
+### 执行编译
+
+根据CPU核心数开启指定线程数
+
+```bash
+make V=s -j$(nproc)
+```
+
+::: info
+如果编译过程中报错了，可以使用单线程模式 `make V=s -j1` ，确认出错的地方，然后排查（注：有时候单线程就不报错了），使用 `-j` 参数可以指定编译时使用的线程数
+:::
+
+### 二次编译
+
+```bash
+# 进入目录
+cd openwrt
+# 拉取更新
+git pull
+# 更新系统组件
+./scripts/feeds update -a && ./scripts/feeds install -a
+# 生成配置文件
+make defconfig
+# 下载源码文件
+make download -j8
+# 使用 WSL/WSL2 进行编译
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# 执行编译
+make V=s -j$(nproc)
+```
+
+### 如果需要重新配置
+
+```bash
+# 清除缓存和配置文件
+rm -rf ./tmp && rm -rf .config
+# 打开配置菜单
+make menuconfig
+# 下载源码文件
+make download -j8 
+# 使用 WSL/WSL2 进行编译
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# 执行编译
+make V=s -j$(nproc)
+```
+
+### 生成 `seed.config` 文件
+
+```bash
+make defconfig
+./scripts/diffconfig.sh > seed.config
+```
+
+## 参考
+
+[使用 OpenWrt 23.05.5 官网源码编译固件](https://maxqiu.com/article/detail/153)
+
+[【openwrt】openwrt内核编译libustream-openssl出错 解决-谷动谷力](http://bbs.sunsili.com/thread-269580-1-1.html)
+
+---
+
+---
+url: /router/openwrt/pcj1c41r/index.md
+---
+# 使用 LEDE 源码编译固件
+## 项目地址
+
+> [Lean的Openwrt源码仓库](https://github.com/coolsnowwolf/lede)
+
+::: important 编译注意事项
+
+1. 不要用 `root` 用户进行编译！！！
+2. 国内用户编译前最好准备好梯子
+3. 默认登陆IP `192.168.1.1` 密码 `password`
+
+:::
+
+## 编译命令
+
+:::: steps
+
+1. 首先装好 Linux 系统，推荐 Debian 或 Ubuntu LTS
+
+2. 安装编译依赖
+
+   ```bash
+   sudo apt update -y
+   sudo apt full-upgrade -y
+   sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+   bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext \
+   genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev \
+   libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev \
+   libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf \
+   python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion \
+   swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+   ```
+
+   ::: warning 如果使用 `root` 执行了以上命令，那接下来必须使用 `非root` 权限用户进行后续操作
+
+   :::
+
+3. 下载好源代码
+
+   ```bash
+   git clone https://github.com/coolsnowwolf/lede
+   ```
+
+4. 进入 lede 目录（源码存在此目录，所以此目录即为 buildroot 目录）
+
+   ```bash
+   cd lede
+   ```
+
+5. 更新系统组件
+
+   ```bash
+   ./scripts/feeds update -a
+   ./scripts/feeds install -a
+   make menuconfig
+   ```
+
+   ::: tip 如果已经成功编译过，再次编译时还要 `git pull` 同步 L 大的代码
+
+   :::
+
+6. 运行 `make menuconfig` 入选单界面，选择 CPU 架构，型号，固件类型，所需插件及工具等，记得先 `Save` 再退出
+
+7. 下载源码文件到 `buildroot` 录下的 `dl` 目录
+
+   ```bash
+   make download -j8
+   ```
+
+8. `WSL` 编译前可尝试运行以下代码
+
+   ```bash
+   PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   ```
+
+9. 正式开始编译，建议先运行 `screen` 命令守护进程，尤其是在 `VPS` 上编译时（ `-j` 后面是线程数，第一次编译推荐用单线程）
+
+   ```bash
+   make V=s -j1
+   ```
+
+::::
+
+## 二次编译
+
+```bash
+cd lede
+git pull
+./scripts/feeds update -a && ./scripts/feeds install -a
+make defconfig
+make download -j8
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+make V=s -j$(nproc)
+```
+
+## 重新配置
+
+```bash
+rm -rf ./tmp && rm -rf .config
+make menuconfig
+make download 
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+make V=s -j$(nproc)
+```
+
+## 生成 seed.config 文件
+
+```bash
+make defconfig
+./scripts/diffconfig.sh > seed.config
+```
 
 ---
 

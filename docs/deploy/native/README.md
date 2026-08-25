@@ -14,7 +14,7 @@ Native
 │   └── yum install xxx
 │
 ├── Binary
-│   ├── 下载 sing-box 二进制
+│   ├── 下载二进制
 │   └── 手动放入 /usr/local/bin
 │
 └── Source

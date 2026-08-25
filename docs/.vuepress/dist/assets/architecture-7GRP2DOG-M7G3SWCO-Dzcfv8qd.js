@@ -1,1 +1,0 @@
-import{Rt as e}from"./common-D1NZeQ-i.js";export{e as createArchitectureServices};

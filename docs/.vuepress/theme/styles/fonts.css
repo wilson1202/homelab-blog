@@ -1,0 +1,10 @@
+/* ===== 字体 / Fonts ===== */
+
+@import url('https://fonts.googleapis.com/css2?family=PT+Serif:ital,wght@0,400;0,700;1,400;1,700&family=Noto+Serif+SC:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+
+:root {
+  --vp-font-family-base: "PT Serif", "Noto Serif SC", serif;
+  --vp-font-family-mono: "JetBrains Mono", "Noto Serif SC", monospace;
+}
