@@ -69,6 +69,7 @@
 ### Native
 
 - [原生部署](/deploy/native/index.md)
+- [SmartDNS](/deploy/native/864cn2cd/index.md)
 - [rtp2httpd](/deploy/native/zgmszd41/index.md)
 
 ### Others
