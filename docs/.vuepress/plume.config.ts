@@ -20,9 +20,9 @@ import navbar from './navbar'
 export default defineThemeConfig({
   logo: '/avatar.png',
 
-  social: [
-    { icon: 'github', link: '/' },
-  ],
+  // social: [
+  //   { icon: 'github', link: '/' },
+  // ],
 
   /**
    * @see https://theme-plume.vuejs.press/config/theme/#profile
