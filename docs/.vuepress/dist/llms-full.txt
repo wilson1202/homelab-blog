@@ -1765,6 +1765,299 @@ sudo ufw reload
 ---
 
 ---
+url: /os/debian/wk2mc5ju/index.md
+---
+## 概述
+
+Debian Cloud 镜像通常使用 Netplan + Cloud-init 管理网络。Netplan 通过 `/etc/netplan/*.yaml` 定义网卡、静态 IP、默认网关、DNS 和路由，并将配置转换为系统实际的网络配置。
+
+本文以 Debian 13 Cloud 双网卡主机为例，介绍静态 IP、默认网关、多网卡、配置优先级以及远程 SSH 环境下的安全应用与验证。
+
+核心流程：
+
+```text
+查看当前状态 → 修改 Netplan → 语法检查 → 临时应用 → 验证 → 正式应用
+```
+
+## 一、查看当前网络
+
+修改前先确认网卡、IP 和路由：
+
+```bash
+ip -br addr
+ip route
+```
+
+输出示例：
+
+```text
+ens192    UP    10.0.0.8/24
+ens224    UP    172.16.1.1/24
+```
+
+路由：
+
+```text
+default via 10.0.0.1 dev ens192
+10.0.0.0/24 dev ens192
+172.16.1.0/24 dev ens224
+```
+
+其中 `ens192` 是主接口（负责外部网络访问，IP `10.0.0.8/24`，网关 `10.0.0.1`），`ens224` 是辅助接口（内部/专用网络，IP `172.16.1.1/24`）。
+
+## 二、Netplan 配置文件
+
+Netplan 配置位于 `/etc/netplan/`，查看目录：
+
+```bash
+ls -lh /etc/netplan/
+```
+
+默认文件：`50-cloud-init.yaml`
+
+查看配置：
+
+```bash
+cat /etc/netplan/50-cloud-init.yaml
+```
+
+> \[!NOTE]
+> **配置优先级**：Netplan 按文件名字典序读取 `/etc/netplan/*.yaml`，因此 `50-cloud-init.yaml` 先于 `99-custom.yaml` 加载。将自定义配置放在较大编号的文件（如 `99-custom.yaml`）中，可使其位于 Cloud-init 默认配置之后。多个 YAML 文件不是简单的「后者覆盖前者」，而是按 Netplan 规则合并，最终配置以 `netplan get` 显示为准。
+
+## 三、配置静态 IP
+
+推荐使用 `routes` 配置默认路由，而非旧式 `gateway4`。`gateway4` 在新版 Netplan 中已不推荐，`routes` 对多路由和策略路由更统一。
+
+双网卡配置示例：
+
+```yaml
+network:
+  version: 2
+
+  ethernets:
+    ens192:
+      dhcp4: false
+      dhcp6: false
+
+      addresses:
+        - 10.0.0.8/24
+
+      routes:
+        - to: default
+          via: 10.0.0.1
+
+      nameservers:
+        addresses:
+          - 10.0.0.2
+          - 223.5.5.5
+
+    ens224:
+      dhcp4: false
+      dhcp6: false
+
+      addresses:
+        - 172.16.1.1/24
+```
+
+创建或修改配置：
+
+```bash
+nano /etc/netplan/99-custom.yaml
+```
+
+> \[!TIP]
+> **为何只配一个网关**：`ens192` 是主网络接口，因此配置默认路由；`ens224` 只配置地址、不配置网关。因为 `172.16.1.0/24` 是 `ens224` 的直连网络，Linux 会自动生成对应直连路由。普通情况一台主机只需一个默认路由，除非明确使用策略路由或多出口，否则不要为辅助接口配置第二个默认网关。
+>
+> 核心原则：默认网关配置在负责外部网络访问的接口上；内部、管理或专用接口通常只配置 IP 和对应路由。
+
+## 四、应用配置
+
+修改后先检查语法：
+
+```bash
+netplan generate
+```
+
+无错误输出通常表示 YAML 与 Netplan 配置可正常生成。
+
+> \[!WARNING]
+> 远程 SSH 环境下，不要在未验证的情况下直接正式应用，网络配置错误可能立即导致 SSH 断开。推荐先临时应用 `netplan try`，它会在未确认时自动回滚。确认以下项正常后再正式应用：
+>
+> * SSH 连接正常
+> * 网关可达
+> * DNS 正常
+> * 外网访问正常
+
+正式应用：
+
+```
+netplan apply
+```
+
+## 五、验证网络
+
+查看最终 Netplan 配置：
+
+```bash
+netplan get
+```
+
+查看 IP：
+
+```bash
+ip -br addr
+```
+
+查看默认路由：
+
+```bash
+ip route show default
+
+# 预期显示：default via 10.0.0.1 dev ens192
+```
+
+查看完整路由：
+
+```bash
+ip route
+```
+
+排查多网卡或路由异常时，直接查询目标地址的实际出口，比单纯 `ping` 更直观：
+
+```bash
+ip route get 223.5.5.5
+```
+
+输出示例：
+
+```text
+223.5.5.5 via 10.0.0.1 dev ens192 src 10.0.0.8
+```
+
+可确认数据包实际从哪个接口和源地址发出。
+
+## 六、连通性测试
+
+建议按「网关 → DNS → 公网 IP → 域名」逐级测试。
+
+测试网关：
+
+```bash
+ping -c 4 10.0.0.1
+```
+
+测试 DNS 服务器：
+
+```bash
+ping -c 4 10.0.0.2
+```
+
+测试公网：
+
+```bash
+ping -c 4 223.5.5.5
+```
+
+检查 DNS：
+
+```bash
+resolvectl status
+```
+
+若公网 IP 可访问但域名无法解析，重点检查 DNS 配置，而非继续排查默认网关。
+
+## 七、YAML 注意事项
+
+Netplan 使用 YAML，缩进必须正确，且只能使用空格，不要使用 Tab。
+
+正确：
+
+```yaml
+network:
+  version: 2
+  ethernets:
+    ens192:
+      dhcp4: false
+      addresses:
+        - 10.0.0.8/24
+```
+
+错误（缺少缩进）：
+
+```yaml
+network:
+version: 2
+ethernets:
+ens192:
+```
+
+修改后使用 `netplan generate` 检查配置。
+
+## 八、Cloud-init 注意事项
+
+Cloud 镜像通常由 Cloud-init 生成 `/etc/netplan/50-cloud-init.yaml`。自定义配置可放在 `/etc/netplan/99-custom.yaml`，再用 `netplan get` 检查最终配置。
+
+> \[!WARNING]
+> 如果 Cloud-init 仍负责网络配置，后续重新初始化或再次运行 Cloud-init 时可能重新生成网络配置。长期运行的 Cloud VPS 应明确网络配置的唯一管理者，避免 Cloud-init、Netplan 或其他网络管理工具同时修改网络。
+
+## 九、云服务器的特殊情况
+
+不要假设云服务器网关一定是 `x.x.x.1`。云厂商可能使用 `IP 1.2.3.4/32`、网关 `1.2.3.1`，或要求额外配置网关路由。配置云服务器应以云厂商提供的参数为准：IPv4 地址、子网掩码/CIDR、默认网关、IPv6 地址及网关、DNS、静态路由、特殊路由要求。尤其是 `/32` 地址的云服务器，不能直接按普通 `/24` 局域网理解网关关系。
+
+## 十、常用命令
+
+| 用途 | 命令 |
+| --- | --- |
+| 查看网卡 | `ip link` |
+| 查看 IP | `ip addr` |
+| 简洁查看 IP | `ip -br addr` |
+| 查看路由 | `ip route` |
+| 查看默认网关 | `ip route show default` |
+| 查询实际选路 | `ip route get <IP>` |
+| 查看 DNS | `resolvectl status` |
+| 查看最终配置 | `netplan get` |
+| 生成配置 / 语法检查 | `netplan generate` |
+| 临时应用并支持回滚 | `netplan try` |
+| 正式应用 | `netplan apply` |
+
+## 十一、推荐操作流程
+
+远程 Debian Cloud 修改 IP 时，推荐严格按以下顺序操作：
+
+```bash
+# 1. 查看当前网络
+ip -br addr
+ip route
+
+# 2. 修改配置
+nano /etc/netplan/99-custom.yaml
+
+# 3. 检查最终配置
+netplan get
+
+# 4. 生成配置并检查语法
+netplan generate
+
+# 5. 临时应用，避免配置错误导致永久断网
+netplan try
+
+# 6. 验证网络
+ip -br addr
+ip route
+ip route get 223.5.5.5
+ping -c 4 10.0.0.1
+ping -c 4 223.5.5.5
+
+# 7. 确认无误后正式应用
+netplan apply
+```
+
+> \[!TIP]
+> 远程修改网络的关键不是直接 `netplan apply`，而是先 `netplan generate` 检查配置，再用 `netplan try` 临时验证，确认 SSH 和路由正常后再正式应用。
+
+---
+
+---
 url: /os/ubuntu/index.md
 ---
 # Ubuntu

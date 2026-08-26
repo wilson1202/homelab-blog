@@ -45,6 +45,7 @@
 - [Debian](/os/debian/index.md)
 - [Debian 修改 IP 地址](/os/debian/4odhnhal/index.md)
 - [允许 Root 远程 SSH 登录](/os/debian/ds4tuka2/index.md)
+- [Debian Cloud 修改 IP 地址](/os/debian/wk2mc5ju/index.md)
 
 ### Ubuntu
 
