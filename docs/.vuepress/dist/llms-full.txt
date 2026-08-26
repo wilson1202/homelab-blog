@@ -1572,7 +1572,7 @@ sudo cp /etc/network/interfaces  /etc/network/interfacesbak
 
 编辑文件 `/etc/network/interfaces`{.fp}，内容如下：
 
-```ini title="interface"
+```ini title="/etc/network/interfaces"
 # The loopback network interface
 auto lo
 auto eth0  #设置开机自动连接网络
@@ -1592,7 +1592,7 @@ gateway 192.168.9.254    #网关
 
 这个配置过程与 ::devicon:redhat-wordmark =24px:: 系列的系统是相同的，只需要修改 `/etc/resolv.conf`{.fp} 文件即可，内容如下，
 
-```ini title="resolv.conf"
+```ini title="/etc/resolv.conf"
 nameserver 114.114.114.114   #设置首选dns
 nameserver 8.8.8.8   #设置备用dns
 ```
