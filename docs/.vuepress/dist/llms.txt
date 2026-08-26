@@ -32,9 +32,9 @@
 ### ESXi
 
 - [ESXi](/vm/esxi/index.md)
+- [ESXi 直通 SATA 控制器](/vm/esxi/8iu5gpv8/index.md)
 - [ESXi 部署 Debian Cloud 镜像](/vm/esxi/ph48hyup/index.md)
 - [ESXi 虚拟机安装](/vm/esxi/t6ypr8e4/index.md)
-- [ESXi 直通 SATA 控制器](/vm/esxi/yi854kwn/index.md)
 
 ### Proxmox VE
 
