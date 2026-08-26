@@ -53,11 +53,14 @@ chpasswd:
   expire: false
 ```
 
-`lock_passwd: false` 允许该用户使用密码登录；`chpasswd` 为 `debian` 用户设定初始密码 `123456`。
+> \[!NOTE]
+>
+> * `lock_passwd`: `false` 允许该用户使用密码登录；
+> * `chpasswd` : 用户`debian` ，初始密码 `123456`；
 
 创建 `meta-data`（示例路径 `/root/meta-data`）：
 
-```text
+```ini
 instance-id: debian-01
 local-hostname: debian
 ```
