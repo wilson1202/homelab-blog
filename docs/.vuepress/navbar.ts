@@ -53,4 +53,15 @@ export default defineNavbarConfig([
     ],
   },
 
+  {
+    text: '工具收藏',
+    icon: 'fa6-solid:screwdriver-wrench',
+    items: [
+      { text: '导航', link: '/tool/nav/README.md', icon: 'token-branded:nav' },
+      { text: '收藏', link: '/tool/github/README.md', icon: 'akar-icons:github-fill' },
+      { text: '笔记', link: '/tool/note/README.md', icon: 'twemoji:memo' },
+      { text: '配置', link: '/tool/plume/README.md', icon: 'selfhst:vue-js' },
+    ],
+  },
+
 ])

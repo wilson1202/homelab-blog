@@ -1,0 +1,477 @@
+---
+url: /tool/note/rohvmzai/index.md
+---
+## 概述
+
+如果一台电脑上的 VS Code 同时需要操作两个不同的 GitHub 账户，例如：
+
+* **GitHub 账户 A**：个人项目
+* **GitHub 账户 B**：工作项目
+
+不建议频繁切换 VS Code 的 GitHub 登录账号。
+
+更稳定的方式是为两个 GitHub 账户分别创建 SSH Key，通过 `~/.ssh/config` 使用不同的 Host 别名区分认证身份，再通过 Git 仓库级配置设置不同的 `user.name` 和 `user.email`。
+
+最终实现：
+
+```text
+                    ┌── GitHub 账户 A
+本机 / VS Code ─────┤
+                    └── GitHub 账户 B
+
+SSH Key A ── github-personal ── GitHub A
+SSH Key B ── github-work     ── GitHub B
+```
+
+GitHub 官方支持在同一工作站使用多个账户，并建议通过不同协议、凭据或 SSH Key 区分账户。
+
+## 一、核心原理
+
+需要区分两个概念：
+
+1. GitHub 认证身份
+
+   决定你有权限向哪个 GitHub 账户的仓库进行 Push，由 SSH Key 决定。例如：
+
+   ```text
+   github-personal → ~/.ssh/id_ed25519_github_personal
+   github-work     → ~/.ssh/id_ed25519_github_work
+   ```
+
+2. Git Commit 身份
+
+   决定这个 Commit 在 GitHub 上显示为谁提交的，由 Git 配置决定：
+
+   ```bash
+   git config user.name
+   git config user.email
+   ```
+
+> \[!IMPORTANT]
+>
+> GitHub 根据 Commit 中的邮箱地址将提交关联到对应账户，因此两个账户最好分别使用对应账户已验证的邮箱，或 GitHub 提供的 `noreply` 地址。
+>
+> 完整关系：
+>
+> ```
+> SSH Key → GitHub 身份认证 → 是否有权限 Push
+> user.name + user.email → Commit 作者信息 → GitHub 关联到哪个账户
+> ```
+>
+> 两者不是一回事。
+
+## 二、准备两个 GitHub 账户
+
+假设：
+
+| 用途 | GitHub 账户 | 邮箱 |
+| --- | --- | --- |
+| 个人 | `github-personal` | `personal@example.com` |
+| 工作 | `github-work` | `work@example.com` |
+
+实际使用时替换成自己的账户和邮箱。
+
+## 三、分别创建 SSH Key
+
+1. 创建个人账户 Key
+
+   Windows PowerShell、Git Bash 或 Linux/macOS 终端执行：
+
+   ```bash
+   ssh-keygen -t ed25519 -C "personal@example.com" -f ~/.ssh/id_ed25519_github_personal
+   ```
+
+   生成私钥（不要泄露）与公钥：
+
+   ```text
+   ~/.ssh/id_ed25519_github_personal
+   ~/.ssh/id_ed25519_github_personal.pub
+   ```
+
+2. 创建工作账户 Key
+
+   ```bash
+   ssh-keygen -t ed25519 -C "work@example.com" -f ~/.ssh/id_ed25519_github_work
+   ```
+
+   生成：
+
+   ```text
+   ~/.ssh/id_ed25519_github_work
+   ~/.ssh/id_ed25519_github_work.pub
+   ```
+
+   最终目录：
+
+   ```text
+   ~/.ssh/
+   ├── id_ed25519_github_personal
+   ├── id_ed25519_github_personal.pub
+   ├── id_ed25519_github_work
+   └── id_ed25519_github_work.pub
+   ```
+
+## 四、将 SSH 公钥添加到 GitHub
+
+分别登录两个 GitHub 账户，进入 **Settings → SSH and GPG keys → New SSH key**，将对应 `.pub` 公钥内容添加到对应账户：
+
+* 添加到个人 GitHub 账户
+
+  ```bash
+  cat ~/.ssh/id_ed25519_github_personal.pub
+  ```
+
+* 添加到工作 GitHub 账户
+
+  ```bash
+  cat ~/.ssh/id_ed25519_github_work.pub
+  ```
+
+GitHub 官方支持使用 SSH Key 进行 Git 操作，并可通过不同 SSH 配置为不同账户使用不同 Key。
+
+## 五、配置 SSH Host 别名
+
+编辑 `~/.ssh/config`（不存在则创建），写入：
+
+```ini
+# GitHub 个人账户
+Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_personal
+    IdentitiesOnly yes
+
+# GitHub 工作账户
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_work
+    IdentitiesOnly yes
+```
+
+> \[!TIP]
+>
+> * `Host github-personal`
+> * `github-work`
+>
+> 上述只是 SSH 别名，最终都连接 `github.com`，但使用不同 SSH Key。`IdentitiesOnly yes` 可避免 SSH Agent 加载多个 Key 时选错密钥，GitHub 官方多账户示例也采用这种方式。
+
+## 六、测试两个 GitHub 账户
+
+测试个人账户：
+
+```bash
+ssh -T git@github-personal
+```
+
+正常返回：
+
+```text
+Hi personal-user! You've successfully authenticated,
+but GitHub does not provide shell access.
+```
+
+测试工作账户：
+
+```bash
+ssh -T git@github-work
+```
+
+如果果两个命令返回的是不同 GitHub 用户名，说明 SSH 多账户配置成功。
+
+## 七、克隆仓库时使用对应的 Host
+
+这是整个方案最关键的一步，不要使用 `git@github.com:...`，而是：
+
+个人项目：
+
+```bash
+git clone git@github-personal:personal-user/project.git
+```
+
+工作项目：
+
+```bash
+git clone git@github-work:work-user/project.git
+```
+
+这样 Git 会自动选择对应 SSH Key。
+
+## 八、已 Clone 仓库如何修改 Remote
+
+查看当前 Remote：
+
+```bash
+git remote -v
+```
+
+修改为个人账户：
+
+```bash
+git remote set-url origin git@github-personal:personal-user/homelab.git
+```
+
+工作账户：
+
+```bash
+git remote set-url origin git@github-work:work-user/project.git
+```
+
+再次检查应已变更。
+
+## 九、设置每个仓库的 Git 提交身份
+
+SSH 解决 Push 使用哪个账户，还需设置 Commit 的作者身份。
+
+进入个人项目：
+
+```bash
+cd ~/projects/homelab
+git config user.name "Personal Name"
+git config user.email "personal@example.com"
+```
+
+进入工作项目：
+
+```bash
+cd ~/projects/work-project
+git config user.name "Work Name"
+git config user.email "work@example.com"
+```
+
+Git 支持针对单个仓库设置 `user.name` / `user.email`，仓库级配置会覆盖全局。
+
+## 十、检查当前仓库使用哪个身份
+
+```bash
+git config user.name
+git config user.email
+git config --local --list
+git remote -v
+```
+
+推荐一次性检查：
+
+```bash
+git config --get user.name
+git config --get user.email
+git remote -v
+```
+
+个人项目预期：
+
+```text
+Personal Name
+personal@example.com
+origin  git@github-personal:share-nas/homelab.git (fetch)
+origin  git@github-personal:share-nas/homelab.git (push)
+```
+
+## 十一、推荐设置全局默认身份
+
+设置默认身份，新建仓库默认使用个人身份：
+
+```bash
+git config --global user.name "Personal Name"
+git config --global user.email "personal@example.com"
+```
+
+工作项目再单独覆盖：
+
+```bash
+git config user.name "Work Name"
+git config user.email "work@example.com"
+```
+
+这种方式比频繁修改 `--global` 更安全：Global 为默认，各仓库按需覆盖。
+
+## 十二、在 VS Code 中正常使用
+
+配置完成后，VS Code 不需要频繁切换 GitHub 账户。直接打开对应项目：
+
+```bash
+code ~/projects/homelab
+code ~/projects/work-project
+```
+
+VS Code 识别项目中的 `.git` 仓库，使用 Git 的 Remote 与本地配置执行提交、拉取、推送。VS Code 的 GitHub 登录主要用于 GitHub 集成功能；实际 Clone/Pull/Push 直接使用本机 Git 配置的 SSH 凭据。
+
+## 十三、一个完整示例
+
+假设个人账户 `share-nas`（邮箱 `personal@example.com`）、工作账户 `company-user`（邮箱 `work@example.com`）。
+
+个人项目：
+
+```bash
+cd ~/projects/homelab
+git remote set-url origin git@github-personal:share-nas/homelab.git
+git config user.name "share-nas"
+git config user.email "personal@example.com"
+```
+
+工作项目：
+
+```bash
+cd ~/projects/project
+git remote set-url origin git@github-work:company-user/project.git
+git config user.name "company-user"
+git config user.email "work@example.com"
+```
+
+## 十四、提交前快速检查
+
+提交前确认身份与 Remote：
+
+```bash
+echo "=== Git Identity ==="
+git config user.name
+git config user.email
+echo "=== Git Remote ==="
+git remote -v
+```
+
+确认无误后再：
+
+```bash
+git add .
+git commit -m "update"
+git push
+```
+
+## 十五、查看 Commit 使用的身份
+
+查看最近一次提交：
+
+```bash
+git log -1 --format=fuller
+```
+
+或：
+
+```bash
+git log -1 --format='%an <%ae>'
+```
+
+可在 Push 前确认作者是否正确。
+
+## 十六、常见问题
+
+1. **两个账户都配了 SSH Key 但仍登录错账户**
+
+   测试两个 Host：
+
+   ```bash
+   ssh -T git@github-personal
+   ssh -T git@github-work
+   ```
+
+   若返回相同账户，检查 `~/.ssh/config` 中 `IdentitiesOnly yes` 是否存在。
+
+2. **`Permission denied (publickey)`**
+
+   ```bash
+   ls ~/.ssh/
+   ssh -vT git@github-personal
+   ssh -vT git@github-work
+   ```
+
+   重点观察 SSH 最终尝试的是哪个 Key。
+
+3. **Commit 显示成了错误的 GitHub 账户**
+
+   ```bash
+   git config user.email
+   ```
+
+   若错误则修正：
+
+   ```bash
+   git config user.email "correct@example.com"
+   ```
+
+   > \[!NOTE]
+   > 修改 Git 配置只影响后续 Commit，不会自动修改已创建的 Commit。
+
+4. **Push 权限正确但贡献记录不显示**
+
+   检查 `git config user.email` 是否与对应 GitHub 账户关联，可优先使用 GitHub 提供的 `noreply` 邮箱减少真实邮箱暴露。
+
+5. **VS Code 左下角登录的是另一个 GitHub 账户**
+
+   这通常不等于 Git Push 使用的 SSH 账户。需区分：
+
+   * **VS Code GitHub 登录** → GitHub 扩展、PR、Issue 等功能
+   * **SSH Key** → Git Clone/Pull/Push
+   * **git user.email** → Commit 作者归属
+
+   不要仅因 VS Code 显示另一个用户就认为 Push 会使用错误账户。
+
+## 十七、最终推荐目录结构
+
+```text
+~/.ssh/
+├── config
+├── id_ed25519_github_personal
+├── id_ed25519_github_personal.pub
+├── id_ed25519_github_work
+└── id_ed25519_github_work.pub
+```
+
+`config`：
+
+```ini
+Host github-personal
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_personal
+    IdentitiesOnly yes
+
+Host github-work
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_ed25519_github_work
+    IdentitiesOnly yes
+```
+
+仓库：
+
+```text
+~/projects/
+├── homelab/
+│   └── .git/ → Remote: github-personal
+└── work-project/
+    └── .git/ → Remote: github-work
+```
+
+## 十八、最终效果
+
+配置完成后无需退出/登录 GitHub、修改 VS Code 账户、重新认证。每个仓库只需配置一次，之后无论 VS Code 图形界面还是终端，都会自动使用该仓库对应的 GitHub 账户。
+
+## 总结
+
+同一台电脑管理多个 GitHub 账户，推荐遵循三个原则：
+
+| 项目 | 负责什么 | 配置位置 |
+| --- | --- | --- |
+| SSH Key | GitHub 登录 / Push 权限 | `~/.ssh/` |
+| SSH Host | 选择哪个 SSH Key | `~/.ssh/config` |
+| `user.name` / `user.email` | Commit 作者 | Git 仓库 `.git/config` |
+
+最关键的配置就是：
+
+```text
+github-personal → SSH Key A → GitHub A
+github-work     → SSH Key B → GitHub B
+```
+
+以及：
+
+```text
+个人仓库 → git@github-personal:...
+工作仓库 → git@github-work:...
+```
+
+这样可以让 **VS Code、Git 命令行和 GitHub 多账户管理保持一致**，也是长期使用最不容易误提交到错误账户的方案。
+
+> \[!IMPORTANT]
+> SSH Key 是认证身份，`user.email` 是 Commit 身份。两者都需正确配置，不能只配置其中一个。

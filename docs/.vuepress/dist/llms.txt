@@ -57,16 +57,16 @@
 
 - [Windows](/os/windows/index.md)
 
-### Windows
+### DSM
 
 - [DSM](/os/dsm/index.md)
 - [Container Manager 设置代理](/os/dsm/udgag0t3/index.md)
 
-### Windows
+### QTS
 
 - [QTS](/os/qts/index.md)
 
-### Windows
+### fnOS
 
 - [fnOS](/os/fnos/index.md)
 
@@ -87,6 +87,23 @@
 - [原生部署](/deploy/native/index.md)
 - [SmartDNS 部署与配置](/deploy/native/jwynt0v0/index.md)
 - [rtp2httpd 部署与配置](/deploy/native/qrlicht2/index.md)
+
+### Navigation
+
+- [导航栏](/tool/nav/index.md)
+
+### GitHub
+
+- [GitHub 收藏](/tool/github/index.md)
+
+### Note
+
+- [笔记](/tool/note/index.md)
+- [VSCode 使用不同 GitHub 账户](/tool/note/rohvmzai/index.md)
+
+### Plume
+
+- [plume 主题配置](/tool/plume/index.md)
 
 ### Others
 

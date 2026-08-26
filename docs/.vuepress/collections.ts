@@ -112,7 +112,7 @@ const dsmDoc = defineCollection({
   type: 'doc',
   dir: 'os/dsm/',
   linkPrefix: '/os/dsm/',
-  title: 'Windows',
+  title: 'DSM',
   // 根据文件结构自动生成侧边栏
   sidebar: 'auto',
 })
@@ -121,7 +121,7 @@ const qtsDoc = defineCollection({
   type: 'doc',
   dir: 'os/qts/',
   linkPrefix: '/os/qts/',
-  title: 'Windows',
+  title: 'QTS',
   // 根据文件结构自动生成侧边栏
   sidebar: 'auto',
 })
@@ -130,7 +130,7 @@ const fnosDoc = defineCollection({
   type: 'doc',
   dir: 'os/fnos/',
   linkPrefix: '/os/fnos/',
-  title: 'Windows',
+  title: 'fnOS',
   // 根据文件结构自动生成侧边栏
   sidebar: 'auto',
 })
@@ -155,6 +155,43 @@ const nativeDoc = defineCollection({
   sidebar: 'auto',
 })
 
+// 工具收藏
+const navDoc = defineCollection({
+  type: 'doc',
+  dir: 'tool/nav/',
+  linkPrefix: '/tool/nav/',
+  title: 'Navigation',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
+const githubDoc = defineCollection({
+  type: 'doc',
+  dir: 'tool/github/',
+  linkPrefix: '/tool/github/',
+  title: 'GitHub',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
+const noteDoc = defineCollection({
+  type: 'doc',
+  dir: 'tool/note/',
+  linkPrefix: '/tool/note/',
+  title: 'Note',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
+const plumeDoc = defineCollection({
+  type: 'doc',
+  dir: 'tool/plume/',
+  linkPrefix: '/tool/plume/',
+  title: 'Plume',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
 export default defineCollections([
   // blog,
   // 路由器
@@ -173,6 +210,10 @@ export default defineCollections([
   fnosDoc,
   // 服务部署
   dockerDoc,
-  nativeDoc
-
+  nativeDoc,
+  // 工具收藏
+  navDoc,
+  githubDoc,
+  noteDoc,
+  plumeDoc,
 ])

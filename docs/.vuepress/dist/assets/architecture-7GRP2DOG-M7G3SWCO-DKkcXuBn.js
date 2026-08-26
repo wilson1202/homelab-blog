@@ -1,1 +1,0 @@
-import{Rt as e}from"./common-cDxYqO3U.js";export{e as createArchitectureServices};
