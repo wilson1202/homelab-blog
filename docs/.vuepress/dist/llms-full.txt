@@ -2058,6 +2058,184 @@ netplan apply
 ---
 
 ---
+url: /os/dsm/index.md
+---
+# DSM
+群晖 DSM 配置笔记。
+
+---
+
+---
+url: /os/dsm/udgag0t3/index.md
+---
+## 概述
+
+在国内网络环境下，访问 Docker 官方镜像库经常超时或拉取失败。为群晖 DSM 7.2 的 Container Manager（即 Docker 服务）配置 HTTP 或 SOCKS5 代理，可解决镜像拉取问题。本文记录通过 systemd drop-in 环境变量为 Container Manager 的 dockerd 设置代理的方法，并给出实测验证链路。
+
+> \[!NOTE]
+> Synology 的 dockerd 对 `daemon.json` 的 `proxies` 字段支持不可靠（需 Docker ≥ 23，且 GUI 会重写 daemon.json）。DSM 7.2 建议统一使用 systemd drop-in 环境变量方案，对所有版本生效，且不受 GUI 重写影响。
+
+## 一、SSH 登录群晖
+
+1. 在 DSM 控制面板开启 SSH 服务（控制面板 → 终端机与 SNMP）。
+
+2. 连接 NAS（Windows 可用 PuTTY，Mac/Linux 直接用 Terminal）：
+
+   ```bash
+   ssh <用户名>@<NAS_IP>
+   ```
+
+3. 切换到 root：
+
+   ```bash
+   sudo -i
+   ```
+
+## 二、创建 Docker 服务配置目录
+
+```bash
+mkdir -p /etc/systemd/system/pkg-ContainerManager-dockerd.service.d
+```
+
+## 三、创建并编辑代理配置文件
+
+1. 新建配置文件：
+
+   ```bash
+   touch /etc/systemd/system/pkg-ContainerManager-dockerd.service.d/http-proxy.conf
+   ```
+
+2. 编辑文件：
+
+   ```bash
+   vi /etc/systemd/system/pkg-ContainerManager-dockerd.service.d/http-proxy.conf
+   ```
+
+3. 按 `i` 进入插入模式，按代理类型填入以下内容（将 `192.168.1.3:10808` 及认证信息替换为你自己的代理）：
+
+   **HTTP/HTTPS 代理：**
+
+   ```ini
+   [Service]
+   Environment="HTTP_PROXY=http://192.168.1.3:10808"
+   Environment="HTTPS_PROXY=http://192.168.1.3:10808"
+   Environment="NO_PROXY=localhost,127.0.0.1"
+   ```
+
+   **SOCKS5 代理：**
+
+   ```ini
+   [Service]
+   Environment="HTTP_PROXY=socks5://192.168.1.3:10808"
+   Environment="HTTPS_PROXY=socks5://192.168.1.3:10808"
+   Environment="NO_PROXY=localhost,127.0.0.1"
+   ```
+
+   **带认证的 SOCKS5 代理：**
+
+   ```ini
+   [Service]
+   Environment="HTTP_PROXY=socks5://用户名:密码@192.168.1.3:10808"
+   Environment="HTTPS_PROXY=socks5://用户名:密码@192.168.1.3:10808"
+   Environment="NO_PROXY=localhost,127.0.0.1"
+   ```
+
+> \[!TIP]
+> SOCKS5 代理需添加 `socks5://` 前缀；带认证时用户名密码写在 `@` 前。
+
+## 四、保存并退出 vi
+
+* 按 Esc 退出插入模式
+* 输入 `:wq` 保存并退出
+* 放弃修改输入 `:q!` 强制退出
+
+## 五、重新加载并重启 Docker 服务
+
+```bash
+systemctl daemon-reload
+systemctl restart pkg-ContainerManager-dockerd.service
+```
+
+## 六、验证代理是否生效
+
+1. 查看 dockerd 环境变量：
+
+   ```bash
+   systemctl show --property=Environment pkg-ContainerManager-dockerd.service
+   ```
+
+   输出包含你的代理信息即配置成功。
+
+2. 拉取镜像测试：
+
+   ```bash
+   docker pull busybox
+   ```
+
+3. 容器内代理（可选）：
+
+   ```bash
+   docker run -e http_proxy=http://your-proxy:port \
+              -e https_proxy=http://your-proxy:port \
+              -e no_proxy=localhost,127.0.0.1 \
+              your-image
+   ```
+
+## 七、检测链路（实测验证）
+
+### 1. 代理连通性
+
+```bash
+# HTTP 代理
+curl -x http://10.0.0.3:8888 -sI -o /dev/null -w '%{http_code}\n' https://registry-1.docker.io/v2/
+# SOCKS5 代理
+curl --socks5-hostname 10.0.0.3:7891 -sI -o /dev/null -w '%{http_code}\n' https://registry-1.docker.io/v2/
+```
+
+返回 `401` 即链路通（未带 token 的正常响应）。
+
+### 2. 代理环境变量生效
+
+```bash
+docker info 2>/dev/null | grep -i proxy
+```
+
+应显示 `HTTP Proxy:`、`HTTPS Proxy:`、`No Proxy:` 三行。
+
+### 3. 实测拉取
+
+```bash
+docker pull busybox   # 小镜像，快速验证
+docker pull nginx     # ~60MB，压测真实速度
+```
+
+> \[!WARNING]
+> 拉取依然超时：检查代理端口、防火墙与配置路径是否正确。
+> 容器内网络不通：需在 `docker run` 时添加 `-e http_proxy` 等环境变量，或在 Dockerfile 中设置。
+
+## 参考
+
+* [群晖 DSM 7.2 为 Container Manager（docker）设置代理\_群晖docker设置代理-CSDN博客](https://blog.csdn.net/caca_66/article/details/150264099)
+
+---
+
+---
+url: /os/fnos/index.md
+---
+# fnOS
+飞牛 fnOS 配置笔记。
+
+---
+
+---
+url: /os/qts/index.md
+---
+# QTS
+威联通 QTS 配置笔记。
+
+---
+
+---
 url: /os/ubuntu/index.md
 ---
 # Ubuntu
@@ -3197,6 +3375,24 @@ set ether5 queue=fq-codel-iface
 根据官方文档，虽然在 `Fasttrack` 关闭时支持将 `Simple Queues` 和 `Queue Tree` 同时使用，以达到 “双重流控” 的效果，但本文中的示例配置方法并不支持同时使用两种流控，如果你拥有高性能硬件支持 “双重流控” ，欢迎分享你的 QoS 配置方案。
 
 至此，RouterOS 设置流量整形步骤完成。
+
+---
+
+---
+url: /router/routeros/ew4jqxnm/index.md
+---
+## 1.修改静态IP
+
+```bash
+# 打印/查看所有 DHCP 租约列表（用于查找设备当前获取到的 IP 和 MAC 地址）
+/ip dhcp-server lease print
+
+# 将指定 MAC 地址的动态 DHCP 租约转换为静态绑定（锁定 MAC 与 IP 的分配关系）
+/ip dhcp-server lease make-static [find where mac-address=XX:XX:XX:XX:XX:XX]
+
+# 将指定 MAC 地址的静态租约 IP 地址修改为 10.0.0.103
+/ip dhcp-server lease set [find where mac-address=XX:XX:XX:XX:XX:XX] address=10.0.0.103
+```
 
 ---
 
@@ -4871,6 +5067,63 @@ url: /vm/esxi/index.md
 ---
 # ESXi
 ESXi 虚拟化笔记。
+
+---
+
+---
+url: /vm/esxi/8cbl2iji/index.md
+---
+# ESXi 磁盘报错托管 I/O 故障
+## 概述
+
+ESXi 开启虚拟机时若报「对象类型需要托管的 I/O」（英文：`Object type requires hosted I/O`），并伴随「模块 Disk 打开电源失败」，通常是 VMDK（Virtual Machine Disk，虚拟磁盘）的元数据或快照链损坏所致，常见于异常断电后未落盘。本文记录检查、修复磁盘，以及通过 `writeThrough` 配置根治断电丢盘的完整步骤。
+
+## 一、错误现象
+
+**Power On VM 错误日志**
+
+| 属性 | 内容 |
+| :--- | :--- |
+| 任务名称 | Power On VM |
+| 键 (Key) | `haTask-50-vim.VirtualMachine.powerOn-4` |
+| 描述 | 打开该虚拟机电源 |
+| 虚拟机 | `RouterOS` |
+| 状况 | 失败 - 对象类型需要托管的 I/O |
+
+**错误详情**
+
+* 对象类型需要托管的 I/O
+* 无法打开磁盘 `/vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/chr-7.21.5.vmdk` 或其所依赖的快照磁盘之一。
+* 模块「Disk」打开电源失败。
+* 无法启动虚拟机。
+
+## 二、检查与修复磁盘
+
+在 ESXi SSH 中先检查磁盘一致性：
+
+```bash
+vmkfstools -x check /vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/chr-7.21.5.vmdk
+```
+
+若检查发现损坏，执行修复：
+
+```bash
+vmkfstools -x repair /vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/chr-7.21.5.vmdk
+```
+
+## 三、根治断电丢盘
+
+确认磁盘正常后，关闭虚拟机，在 ESXi SSH 中向该 VM 的 `.vmx` 文件追加一行：
+
+```bash
+echo 'disk.writeThrough = "TRUE"' >> /vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/RouterOS.vmx
+```
+
+> \[!NOTE]
+> `.vmx` 与 `.vmdk` 同目录，文件名以实际 VM 目录为准（上例为 `RouterOS.vmx`）。
+
+> \[!IMPORTANT]
+> 这一行才是治断电的根：开启 `writeThrough` 后所有写直接落盘、不进 host 写缓存，断电零丢失。IDE + writeThrough 的效果与 SCSI 一致，控制器换不换其实无所谓。之后若再遇断电，开机跑 `vmkfstools -x check` 验证即可。
 
 ---
 

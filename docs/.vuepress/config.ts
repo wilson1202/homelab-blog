@@ -48,6 +48,12 @@ export default defineUserConfig({
     // cache: 'filesystem',
 
     /**
+     * 文章版权信息
+     * @see https://theme-plume.vuejs.press/guide/features/copyright/
+     */
+    copyright: 'CC-BY-4.0', // 是否启用文章版权信息 'CC-BY-4.0'
+
+    /**
      * 为 markdown 文件自动添加 frontmatter 配置
      * @see https://theme-plume.vuejs.press/config/basic/#autofrontmatter
      */

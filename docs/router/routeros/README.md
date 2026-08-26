@@ -2,6 +2,13 @@
 title: RouterOS
 createTime: 2026/08/24 18:33:21
 permalink: /router/routeros/
+copyright:
+  creation: reprint
+  license: CC-BY-4.0
+  source: https://gitee.com/callmer/routeros_toss_notes/tree/master
+  author:
+    name: callmer
+    url: https://gitee.com/callmer
 ---
 # RouterOS 折腾手记
 

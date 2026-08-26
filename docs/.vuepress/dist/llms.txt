@@ -10,6 +10,7 @@
 - [设置网络接口](/router/routeros/7s1zyj43/index.md)
 - [正版系统激活](/router/routeros/aduf7b9w/index.md)
 - [设置流量整形](/router/routeros/bqq96dqt/index.md)
+- [B.常用命令](/router/routeros/ew4jqxnm/index.md)
 - [设置防火墙](/router/routeros/h0yt3eja/index.md)
 - [PVE下安装系统](/router/routeros/h3ab9wo3/index.md)
 - [设置DHCPv4](/router/routeros/hn6upvnt/index.md)
@@ -32,6 +33,7 @@
 ### ESXi
 
 - [ESXi](/vm/esxi/index.md)
+- [ESXi 磁盘报错托管 I/O 故障](/vm/esxi/8cbl2iji/index.md)
 - [ESXi 直通 SATA 控制器](/vm/esxi/8iu5gpv8/index.md)
 - [ESXi 部署 Debian Cloud 镜像](/vm/esxi/ph48hyup/index.md)
 - [ESXi 虚拟机安装](/vm/esxi/t6ypr8e4/index.md)
@@ -54,6 +56,19 @@
 ### Windows
 
 - [Windows](/os/windows/index.md)
+
+### Windows
+
+- [DSM](/os/dsm/index.md)
+- [Container Manager 设置代理](/os/dsm/udgag0t3/index.md)
+
+### Windows
+
+- [QTS](/os/qts/index.md)
+
+### Windows
+
+- [fnOS](/os/fnos/index.md)
 
 ### Docker
 

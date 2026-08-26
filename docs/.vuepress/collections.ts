@@ -108,6 +108,34 @@ const windowsDoc = defineCollection({
   sidebar: 'auto',
 })
 
+const dsmDoc = defineCollection({
+  type: 'doc',
+  dir: 'os/dsm/',
+  linkPrefix: '/os/dsm/',
+  title: 'Windows',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
+const qtsDoc = defineCollection({
+  type: 'doc',
+  dir: 'os/qts/',
+  linkPrefix: '/os/qts/',
+  title: 'Windows',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
+const fnosDoc = defineCollection({
+  type: 'doc',
+  dir: 'os/fnos/',
+  linkPrefix: '/os/fnos/',
+  title: 'Windows',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
+
 // 服务部署
 const dockerDoc = defineCollection({
   type: 'doc',
@@ -140,6 +168,9 @@ export default defineCollections([
   debianDoc,
   ubuntuDoc,
   windowsDoc,
+  dsmDoc,
+  qtsDoc,
+  fnosDoc,
   // 服务部署
   dockerDoc,
   nativeDoc

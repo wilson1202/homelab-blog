@@ -1,0 +1,53 @@
+---
+url: /vm/esxi/8cbl2iji/index.md
+---
+## 概述
+
+ESXi 开启虚拟机时若报「对象类型需要托管的 I/O」（英文：`Object type requires hosted I/O`），并伴随「模块 Disk 打开电源失败」，通常是 VMDK（Virtual Machine Disk，虚拟磁盘）的元数据或快照链损坏所致，常见于异常断电后未落盘。本文记录检查、修复磁盘，以及通过 `writeThrough` 配置根治断电丢盘的完整步骤。
+
+## 一、错误现象
+
+**Power On VM 错误日志**
+
+| 属性 | 内容 |
+| :--- | :--- |
+| 任务名称 | Power On VM |
+| 键 (Key) | `haTask-50-vim.VirtualMachine.powerOn-4` |
+| 描述 | 打开该虚拟机电源 |
+| 虚拟机 | `RouterOS` |
+| 状况 | 失败 - 对象类型需要托管的 I/O |
+
+**错误详情**
+
+* 对象类型需要托管的 I/O
+* 无法打开磁盘 `/vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/chr-7.21.5.vmdk` 或其所依赖的快照磁盘之一。
+* 模块「Disk」打开电源失败。
+* 无法启动虚拟机。
+
+## 二、检查与修复磁盘
+
+在 ESXi SSH 中先检查磁盘一致性：
+
+```bash
+vmkfstools -x check /vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/chr-7.21.5.vmdk
+```
+
+若检查发现损坏，执行修复：
+
+```bash
+vmkfstools -x repair /vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/chr-7.21.5.vmdk
+```
+
+## 三、根治断电丢盘
+
+确认磁盘正常后，关闭虚拟机，在 ESXi SSH 中向该 VM 的 `.vmx` 文件追加一行：
+
+```bash
+echo 'disk.writeThrough = "TRUE"' >> /vmfs/volumes/6637ead3-df4cbb61-6bf3-60beb41608dc/RouterOS/RouterOS.vmx
+```
+
+> \[!NOTE]
+> `.vmx` 与 `.vmdk` 同目录，文件名以实际 VM 目录为准（上例为 `RouterOS.vmx`）。
+
+> \[!IMPORTANT]
+> 这一行才是治断电的根：开启 `writeThrough` 后所有写直接落盘、不进 host 写缓存，断电零丢失。IDE + writeThrough 的效果与 SCSI 一致，控制器换不换其实无所谓。之后若再遇断电，开机跑 `vmkfstools -x check` 验证即可。
