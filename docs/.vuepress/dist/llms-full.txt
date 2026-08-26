@@ -1271,64 +1271,61 @@ Native
 ---
 
 ---
-url: /deploy/native/864cn2cd/index.md
+url: /deploy/native/jwynt0v0/index.md
 ---
-## 简介
+## 概述
 
-> SmartDNS
->
-> 官网：<https://pymumu.github.io/smartdns/>
->
-> Github：<https://github.com/pymumu/smartdns>
+SmartDNS 是一款本地 DNS 服务器，通过多上游并发查询、测速选快等机制提升 DNS 解析速度与准确性。本文记录在 Linux（x86 及 ARM/Debian 系）上安装 SmartDNS、检查并解决 53 端口冲突、修改上游配置、启动服务，并将局域网 DNS 请求转发至 SmartDNS 的完整流程。
 
-## Linux安装
+官网：<https://pymumu.github.io/smartdns/>
 
-* 下载配套安装包，并上传到 Linux 系统中, 标准 Linux 系统（X86 / X86\_64）请执行如下命令安装：
+Github：<https://github.com/pymumu/smartdns>
 
-```bash
-tar zxf smartdns.1.yyyy.MM.dd-REL.x86_64-linux-all.tar.gz
-cd smartdns
-chmod +x ./install
-./install -i
-```
+## 一、Linux 安装
 
-* 树莓派或其他 Debian 系系统（ARM / ARM64）请执行如下命令安装：
+1. 标准 Linux 系统（X86 / X86\_64），下载配套安装包并上传后执行：
 
-```bash
-dpkg -i smartdns.1.yyyy.MM.dd-REL.arm-debian-all.deb
-```
+   ```bash
+   tar zxf smartdns.1.yyyy.MM.dd-REL.x86_64-linux-all.tar.gz
+   cd smartdns
+   chmod +x ./install
+   ./install -i
+   ```
 
-::: caution 关注 **Ubuntu** 系统 **53** 端口占用问题
+2. 树莓派或其他 Debian 系系统（ARM / ARM64），执行：
 
-1. ubuntu系统下，`systemd-resolved`会占用 `TCP53` 和 `UDP53` 端口, 你需要手动解决端口占用问题或者修改 SmartDNS 监听端口。
-2. 日志文件在 `/var/log/smartdns/smartdns.log`{.filepath}
+   ```bash
+   dpkg -i smartdns.1.yyyy.MM.dd-REL.arm-debian-all.deb
+   ```
 
-:::
-
-::: details 解决 53 端口占用问题
-
-查看端口占用情况
+## 二、检查 53 端口占用
 
 ```bash
-lsof -i:53
+# 方法1（推荐）：直接显示占用53端口的进程信息
+lsof -i :53
+
+# 方法2：使用 netstat 查看
+netstat -tulpn | grep :53
 ```
+
+> \[!CAUTION]
+> 在 Ubuntu 系统下，`systemd-resolved` 会占用 `TCP 53` 和 `UDP 53` 端口，需手动解决端口冲突或改 SmartDNS 监听端口。SmartDNS 日志位于 `/var/log/smartdns/smartdns.log`。
 
 **方案一：关闭 DNS 存根监听器，使其不再监听 53 端口**
 
-1. 修改配置文件
+1. 修改配置文件：
 
    ```bash
    sudo nano /etc/systemd/resolved.conf
    ```
 
-2. `/etc/systemd/resolved.conf`{.fp} 取消注释并修改以下行
+2. 取消注释并修改以下行：
 
    ```ini
-   #DNSStubListener=yes
    DNSStubListener=no
    ```
 
-3. 重启 `systemd-resolved` 使配置生效
+3. 重启 `systemd-resolved` 使配置生效：
 
    ```bash
    sudo systemctl restart systemd-resolved
@@ -1336,35 +1333,33 @@ lsof -i:53
 
 **方案二：关闭 `systemd-resolved` 服务**
 
-1. 立即停止
+1. 立即停止：
 
    ```bash
    sudo systemctl stop systemd-resolved
    ```
 
-2. 永久禁用
+2. 永久禁用：
 
    ```bash
    sudo systemctl disable systemd-resolved
    ```
 
-:::
+## 三、修改配置
 
-## 修改配置
+安装完成后，配置 SmartDNS 的上游服务器。一般情况下只需增加 `server [IP]:port` 与 `server-tcp [IP]:port` 两项，并尽可能配置多个国内外上游。完整参数见官方配置文件说明。
 
-安装完成后，可配置 SmartDNS 的上游服务器信息，一般情况下，只需要增加 `server`\[`IP`]`:port` 和 `server-tcp`\[`IP`]`:port` 配置项，请尽可能配置多个上游 DNS 服务器，包括国内外的服务器。具体配置参数请参考`配置文件`说明
-
-* 配置文件
+编辑配置文件：
 
 ```bash
-vi /etc/smartdns/smartdns.conf
+nano /etc/smartdns/smartdns.conf
 ```
 
-::: info `/etc/smartdns/smartdns.conf`{.fp} 配置包含如下基本内容：
+配置包含如下基本内容：
 
 ```ini
 # 指定监听的端口号
-bind []:53 
+bind []:53
 # 指定上游服务器
 server 1.1.1.1
 server-tls 8.8.8.8
@@ -1373,39 +1368,36 @@ address /example.com/1.2.3.4
 domain-rules /example.com/ -address 1.2.3.4
 ```
 
-:::
-
-## 启动服务
+## 四、启动服务
 
 ```bash
 systemctl enable smartdns
 systemctl start smartdns
 ```
 
-## 将 DNS 请求转发到 SmartDNS 解析
+## 五、将 DNS 请求转发到 SmartDNS
 
-修改本地路由器的 DNS 服务器，将 DNS 服务器配置为 SmartDNS。
+修改本地路由器的 DNS 服务器，将其指向运行 SmartDNS 的主机（如树莓派）：
 
-* 登录到本地网络的路由器中，配置树莓派，分配其静态 IP 地址。
-
-* 修改 WAN 口或者 DHCP DNS 为树莓派 IP 地址。
+* 登录本地路由器，为运行 SmartDNS 的设备分配静态 IP。
+* 将 WAN 口或 DHCP 下发的 DNS 改为该设备 IP。
 
 > \[!WARNING]
 >
-> 1. 每款路由器配置方法不尽相同，请在网络上搜索对应配置方法。
-> 2. 华为等路由器可能不支持配置 DNS 为本地 IP，可修改电脑端或手机端的 DNS 服务器为树莓派 IP。
+> 1. 不同品牌路由器配置方式不同，请自行搜索对应方法。
+> 2. 华为等部分路由器不支持将 DNS 设为本地 IP，此时可改为在电脑或手机端手动指定 DNS 为该设备 IP。
 
-## 检测服务是否配置成功
+## 六、检测服务是否配置成功
 
-* 执行
+执行如下命令：
 
 ```bash
 nslookup -querytype=ptr smartdns
 ```
 
-* 查看命令结果中的 `name` 是否为 `smartdns` 或你的主机名，如果是则表示生效
+查看结果中的 `name` 是否为 `smartdns` 或你的主机名，若是则表示生效：
 
-```
+```text
 $ nslookup -querytype=ptr smartdns
 Server:         192.168.1.1
 Address:        192.168.1.1#53
@@ -1416,61 +1408,82 @@ smartdns        name = smartdns.
 
 ## 参考
 
-[标准Linux系统 / 树莓派 - SmartDNS](https://pymumu.github.io/smartdns/install/linux/)
+* [标准 Linux 系统 / 树莓派 - SmartDNS](https://pymumu.github.io/smartdns/install/linux/)
 
 ---
 
 ---
-url: /deploy/native/zgmszd41/index.md
+url: /deploy/native/qrlicht2/index.md
 ---
-## 简介
+## 概述
 
-> rtp2httpd - IPTV 流媒体转发服务器
->
-> 官网：<https://rtp2httpd.com/>
->
-> Github：<https://github.com/stackia/rtp2httpd>
+rtp2httpd 是一款 IPTV 流媒体转发服务器，将组播 RTP 流转换为 HTTP 单播，供全屋设备播放。本文记录在 Debian 13 上部署 rtp2httpd 的完整流程：配置组播接收网卡、获取二进制（三种方式任选）、以 systemd 托管启动，并验证流是否正常。
 
-## 0. 前置
+官网：<https://rtp2httpd.com/>
 
-* iptv 是 Debian 13（其他 Debian/Ubuntu 同理）
-* ens224 网卡已由 ESXi 添加（vIPTV vSwitch），确认存在：`ip link show ens224`
+Github：<https://github.com/stackia/rtp2httpd>
 
-## 1. 网卡配置（netplan，持久化）
+## 一、前置条件
 
-```bash
-cat > /etc/netplan/99-custom.yaml <<'EOF'
-network:
-  version: 2
-  ethernets:
-    ens192:
-      dhcp4: false
-      dhcp6: false
-      addresses:
-        - 10.0.0.8/24
-      gateway4: 10.0.0.1
-      nameservers:
-        addresses:
-          - 10.0.0.2
-    ens224:
-      dhcp4: false
-      dhcp6: false
-      addresses:
-        - 172.16.1.1/24
-EOF
-chmod 600 /etc/netplan/99-custom.yaml
-netplan apply
-ip -br addr show ens224    # 应显示 172.16.1.1/24
-```
+* 系统为 Debian 13（其他 Debian/Ubuntu 同理）
+* 组播网卡 `ens224` 已由 ESXi 添加（vIPTV vSwitch），确认存在：
+
+  ```bash
+  ip link show ens224
+  ```
+
+## 二、网卡配置
+
+1. 编辑 SSH 配置文件：
+
+   ```bash
+   nano /etc/netplan/99-custom.yaml
+   ```
+
+2. 写入配置参数：
+
+   ```ini
+   network:
+     version: 2
+     ethernets:
+       ens192:
+         dhcp4: false
+         dhcp6: false
+         addresses:
+           - 10.0.0.8/24
+         gateway4: 10.0.0.1
+         nameservers:
+           addresses:
+             - 10.0.0.2
+       ens224:
+         dhcp4: false
+         dhcp6: false
+         addresses:
+           - 172.16.1.1/24
+   ```
+
+3. 保存并应用：
+
+   ```bash
+   chmod 600 /etc/netplan/99-custom.yaml
+   netplan apply
+   ```
+
+4. 验证：
+
+   ```bash
+   ip -br addr show ens224
+   # 应显示 172.16.1.1/24
+   ```
 
 > \[!IMPORTANT]
-> ens224 **必须有 IPv4 地址**（实测：无 IP 时 join 失败），私有段任意（光猫推流不看源 IP 网段）；**不加网关**
+> `ens224` **必须有 IPv4 地址**（实测：无 IP 时 join 失败），私有段任意（光猫推流不看源 IP 网段）；**不加网关**。
 
-## 2. 获取 rtp2httpd 二进制（三选一）
+## 三、获取 rtp2httpd
 
-### 方式 A（推荐）：官方 release 静态二进制
+**方式 A（推荐）：官方 release 静态二进制**
 
-> 最简单，无需任何依赖，自动获取最新版
+> 最简单，无需任何依赖，自动获取最新版。
 
 ```bash
 VER=$(curl -s https://api.github.com/repos/stackia/rtp2httpd/releases/latest | grep -oP '"tag_name": *"\K[^"]+')
@@ -1480,11 +1493,11 @@ chmod +x /usr/local/bin/rtp2httpd
 ```
 
 > \[!NOTE]
-> 官方 release 的 `rtp2httpd-<版本>-x86_64` 是**完全静态编译**（`ldd` 显示 not a dynamic executable）——任何 Linux 直接跑，**不需要 musl/编译**，版本自动跟随最新（asset 命名规则 = tag 去掉 `v` 前缀 + `-x86_64`）。无 .deb 包，x86\_64 静态二进制即 Debian 可用形态
+> 官方 release 的 `rtp2httpd-<版本>-x86_64` 是**完全静态编译**（`ldd` 显示 not a dynamic executable）——任何 Linux 直接跑，**不需要 musl/编译**，版本自动跟随最新（asset 命名规则 = tag 去掉 `v` 前缀 + `-x86_64`）。无 .deb 包，x86\_64 静态二进制即 Debian 可用形态。
 
-### 方式 B：从官方镜像提取
+**方式 B：从官方镜像提取**
 
-> 需要有 docker 的机器，如 Ubuntu
+> 需要有 docker 的机器，如 Ubuntu。
 
 ```bash
 docker pull ghcr.io/stackia/rtp2httpd:latest
@@ -1494,9 +1507,9 @@ docker rm r2h-tmp
 scp rtp2httpd root@10.0.0.8:/usr/local/bin/rtp2httpd
 ```
 
-### 方式 C：源码编译
+**方式 C：源码编译**
 
-> iptv 上直接编，不需要 docker
+> iptv 上直接编，不需要 docker。
 
 ```bash
 apt update && apt install -y git cmake gcc make
@@ -1507,38 +1520,66 @@ cmake --build build -j$(nproc)
 install -m755 build/rtp2httpd /usr/local/bin/rtp2httpd
 ```
 
-## 3. 运行依赖 + 启动服务
+## 四、启动服务
+
+1. 配置文件：
 
 ```bash
-apt install -y musl          # musl 动态链接库（方式 A 的二进制需要；方式 B 编译的可跳过但装了无害）
-chmod +x /usr/local/bin/rtp2httpd
-
-cat > /etc/systemd/system/rtp2httpd.service <<'EOF'
-[Unit]
-Description=rtp2httpd IPTV
-After=network.target
-
-[Service]
-ExecStart=/usr/local/bin/rtp2httpd --noconfig --verbose 2 --listen 0.0.0.0:5140 --maxclients 20 --upstream-interface-multicast ens224
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-EOF
-systemctl daemon-reload
-systemctl enable --now rtp2httpd
+nano /etc/systemd/system/rtp2httpd.service
 ```
 
-> \[!IMPORTANT]
-> 关键参数：**`--upstream-interface-multicast ens224`**（从光猫网卡发 IGMP join）——漏了它就收不到流（503）
+2. 写入配置参数：
 
-## 4. 验证
+   ```ini
+   [Unit]
+   Description=RTP to HTTP IPTV Service
+   After=network-online.target
+   Wants=network-online.target
+
+   [Service]
+   Type=simple
+   ExecStart=/usr/local/bin/rtp2httpd \
+       --noconfig \
+       --verbose 2 \
+       --listen 0.0.0.0:5140 \
+       --maxclients 20 \
+       --upstream-interface-multicast ens224
+   Restart=always
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. 加载并启动服务：
+
+   ```bash
+   systemctl daemon-reload
+   systemctl enable --now rtp2httpd
+   ```
+
+4. 检查服务状态：
+
+   ```bash
+   systemctl status rtp2httpd --no-pager
+   ```
+
+> \[!IMPORTANT]
+> 关键参数：`--upstream-interface-multicast ens224`（从光猫网卡发 IGMP join）——漏了它就收不到流（503）。
+
+## 五、验证
 
 ```bash
-curl http://127.0.0.1:5140/status                      # 返回状态页 = 服务正常
+# 服务状态检查
+curl http://127.0.0.1:5140/status
+# 正常：返回状态页
+
+# RTP 流检测
 curl -o /dev/null -w "%{http_code} %{size_download}\n" \
-  http://127.0.0.1:5140/rtp/239.49.8.19:9614           # 200 + 每秒约 1MB+ = 有流
-# 全屋播放：http://10.0.0.8:5140/rtp/239.49.8.19:9614
+  http://127.0.0.1:5140/rtp/239.49.8.19:9614
+# 正常：HTTP 200，size_download 持续增长（约 1 MB/s+）
+
+# 全屋播放地址
+http://10.0.0.8:5140/rtp/239.49.8.19:9614
 ```
 
 ---
@@ -1552,160 +1593,158 @@ Debian 配置笔记。
 ---
 
 ---
-url: /os/debian/64i2k4fj/index.md
+url: /os/debian/4odhnhal/index.md
 ---
-> 新安装的 Debian 系统，默认一般使用 DHCP 获取 IP 地址，除非在安装过程中，使用了指定的 IP 地址。本文将介绍如何在 Debian 系统中，配置使用静态 IP 地址，配置网关，以及设置 DNS 服务器。
+## 概述
 
-这些配置通过修改配置文件，很容易实现。在 Redhat 系列的 Linux 环境中，我们一般修改网卡的网络配置文件，对应的文件名为 `/etc/sysconfig/network-scripts/ifcfg-eXX`{.fp}，其中  eXX 即为网络设备名。网络设备的列表可以他通过 `ifconfig` 命令获取。同样的，在 Debian 环境下，我们只需要修改网络的配置文件便可以了。相比之下，配置过程要比 Redhat 更为方便，只需要修改 `/etc/network/interfaces`{.fp} 文件。
+新安装的 Debian 系统默认一般通过 DHCP 获取 IP 地址，除非在安装过程中指定了静态 IP。本文记录如何在 Debian 中配置静态 IP 地址、网关以及 DNS 服务器。整个过程只需修改两个配置文件即可完成，相比 Red Hat 系修改 `/etc/sysconfig/network-scripts/ifcfg-eXX` 的方式更为直接。
 
-::: important 以 `root` 权限打开 `/etc/network/interfaces`{.fp}
+## 一、确认网络接口并备份配置
 
-:::
-
-## Debian 系统设置静态 IP 地址、网关
-
-首选备份原始的网络配置文件
+查看当前网络接口名称：
 
 ```bash
-sudo cp /etc/network/interfaces  /etc/network/interfacesbak
+ip a
 ```
 
-编辑文件 `/etc/network/interfaces`{.fp}，内容如下：
+> \[!NOTE]
+> 现代 Debian 默认采用可预测网卡命名（如 `ens18`、`enp1s0`），并非固定的 `eth0`。下文示例沿用 `eth0` 作为占位，实际操作时请替换为你机器上 `ip a` 看到的实际名称。
 
-```ini title="/etc/network/interfaces"
+备份原始配置文件，避免改错后无法回退：
+
+```bash
+sudo cp /etc/network/interfaces /etc/network/interfaces.bak
+```
+
+## 二、配置静态 IP 与网关
+
+编辑 `/etc/network/interfaces`：
+
+```ini
 # The loopback network interface
 auto lo
-auto eth0  #设置开机自动连接网络
 iface lo inet loopback
 
 # The primary network interface
 allow-hotplug eth0
-iface eth0 inet static   #static表示使用固定IP地址上网，dhcp表示使用动态ip
-address 192.168.9.100    #设置静态ip地址
-netmask 255.255.255.0    #子网掩码
-gateway 192.168.9.254    #网关
+auto eth0
+iface eth0 inet static   # static 表示使用固定 IP，dhcp 表示动态获取
+    address 192.168.9.100    # 静态 IP 地址
+    netmask 255.255.255.0    # 子网掩码
+    gateway 192.168.9.254    # 网关
 ```
 
-使用 Ctrl + O 保存配置，使用 Ctrl + X 退出 **nano** 编辑器。
+> \[!IMPORTANT]
+> 编辑该文件需 root 权限，可用 `sudo nano /etc/network/interfaces` 打开。
 
-## 配置 Debian 环境中的 DNS 服务器
+使用 Ctrl+O 保存，使用 Ctrl+X 退出 nano 编辑器。
 
-这个配置过程与 ::devicon:redhat-wordmark =24px:: 系列的系统是相同的，只需要修改 `/etc/resolv.conf`{.fp} 文件即可，内容如下，
+## 三、配置 DNS 服务器
 
-```ini title="/etc/resolv.conf"
-nameserver 114.114.114.114   #设置首选dns
-nameserver 8.8.8.8   #设置备用dns
+编辑 `/etc/resolv.conf`：
+
+```ini
+nameserver 114.114.114.114   # 首选 DNS
+nameserver 8.8.8.8           # 备用 DNS
 ```
 
-至此，IP地址、网关、DNS配置完成。
+> \[!NOTE]
+> 若系统由 systemd-resolved 或 NetworkManager 接管 DNS，直接修改 `resolv.conf` 可能在重启后被覆盖；此类环境应在对应服务（NetworkManager 连接配置或 `/etc/systemd/resolved.conf`）中设置 DNS。
 
-重启网络使配置生效：
+## 四、使配置生效并验证
+
+重启网络服务使配置生效：
 
 ```bash
 sudo service networking restart
 ```
 
-检查新配置是否工作：
+验证新配置是否工作：
 
 ```bash
 ping www.debian.cn
 ```
 
-::: warning 如果重启网络后，配置并没有生效
-
-1. 请检查是否有书写错误，比如全角和半角字符；
-2. `interfaces`{.fp} 文件中 `auto eth0` 也很关键， `/etc/init.d/networking`{.fp} 根据这个字段判断是否启动某个网卡的网络；
-
-:::
+> \[!WARNING]
+> 若重启网络后配置未生效：
+>
+> 1. 检查是否存在书写错误，尤其是全角/半角字符混用；
+> 2. `interfaces` 文件中的 `auto eth0` 很关键，`/etc/init.d/networking` 依据该字段判断是否启动对应网卡。
 
 ## 参考
 
-[debian 11修改ip地址的方法 - Thenext - 博客园](https://www.cnblogs.com/Thenext/p/16950850.html)
+* [debian 11 修改 ip 地址的方法 - Thenext - 博客园](https://www.cnblogs.com/Thenext/p/16950850.html)
 
 ---
 
 ---
-url: /os/debian/c3me4wk0/index.md
+url: /os/debian/ds4tuka2/index.md
 ---
-# 允许Root远程SSH登录
-在 **Debian 12** 系统中开启允许 SSH 远程 Root 登录的步骤如下：
+# 允许 Root 远程 SSH 登录
+## 概述
 
-***
+Debian 12 默认禁止 root 通过密码远程登录 SSH（默认 `PermitRootLogin prohibit-password`，仅允许密钥登录或无密码方式）。本文记录如何在 Debian 12 中开启 root 远程 SSH 登录（含密码认证），以及如何配置防火墙放行与事后恢复默认。该操作会降低系统安全性，仅建议在隔离内网或临时调试场景下使用。
 
-### **步骤 1：修改 SSH 服务端配置**
+## 一、修改 SSH 服务端配置
 
-1. **备份原配置文件**（避免操作失误）：
+1. 备份原配置文件：
 
    ```bash
    sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
    ```
 
-2. **编辑 SSH 配置文件**：
+2. 编辑 SSH 配置文件：
 
    ```bash
    sudo nano /etc/ssh/sshd_config
    ```
 
-3. **找到并修改以下参数**：
+3. 找到并修改以下参数（行首 `#` 注释符需一并删除）：
 
-   * 将 `PermitRootLogin` 的值改为 `yes`（如果行首有 `#` 注释符，需删除注释）：
+   ```ini
+   PermitRootLogin yes
+   ```
 
-     ```ini
-     PermitRootLogin yes
-     ```
+   ```ini
+   PasswordAuthentication yes
+   ```
 
-   * 确保允许密码认证（如果禁用密码需同时修改）：
+4. 保存并退出（Nano：Ctrl+O 保存，Ctrl+X 退出）。
 
-     ```ini
-     PasswordAuthentication yes
-     ```
-
-4. **保存并退出编辑器**（Nano 快捷键：`Ctrl+O` 保存，`Ctrl+X` 退出）。
-
-***
-
-### **步骤 2：重启 SSH 服务**
+## 二、重启 SSH 服务
 
 ```bash
 sudo systemctl restart ssh
 ```
 
-***
+## 三、验证配置
 
-### **步骤 3：验证配置**
-
-1. **检查服务状态**：
+1. 检查服务状态，确认处于 `active (running)`：
 
    ```bash
    sudo systemctl status ssh
    ```
 
-   * 确保服务处于 `active (running)` 状态。
-
-2. **测试远程 Root 登录**（从另一台机器执行）：
+2. 从另一台机器测试远程 root 登录：
 
    ```bash
    ssh root@your_server_ip
    ```
 
-   * 输入 Root 密码，确认能否成功登录。
+   输入 root 密码，确认能否成功登录。
 
-***
+## 四、配置防火墙放行 SSH
 
-### **步骤 4：配置防火墙放行 SSH**
-
-如果系统启用了防火墙（如 `ufw`），需放行 SSH 端口（默认 `22`）：
+若系统启用了防火墙（如 `ufw`），需放行 SSH 端口（默认 22）：
 
 ```bash
 sudo ufw allow 22/tcp
 sudo ufw reload
 ```
 
-***
+## 五、恢复默认配置（禁止 Root 登录）
 
-### **恢复默认配置（禁止 Root 登录）**
-
-1. 将 `PermitRootLogin` 改为 `no` 或 `prohibit-password`：
+1. 将 `PermitRootLogin` 改为 `prohibit-password`（仅允许密钥登录，禁止密码登录 root）：
 
    ```ini
    PermitRootLogin prohibit-password
@@ -1717,12 +1756,11 @@ sudo ufw reload
    sudo systemctl restart ssh
    ```
 
-***
+> \[!WARNING]
+> 开放 root 密码远程登录会显著增加服务器被暴力破解的风险，建议仅在必要时临时开启，调试结束后及时按第五节恢复默认。
 
-### **总结**
-
-* **风险提示**：直接开放 Root 远程登录会增加服务器被暴力破解的风险，建议仅在必要时临时开启。
-* **推荐替代方案**：通过普通用户登录后切换至 Root（`su -` 或 `sudo`）。
+> \[!TIP]
+> 更安全的做法：使用普通用户登录后通过 `su -` 或 `sudo` 获取 root 权限；或保持 `PermitRootLogin prohibit-password` 并配置 SSH 密钥登录 root，避免密码暴露。
 
 ---
 

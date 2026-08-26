@@ -1,1 +1,0 @@
-import{Rt as e}from"./common-CJy-h-Lp.js";export{e as createArchitectureServices};

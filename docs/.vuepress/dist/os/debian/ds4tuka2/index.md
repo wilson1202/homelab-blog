@@ -1,0 +1,83 @@
+---
+url: /os/debian/ds4tuka2/index.md
+---
+## 概述
+
+Debian 12 默认禁止 root 通过密码远程登录 SSH（默认 `PermitRootLogin prohibit-password`，仅允许密钥登录或无密码方式）。本文记录如何在 Debian 12 中开启 root 远程 SSH 登录（含密码认证），以及如何配置防火墙放行与事后恢复默认。该操作会降低系统安全性，仅建议在隔离内网或临时调试场景下使用。
+
+## 一、修改 SSH 服务端配置
+
+1. 备份原配置文件：
+
+   ```bash
+   sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
+   ```
+
+2. 编辑 SSH 配置文件：
+
+   ```bash
+   sudo nano /etc/ssh/sshd_config
+   ```
+
+3. 找到并修改以下参数（行首 `#` 注释符需一并删除）：
+
+   ```ini
+   PermitRootLogin yes
+   ```
+
+   ```ini
+   PasswordAuthentication yes
+   ```
+
+4. 保存并退出（Nano：Ctrl+O 保存，Ctrl+X 退出）。
+
+## 二、重启 SSH 服务
+
+```bash
+sudo systemctl restart ssh
+```
+
+## 三、验证配置
+
+1. 检查服务状态，确认处于 `active (running)`：
+
+   ```bash
+   sudo systemctl status ssh
+   ```
+
+2. 从另一台机器测试远程 root 登录：
+
+   ```bash
+   ssh root@your_server_ip
+   ```
+
+   输入 root 密码，确认能否成功登录。
+
+## 四、配置防火墙放行 SSH
+
+若系统启用了防火墙（如 `ufw`），需放行 SSH 端口（默认 22）：
+
+```bash
+sudo ufw allow 22/tcp
+sudo ufw reload
+```
+
+## 五、恢复默认配置（禁止 Root 登录）
+
+1. 将 `PermitRootLogin` 改为 `prohibit-password`（仅允许密钥登录，禁止密码登录 root）：
+
+   ```ini
+   PermitRootLogin prohibit-password
+   ```
+
+2. 重启 SSH 服务：
+
+   ```bash
+   sudo systemctl restart ssh
+   ```
+
+> \[!WARNING]
+> 开放 root 密码远程登录会显著增加服务器被暴力破解的风险，建议仅在必要时临时开启，调试结束后及时按第五节恢复默认。
+
+> \[!TIP]
+> 更安全的做法：使用普通用户登录后通过 `su -` 或 `sudo` 获取 root 权限；或保持 `PermitRootLogin prohibit-password` 并配置 SSH 密钥登录 root，避免密码暴露。

@@ -1,0 +1,169 @@
+---
+url: /deploy/native/qrlicht2/index.md
+---
+## 概述
+
+rtp2httpd 是一款 IPTV 流媒体转发服务器，将组播 RTP 流转换为 HTTP 单播，供全屋设备播放。本文记录在 Debian 13 上部署 rtp2httpd 的完整流程：配置组播接收网卡、获取二进制（三种方式任选）、以 systemd 托管启动，并验证流是否正常。
+
+官网：<https://rtp2httpd.com/>
+
+Github：<https://github.com/stackia/rtp2httpd>
+
+## 一、前置条件
+
+* 系统为 Debian 13（其他 Debian/Ubuntu 同理）
+* 组播网卡 `ens224` 已由 ESXi 添加（vIPTV vSwitch），确认存在：
+
+  ```bash
+  ip link show ens224
+  ```
+
+## 二、网卡配置
+
+1. 编辑 SSH 配置文件：
+
+   ```bash
+   nano /etc/netplan/99-custom.yaml
+   ```
+
+2. 写入配置参数：
+
+   ```ini
+   network:
+     version: 2
+     ethernets:
+       ens192:
+         dhcp4: false
+         dhcp6: false
+         addresses:
+           - 10.0.0.8/24
+         gateway4: 10.0.0.1
+         nameservers:
+           addresses:
+             - 10.0.0.2
+       ens224:
+         dhcp4: false
+         dhcp6: false
+         addresses:
+           - 172.16.1.1/24
+   ```
+
+3. 保存并应用：
+
+   ```bash
+   chmod 600 /etc/netplan/99-custom.yaml
+   netplan apply
+   ```
+
+4. 验证：
+
+   ```bash
+   ip -br addr show ens224
+   # 应显示 172.16.1.1/24
+   ```
+
+> \[!IMPORTANT]
+> `ens224` **必须有 IPv4 地址**（实测：无 IP 时 join 失败），私有段任意（光猫推流不看源 IP 网段）；**不加网关**。
+
+## 三、获取 rtp2httpd
+
+**方式 A（推荐）：官方 release 静态二进制**
+
+> 最简单，无需任何依赖，自动获取最新版。
+
+```bash
+VER=$(curl -s https://api.github.com/repos/stackia/rtp2httpd/releases/latest | grep -oP '"tag_name": *"\K[^"]+')
+curl -L -o /usr/local/bin/rtp2httpd \
+  "https://github.com/stackia/rtp2httpd/releases/download/${VER}/rtp2httpd-${VER#v}-x86_64"
+chmod +x /usr/local/bin/rtp2httpd
+```
+
+> \[!NOTE]
+> 官方 release 的 `rtp2httpd-<版本>-x86_64` 是**完全静态编译**（`ldd` 显示 not a dynamic executable）——任何 Linux 直接跑，**不需要 musl/编译**，版本自动跟随最新（asset 命名规则 = tag 去掉 `v` 前缀 + `-x86_64`）。无 .deb 包，x86\_64 静态二进制即 Debian 可用形态。
+
+**方式 B：从官方镜像提取**
+
+> 需要有 docker 的机器，如 Ubuntu。
+
+```bash
+docker pull ghcr.io/stackia/rtp2httpd:latest
+docker create --name r2h-tmp ghcr.io/stackia/rtp2httpd:latest
+docker cp r2h-tmp:/usr/local/bin/rtp2httpd ./rtp2httpd
+docker rm r2h-tmp
+scp rtp2httpd root@10.0.0.8:/usr/local/bin/rtp2httpd
+```
+
+**方式 C：源码编译**
+
+> iptv 上直接编，不需要 docker。
+
+```bash
+apt update && apt install -y git cmake gcc make
+git clone https://github.com/stackia/rtp2httpd.git /tmp/rtp2httpd-src
+cd /tmp/rtp2httpd-src
+cmake -B build -DCMAKE_BUILD_TYPE=Release
+cmake --build build -j$(nproc)
+install -m755 build/rtp2httpd /usr/local/bin/rtp2httpd
+```
+
+## 四、启动服务
+
+1. 配置文件：
+
+```bash
+nano /etc/systemd/system/rtp2httpd.service
+```
+
+2. 写入配置参数：
+
+   ```ini
+   [Unit]
+   Description=RTP to HTTP IPTV Service
+   After=network-online.target
+   Wants=network-online.target
+
+   [Service]
+   Type=simple
+   ExecStart=/usr/local/bin/rtp2httpd \
+       --noconfig \
+       --verbose 2 \
+       --listen 0.0.0.0:5140 \
+       --maxclients 20 \
+       --upstream-interface-multicast ens224
+   Restart=always
+
+   [Install]
+   WantedBy=multi-user.target
+   ```
+
+3. 加载并启动服务：
+
+   ```bash
+   systemctl daemon-reload
+   systemctl enable --now rtp2httpd
+   ```
+
+4. 检查服务状态：
+
+   ```bash
+   systemctl status rtp2httpd --no-pager
+   ```
+
+> \[!IMPORTANT]
+> 关键参数：`--upstream-interface-multicast ens224`（从光猫网卡发 IGMP join）——漏了它就收不到流（503）。
+
+## 五、验证
+
+```bash
+# 服务状态检查
+curl http://127.0.0.1:5140/status
+# 正常：返回状态页
+
+# RTP 流检测
+curl -o /dev/null -w "%{http_code} %{size_download}\n" \
+  http://127.0.0.1:5140/rtp/239.49.8.19:9614
+# 正常：HTTP 200，size_download 持续增长（约 1 MB/s+）
+
+# 全屋播放地址
+http://10.0.0.8:5140/rtp/239.49.8.19:9614
+```

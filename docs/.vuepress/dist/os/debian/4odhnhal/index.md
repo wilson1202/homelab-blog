@@ -1,0 +1,82 @@
+---
+url: /os/debian/4odhnhal/index.md
+---
+## 概述
+
+新安装的 Debian 系统默认一般通过 DHCP 获取 IP 地址，除非在安装过程中指定了静态 IP。本文记录如何在 Debian 中配置静态 IP 地址、网关以及 DNS 服务器。整个过程只需修改两个配置文件即可完成，相比 Red Hat 系修改 `/etc/sysconfig/network-scripts/ifcfg-eXX` 的方式更为直接。
+
+## 一、确认网络接口并备份配置
+
+查看当前网络接口名称：
+
+```bash
+ip a
+```
+
+> \[!NOTE]
+> 现代 Debian 默认采用可预测网卡命名（如 `ens18`、`enp1s0`），并非固定的 `eth0`。下文示例沿用 `eth0` 作为占位，实际操作时请替换为你机器上 `ip a` 看到的实际名称。
+
+备份原始配置文件，避免改错后无法回退：
+
+```bash
+sudo cp /etc/network/interfaces /etc/network/interfaces.bak
+```
+
+## 二、配置静态 IP 与网关
+
+编辑 `/etc/network/interfaces`：
+
+```ini
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+auto eth0
+iface eth0 inet static   # static 表示使用固定 IP，dhcp 表示动态获取
+    address 192.168.9.100    # 静态 IP 地址
+    netmask 255.255.255.0    # 子网掩码
+    gateway 192.168.9.254    # 网关
+```
+
+> \[!IMPORTANT]
+> 编辑该文件需 root 权限，可用 `sudo nano /etc/network/interfaces` 打开。
+
+使用 Ctrl+O 保存，使用 Ctrl+X 退出 nano 编辑器。
+
+## 三、配置 DNS 服务器
+
+编辑 `/etc/resolv.conf`：
+
+```ini
+nameserver 114.114.114.114   # 首选 DNS
+nameserver 8.8.8.8           # 备用 DNS
+```
+
+> \[!NOTE]
+> 若系统由 systemd-resolved 或 NetworkManager 接管 DNS，直接修改 `resolv.conf` 可能在重启后被覆盖；此类环境应在对应服务（NetworkManager 连接配置或 `/etc/systemd/resolved.conf`）中设置 DNS。
+
+## 四、使配置生效并验证
+
+重启网络服务使配置生效：
+
+```bash
+sudo service networking restart
+```
+
+验证新配置是否工作：
+
+```bash
+ping www.debian.cn
+```
+
+> \[!WARNING]
+> 若重启网络后配置未生效：
+>
+> 1. 检查是否存在书写错误，尤其是全角/半角字符混用；
+> 2. `interfaces` 文件中的 `auto eth0` 很关键，`/etc/init.d/networking` 依据该字段判断是否启动对应网卡。
+
+## 参考
+
+* [debian 11 修改 ip 地址的方法 - Thenext - 博客园](https://www.cnblogs.com/Thenext/p/16950850.html)
