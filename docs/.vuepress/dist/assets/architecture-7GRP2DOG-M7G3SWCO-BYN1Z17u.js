@@ -1,0 +1,1 @@
+import{Rt as e}from"./common-BDLKDveB.js";export{e as createArchitectureServices};
