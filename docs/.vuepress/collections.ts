@@ -126,6 +126,15 @@ const qtsDoc = defineCollection({
   sidebar: 'auto',
 })
 
+const unraidDoc = defineCollection({
+  type: 'doc',
+  dir: 'os/unraid/',
+  linkPrefix: '/os/unraid/',
+  title: 'Unraid',
+  // 根据文件结构自动生成侧边栏
+  sidebar: 'auto',
+})
+
 const fnosDoc = defineCollection({
   type: 'doc',
   dir: 'os/fnos/',
@@ -207,6 +216,7 @@ export default defineCollections([
   windowsDoc,
   dsmDoc,
   qtsDoc,
+  unraidDoc,
   fnosDoc,
   // 服务部署
   dockerDoc,

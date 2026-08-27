@@ -1587,8 +1587,46 @@ http://10.0.0.8:5140/rtp/239.49.8.19:9614
 ---
 url: /os/debian/index.md
 ---
-# Debian
-Debian 配置笔记。
+# Debian 项目导航
+## 概述
+
+本仓库用于归纳 Debian（当前稳定版 13 trixie，于 2025-08-09 发布，最新点版 13.6 / 2026-07-11；oldstable 为 12 bookworm）相关的操作记录、排查笔记与官方资料索引。
+
+Debian 是纯社区驱动的通用 GNU/Linux 操作系统，发行周期采用「stable / testing / unstable(sid)」三线，稳定版提供 3 年完整支持 + 2 年 LTS。核心组件为：APT 包管理、systemd、netinst 安装器、deb 软件包格式。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| Debian 官网（通用操作系统入口） | <https://www.debian.org> |
+| 说明文档（手册、HOWTO、FAQ、发行说明） | <https://www.debian.org/doc/> |
+| 中文文档索引 | <https://www.debian.org/doc/index.zh-cn.html> |
+| Debian Wiki（官方维基，含简体中文） | <https://wiki.debian.org> |
+| 各版本发布页（trixie / bookworm 等） | <https://www.debian.org/releases/> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| 下载 Debian（netinst / 完整镜像 / live） | <https://www.debian.org/distrib/> |
+| 安装手册（stable） | <https://www.debian.org/releases/stable/installmanual> |
+| 用户支持（获取帮助与文档） | <https://www.debian.org/support> |
+| 镜像列表（下载站/软件源） | <https://www.debian.org/CD/http-ftp/#mirrors> |
+| 云镜像（OpenStack / QEMU / AWS / Azure） | <https://cloud.debian.org/images/cloud/> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| 安全公告（Debian Security Advisories, DSA） | <https://www.debian.org/security/> |
+| 邮件列表（debian-devel-announce 等） | <https://lists.debian.org> |
+| 中文社区（debiancn.org） | <https://debiancn.org> |
+| 开发者手册（Debian Policy / 打包指南） | <https://www.debian.org/doc/devel-manuals> |
+| 项目新闻（公告 / 发布） | <https://www.debian.org/News> |
 
 ---
 
@@ -2063,7 +2101,11 @@ url: /os/dsm/index.md
 # Synology DSM 7 项目导航
 ## 概述
 
-本仓库用于归纳群晖 DSM 7（当前主力机型 DS918+ / DSM 7.2）相关的操作记录、排查笔记与官方资料索引。本文档只做导航与说明，具体步骤见各子文档。
+本仓库用于归纳群晖 DSM 7（当前主力机型 DS918+ / DSM 7.2）相关的操作记录、排查笔记与官方资料索引。
+
+群晖 DSM 是一款面向家庭与企业的一体化 NAS 操作系统，核心特性为：基于 Btrfs 的文件系统与快照保护、支持 RAID 与 SHR 灵活扩容存储池、内置 Docker 与虚拟机管理器，以及全平台文件同步与多终端数据备份。
+
+本文档只做导航与说明，具体步骤见各子文档。
 
 ## 官方资源
 
@@ -2322,32 +2364,215 @@ docker pull nginx     # ~60MB，压测真实速度
 ---
 url: /os/fnos/index.md
 ---
-# fnOS
-飞牛 fnOS 配置笔记。
+# fnOS 项目导航
+## 概述
+
+本仓库用于归纳 fnOS（飞牛私有云，由广州铁刃智造开发）相关的操作记录、排查笔记与官方资料索引。
+
+fnOS 是一款基于 Linux（Debian 发行版）深度开发的国产 NAS 操作系统，个人使用正版免费，支持主流 x86 硬件自由组装，并提供 ARM 公开测试版。核心特性为：存储空间管理、飞牛影视（海报墙/转码）、AI 相册、FN Connect 远程访问、虚拟机与硬件直通、应用中心（Docker 类容器应用）。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| fnOS 官网（产品、下载、硬件） | <https://www.fnnas.com> |
+| 飞牛帮助中心（安装、存储、影视、相册、远程、虚拟机等） | <https://help.fnnas.com> |
+| 安装与初始化教程 | <https://help.fnnas.com/articles/v1/start/install-os> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| fnOS 下载（x86 镜像、飞牛 App、TV） | <https://www.fnnas.com/download> |
+| fnOS ARM 镜像下载（公测版） | <https://www.fnnas.com/download-arm> |
+| 社区论坛（新手帮助、建议/BUG 反馈、应用分享） | <https://club.fnnas.com> |
+| FN Connect 远程访问（内网穿透/中继） | <https://fnos.net> |
+| 安全漏洞报告 | <https://help.fnnas.com/articles/v1/safety/index> |
+| 联系我们 | <https://help.fnnas.com/articles/fnosV1/contact/contact-us.md> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| 官方社区门户（资讯/论坛） | <https://club.fnnas.com/forum.php> |
+| 建议反馈版块 | <https://club.fnnas.com/forum.php?mod=forumdisplay&fid=13> |
+| BUG 反馈版块 | <https://club.fnnas.com/forum.php?mod=forumdisplay&fid=22> |
+| ARM 版块（公测反馈） | <https://club.fnnas.com/forum.php?mod=forumdisplay&fid=35> |
 
 ---
 
 ---
 url: /os/qts/index.md
 ---
-# QTS
-威联通 QTS 配置笔记。
+# QNAP QTS 项目导航
+## 概述
+
+本仓库用于归纳 QNAP 威联通 NAS（当前 QTS 主线 5.2，QuTS hero 基于 ZFS）相关的操作记录、排查笔记与官方资料索引。
+
+QTS 是 QNAP 基于 Linux 核心（ext4 文件系统）的 NAS 操作系统，与采用 ZFS 的 QuTS hero 同属 QNAP 产品线。核心特性为：存储与快照、Container Station（Docker/LXD）、虚拟机（Virtualization Station / QuTScloud）、QVPN（含 WireGuard）、QuMagie AI 相册、HBS 3 备份与远程复制。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| QNAP 中国官网（产品、操作系统、解决方案） | <https://www.qnap.com/zh-cn> |
+| 支持服务 / 教程（How-to） | <https://www.qnap.com/zh-cn/how-to> |
+| QTS 5.0 特性说明 | <https://www.qnap.com/qts/5.0/en-us/> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| 下载中心（固件、套件、桌面工具） | <https://www.qnap.com/zh-cn/download> |
+| 新社区论坛（答疑、教程、公告） | <https://community.qnap.com> |
+| 客户服务中心（工单 / 保固） | <https://service.qnap.com.cn/zh-cn/home> |
+| QNAP 账户中心 | <https://account.qnap.com/?lang=zh> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| 安全通报（Security Advisories） | <https://www.qnap.com/zh-cn/security-advisory> |
+| 提交功能建议 | <https://community.qnap.com/c/feature/87> |
+| 官方商城（中国） | <https://www.qnapcn.com> |
 
 ---
 
 ---
 url: /os/ubuntu/index.md
 ---
-# Ubuntu
-Ubuntu 配置笔记。
+# Ubuntu 项目导航
+## 概述
+
+本仓库用于归纳 Ubuntu（由 Canonical 维护，当前 LTS 为 26.04 "Resolute Raccoon"，于 2026 年发布；上一个 LTS 为 24.04 LTS）相关的操作记录、排查笔记与官方资料索引。
+
+Ubuntu 是基于 Debian 的 GNU/Linux 发行版，采用「LTS 每两年 4 月发布、标准支持 5 年」的节奏（LTS 可经 Ubuntu Pro 扩展至 15 年安全维护）。核心组件为：APT/Snap 包管理、Netplan 网络配置、systemd、Subiquity 安装器。衍生形态包括 Ubuntu Server、Desktop、WSL、Core（不可变/边缘）与各类 Flavor。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| Ubuntu 官网（下载、产品、方案入口） | <https://ubuntu.com> |
+| 官方文档站（Server / Desktop 指南） | <https://help.ubuntu.com> |
+| 各产品文档（Juju / MAAS / Snap / Core 等） | <https://documentation.ubuntu.com> |
+| Ubuntu Wiki（社区协作维基） | <https://wiki.ubuntu.com> |
+| LTS 与版本生命周期（发布及 EOL 日期） | <https://ubuntu.com/about/release-cycle> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| 下载 Ubuntu（Desktop / Server / WSL / Core / 镜像） | <https://ubuntu.com/download> |
+| 安全（CVE、Livepatch、Ubuntu Pro） | <https://ubuntu.com/security> |
+| 镜像列表（就近下载） | <https://ubuntu.com/download/alternative-downloads> |
+| Ubuntu Pro（扩展安全维护，30 天试用） | <https://ubuntu.com/pro> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| Ubuntu 社区论坛（Community Hub / Discourse） | <https://discourse.ubuntu.com> |
+| 中文社区站 | <https://cn.ubuntu.com> |
+| 参与开发 / 贡献 | <https://ubuntu.com/community/contribute> |
+
+---
+
+---
+url: /os/unraid/index.md
+---
+# Unraid 项目导航
+## 概述
+
+本仓库用于归纳 Unraid（当前稳定版 7.2.8，7.4.0-beta 已发布，Unraid 8 已公布）相关的操作记录、排查笔记与官方资料索引。
+
+Unraid 是一款面向自托管与 homelab 的 NAS/服务器操作系统，核心特性为：可混用不同容量硬盘组建存储阵列、Docker 应用管理、虚拟机（VM）与硬件直通。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途                                              | 链接                                                         |
+| ------------------------------------------------- | ------------------------------------------------------------ |
+| Unraid 官方文档（入门、WebGUI、存储、Docker、VM） | <https://docs.unraid.net>           |
+| Unraid 官网（产品、授权、下载入口）               | <https://unraid.net>                     |
+| 入门与 USB 启动盘制作                             | <https://unraid.net/getting-started> |
+
+### 下载与支持
+
+| 用途                                           | 链接                                                         |
+| ---------------------------------------------- | ------------------------------------------------------------ |
+| 下载中心（USB Creator / 各平台）               | <https://unraid.net/download>   |
+| 版本发布列表                                   | <https://docs.unraid.net/go/download-list/> |
+| 社区论坛（支持、插件、Docker、硬件）           | <https://forums.unraid.net>       |
+| 社区应用（Community Apps，插件与 Docker 模板） | <https://unraid.net/product#community-apps> |
+| Unraid Connect（远程管理面板）                 | <https://connect.myunraid.net/> |
+
+### 社区与开发者
+
+| 用途                                      | 链接                                                         |
+| ----------------------------------------- | ------------------------------------------------------------ |
+| 官方博客（版本发布说明、公告）            | <https://unraid.net/blog>           |
+| 论坛公告板（各版本 Release Announcement） | <https://forums.unraid.net/forum/7-announcements/> |
+| 文档源码（GitHub，可提交勘误）            | <https://github.com/unraid/docs> |
+| 安全策略与漏洞上报                        | <https://unraid.net/policies>   |
 
 ---
 
 ---
 url: /os/windows/index.md
 ---
-# Windows
-Windows 配置笔记。
+# Windows 11 项目导航
+## 概述
+
+本仓库用于归纳 Windows 11（当前主流版本 25H2「2025 更新」，2025-09-30 发布；24H2 仍广泛在用，2026-10-13 终止 Home/Pro 支持）相关的操作记录、排查笔记与官方资料索引。
+
+Windows 11 采用「每年下半年一次功能更新」节奏：Home/Pro 等消费版提供 24 个月支持，Enterprise/Education 提供 36 个月支持，并每月第二个周二发布累积安全更新（B 类）。另有面向新设备的 26H1（2026-02-10，不向旧设备推送就地升级）与 24H2 企业/IoT LTSC（支持至 2029/2034）。核心组件为：Windows Update、设置与 PowerShell、BitLocker、Windows Hello、Hyper-V（可选）。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| Windows 官网（产品、特性、下载入口） | <https://www.microsoft.com/windows> |
+| Windows 技术文档（IT 专业人士 / 开发者） | <https://learn.microsoft.com/windows> |
+| Windows 帮助与学习（安装、更新、排错） | <https://support.microsoft.com/windows> |
+| 中文技术文档 | <https://learn.microsoft.com/zh-cn/windows> |
+| 版本信息（当前版本、支持终止、更新历史） | <https://learn.microsoft.com/windows/release-health/windows11-release-information> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| 下载 Windows 11（安装助手 / 媒体创建工具 / ISO） | <https://www.microsoft.com/software-download/windows11> |
+| 中文站下载 | <https://www.microsoft.com/zh-cn/software-download/windows11> |
+| Windows 生命周期 FAQ（支持周期） | <https://learn.microsoft.com/lifecycle/faq/windows> |
+| 版本健康状态（已知问题） | <https://aka.ms/windowsreleasehealth> |
+| Windows Insider Preview（预览版 ISO） | <https://www.microsoft.com/software-download/windowsinsiderpreviewiso> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| Microsoft 技术社区（Windows IT Pro 博客） | <https://techcommunity.microsoft.com/t5/windows-it-pro-blog/bg-p/WindowsITPro> |
+| Microsoft Q\&A（问答） | <https://learn.microsoft.com/answers/tags/219/windows> |
+| Windows 开发文档（应用 / 驱动） | <https://learn.microsoft.com/windows/apps/> |
 
 ---
 
@@ -5759,8 +5984,40 @@ plume 主题配置。
 ---
 url: /vm/esxi/index.md
 ---
-# ESXi
-ESXi 虚拟化笔记。
+# VMware ESXi 项目导航
+## 概述
+
+本仓库用于归纳 VMware ESXi（当前随 vSphere 9.1 发布，文档基线 2026-08-25；仍在用版本含 8.0、7.0）相关的操作记录、排查笔记与官方资料索引。
+
+ESXi 是 VMware 的 Type-1 裸金属 hypervisor，本身只负责单机宿主（宿主安装、虚拟机运行、本地存储/网络、Host Client 管理）。注意区分：**ESXi 是 vSphere 套件中的 hypervisor 组件**，vCenter、集群、HA、vMotion、vSAN Lifecycle Manager 等属于 vSphere 平台层，不在本笔记范围。
+
+本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源（ESXi 专属）
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| vSphere 技术文档（按版本 9.1/9.0/8.0/7.0 切换） | <https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-1.html> |
+| ESXi 安装与设置指南 | <https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-1/esx-installation-and-setup.html> |
+| ESXi 升级指南 | <https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-1/esx-upgrade.html> |
+| VMware Host Client（单主机管理） | <https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-1/vsphere-single-host-management-vmware-host-client.html> |
+| ESXi 安全（锁模式 / TPM / 防火墙 / 加固） | <https://techdocs.broadcom.com/us/en/vmware-cis/vsphere/vsphere/9-1/vsphere-security.html> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| Broadcom 支持门户（下载、许可证、工单） | <https://support.broadcom.com> |
+| 产品生命周期（EOL 查询） | <https://support.broadcom.com/web/ecx/productlifecycle> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| Broadcom 社区（VMware 讨论区） | <https://community.broadcom.com/vmware> |
+| 开发者中心（PowerCLI / ESXCLI / API） | <https://developer.broadcom.com> |
 
 ---
 
@@ -6452,5 +6709,38 @@ kernelopt=runweasel systemMediaSize=small  # [!code word:systemMediaSize=small]
 ---
 url: /vm/pve/index.md
 ---
-# Proxmox VE
-Proxmox VE 虚拟化笔记。
+# Proxmox VE 项目导航
+## 概述
+
+本仓库用于归纳 Proxmox VE（当前稳定版 9.2，2026-08 发布；9.2-1 ARM64 ISO 已于 2026-08-05 推出）相关的操作记录、排查笔记与官方资料索引。
+
+Proxmox VE（PVE）是基于 QEMU/KVM 与 LXC 的开源虚拟化平台，内置 Web 界面，可管理虚拟机、容器、集群、软件定义存储（含 Ceph/ZFS）与网络、以及内置防火墙与高可用（HA）。代码以 AGPL-3 授权，由 Proxmox Server Solutions GmbH 维护。
+
+不在本笔记范围。本文档只做导航与说明，具体步骤见各子文档。
+
+## 官方资源
+
+### 帮助与文档
+
+| 用途 | 链接 |
+| --- | --- |
+| PVE Wiki（参考文档、HOWTO、排错） | <https://pve.proxmox.com/wiki/Main_Page> |
+| PVE 管理指南（单页 HTML / PDF） | <https://pve.proxmox.com/pve-docs/> |
+| PVE 命令行手册页（qm/pct/pvecm/pvesm 等） | <https://pve.proxmox.com/pve-docs/pve-admin-guide.html> |
+| 版本路线图与发布历史 | <https://pve.proxmox.com/wiki/Roadmap> |
+| 开发者文档（源码/提补丁） | <https://pve.proxmox.com/wiki/Developer_Documentation> |
+
+### 下载与支持
+
+| 用途 | 链接 |
+| --- | --- |
+| 下载 ISO（PVE / PBS / PMG / PDM） | <https://www.proxmox.com/en/downloads> |
+| PVE 下载与校验（含 SHA256） | <https://pve.proxmox.com/wiki/Downloads> |
+| 包仓库说明（企业/社区源） | <https://pve.proxmox.com/wiki/Package_repositories> |
+
+### 社区与开发者
+
+| 用途 | 链接 |
+| --- | --- |
+| 官方支持论坛 | <https://forum.proxmox.com> |
+| 开发者文档（贡献代码） | <https://pve.proxmox.com/wiki/Developer_Documentation> |

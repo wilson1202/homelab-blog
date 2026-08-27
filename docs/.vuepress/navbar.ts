@@ -40,6 +40,7 @@ export default defineNavbarConfig([
       { text: 'Windows', link: '/os/windows/README.md', icon: 'logos:microsoft-windows-icon' },
       { text: 'DSM', link: '/os/dsm/README.md', icon: 'cbi:synology-dsm' },
       { text: 'QTS', link: '/os/qts/README.md', icon: 'selfhst:qnap' },
+      { text: 'Unraid', link: '/os/unraid/README.md', icon: 'selfhst:unraid' },
       { text: 'fnOS', link: '/os/fnos/README.md', icon: 'selfhst:fnos' },
     ],
   },

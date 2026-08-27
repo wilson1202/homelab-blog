@@ -32,7 +32,7 @@
 
 ### ESXi
 
-- [ESXi](/vm/esxi/index.md)
+- [VMware ESXi 项目导航](/vm/esxi/index.md)
 - [ESXi 磁盘报错托管 I/O 故障](/vm/esxi/8cbl2iji/index.md)
 - [ESXi 直通 SATA 控制器](/vm/esxi/8iu5gpv8/index.md)
 - [ESXi 部署 Debian Cloud 镜像](/vm/esxi/ph48hyup/index.md)
@@ -40,22 +40,22 @@
 
 ### Proxmox VE
 
-- [Proxmox VE](/vm/pve/index.md)
+- [Proxmox VE 项目导航](/vm/pve/index.md)
 
 ### Debian
 
-- [Debian](/os/debian/index.md)
+- [Debian 项目导航](/os/debian/index.md)
 - [Debian 修改 IP 地址](/os/debian/4odhnhal/index.md)
 - [允许 Root 远程 SSH 登录](/os/debian/ds4tuka2/index.md)
 - [Debian Cloud 修改 IP 地址](/os/debian/wk2mc5ju/index.md)
 
 ### Ubuntu
 
-- [Ubuntu](/os/ubuntu/index.md)
+- [Ubuntu 项目导航](/os/ubuntu/index.md)
 
 ### Windows
 
-- [Windows](/os/windows/index.md)
+- [Windows 11 项目导航](/os/windows/index.md)
 
 ### DSM
 
@@ -65,11 +65,15 @@
 
 ### QTS
 
-- [QTS](/os/qts/index.md)
+- [QNAP QTS 项目导航](/os/qts/index.md)
+
+### Unraid
+
+- [Unraid 项目导航](/os/unraid/index.md)
 
 ### fnOS
 
-- [fnOS](/os/fnos/index.md)
+- [fnOS 项目导航](/os/fnos/index.md)
 
 ### Docker
 
