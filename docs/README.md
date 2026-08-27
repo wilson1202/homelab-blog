@@ -13,11 +13,12 @@ config:
       text: 路由器、虚拟机、网络调优与自托管服务的折腾笔记。
       actions:
         -
-          text: 路由器
-          link: /router/routeros/
+          text: 网址导航
+          link: /tool/nav/README.md
           theme: brand
         -
-          text: 虚拟机
-          link: /vm/esxi/
+          text: 笔记
+          link: /tool/note/README.md
           theme: alt
 ---
+
