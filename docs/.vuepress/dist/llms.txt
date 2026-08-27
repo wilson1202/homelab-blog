@@ -59,7 +59,7 @@
 
 ### DSM
 
-- [DSM](/os/dsm/index.md)
+- [Synology DSM 7 项目导航](/os/dsm/index.md)
 - [Web 服务解除默认端口占用](/os/dsm/o502gujg/index.md)
 - [Container Manager 设置代理](/os/dsm/udgag0t3/index.md)
 
