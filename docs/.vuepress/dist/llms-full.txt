@@ -5142,10 +5142,78 @@ GitHub收藏。
 ---
 
 ---
+url: /tool/github/36dprxdf/index.md
+---
+# VitePress
+## 概述
+
+VitePress 是一个基于 **Vite** 和 **Vue 3** 的静态网站生成器（SSG），可以看作是 VuePress 的“精神继承者”和更现代的替代方案。
+
+## 主题
+
+---
+
+---
+url: /tool/github/id9m37dk/index.md
+---
+# VuePress
+## 概述
+
+VuePress 是一个以 Markdown 为中心的静态网站生成器（Static Site Generator, SSG）。它由 Vue.js 驱动，能让你用 Markdown 写内容，并生成一个高性能、对 SEO 友好的静态网站
+
+## 主题
+
+---
+
+---
 url: /tool/nav/index.md
 ---
-# 导航栏
-网址收藏。
+# 常用网址
+
+---
+
+---
+url: /tool/nav/60lrafi0/index.md
+---
+# 网盘
+***
+
+---
+
+---
+url: /tool/nav/8sy2ljt8/index.md
+---
+# Git
+
+---
+
+---
+url: /tool/nav/ngilgmso/index.md
+---
+# AI
+***
+
+---
+
+---
+url: /tool/nav/nzias6s7/index.md
+---
+# 搜索
+
+---
+
+---
+url: /tool/nav/tp5pgfgf/index.md
+---
+# 翻译
+***
+
+---
+
+---
+url: /tool/nav/wh604p81/index.md
+---
+# 视频
 
 ---
 

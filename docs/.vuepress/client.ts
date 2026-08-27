@@ -2,6 +2,7 @@ import { defineAsyncComponent, h } from 'vue'
 import { defineClientConfig } from 'vuepress/client'
 import { Layout } from 'vuepress-theme-plume/client'
 import PageContextMenu from 'vuepress-theme-plume/features/PageContextMenu.vue'
+import RepoCard from 'vuepress-theme-plume/features/RepoCard.vue'
 
 import './theme/styles/_index.css' // import your custom styles / 导入自定义样式
 
@@ -14,5 +15,6 @@ export default defineClientConfig({
   },
   enhance({ app }) {
     // do something...
+    app.component('RepoCard', RepoCard)
   },
 })

@@ -91,11 +91,19 @@
 
 ### Navigation
 
-- [导航栏](/tool/nav/index.md)
+- [常用网址](/tool/nav/index.md)
+- [网盘](/tool/nav/60lrafi0/index.md)
+- [Git](/tool/nav/8sy2ljt8/index.md)
+- [AI](/tool/nav/ngilgmso/index.md)
+- [搜索](/tool/nav/nzias6s7/index.md)
+- [翻译](/tool/nav/tp5pgfgf/index.md)
+- [视频](/tool/nav/wh604p81/index.md)
 
 ### GitHub
 
 - [GitHub 收藏](/tool/github/index.md)
+- [VitePress](/tool/github/36dprxdf/index.md)
+- [VuePress](/tool/github/id9m37dk/index.md)
 
 ### Note
 
