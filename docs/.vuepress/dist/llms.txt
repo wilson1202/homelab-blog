@@ -99,6 +99,7 @@
 - [网盘](/tool/nav/60lrafi0/index.md)
 - [Git](/tool/nav/8sy2ljt8/index.md)
 - [素材](/tool/nav/e71z9yig/index.md)
+- [文库](/tool/nav/gtrhnuat/index.md)
 - [AI](/tool/nav/ngilgmso/index.md)
 - [搜索](/tool/nav/nzias6s7/index.md)
 - [翻译](/tool/nav/tp5pgfgf/index.md)
