@@ -41,6 +41,7 @@
 ### Proxmox VE
 
 - [Proxmox VE 项目导航](/vm/pve/index.md)
+- [禁止 Crontab 执行时发送邮件](/vm/pve/84ifbnwh/index.md)
 - [PVE 使用阿里云 DDNS](/vm/pve/pqqankxd/index.md)
 
 ### Debian
