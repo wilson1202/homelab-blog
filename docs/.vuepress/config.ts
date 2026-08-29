@@ -86,6 +86,7 @@ export default defineUserConfig({
       // twoslash: true, // 启用 twoslash
       // whitespace: true, // 启用 空格/Tab 高亮
       lineNumbers: false, // 启用行号
+      collapsedLines: true, // 启用折叠代码块，https://theme-plume.vuejs.press/guide/code/features/#%E6%8A%98%E5%8F%A0%E4%BB%A3%E7%A0%81%E5%9D%97
       themes: { light: 'github-light', dark: 'github-dark' },
     },
 
