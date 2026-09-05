@@ -119,6 +119,7 @@
 
 - [笔记](/tool/note/index.md)
 - [OpenCode Token 消费规则](/tool/note/4gfe35bu/index.md)
+- [Plume 构建错误排查与修复](/tool/note/gshasgik/index.md)
 - [阅读荧光笔标记体系](/tool/note/ie84pc7r/index.md)
 - [VSCode 使用不同 GitHub 账户](/tool/note/rohvmzai/index.md)
 
