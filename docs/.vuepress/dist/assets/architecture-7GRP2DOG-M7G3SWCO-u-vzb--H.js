@@ -1,0 +1,1 @@
+import{Rt as e}from"./common-WDof2VZB.js";export{e as createArchitectureServices};
