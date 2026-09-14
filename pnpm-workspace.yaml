@@ -1,5 +1,9 @@
 allowBuilds:
   esbuild: true
+overrides:
+  markdown-it: 14.3.1
+  linkify-it: 5.0.2
+shamefullyHoist: true
 minimumReleaseAgeExclude:
   - '@vuepress-plume/plugin-fonts@1.0.0-rc.207 || 1.0.0-rc.209'
   - '@vuepress-plume/plugin-search@1.0.0-rc.207 || 1.0.0-rc.209'
