@@ -31,5 +31,10 @@
     "markmap-toolbar": "^0.18.12",
     "markmap-view": "^0.18.12",
     "mermaid": "^11.17.2"
+  },
+  "pnpm": {
+    "overrides": {
+      "markdown-it": "^13.0.2"
+    }
   }
 }
