@@ -5949,7 +5949,7 @@ giffgaff 是英国的移动虚拟运营商，借用 O2 的网络。实体卡激�
 
 6. 网页下拉至最底部，选择 **Pay as you go**，点击 **Continue**。
 
-7. 选择 10 英镑，点击 **Pay now**，用带有 VISA 或 MasterCard 标志的信用卡充值。
+7. 选择 10 英镑，点击 **Pay now**，用带有 ::selfhst:visa:: VISA 或 ::selfhst:mastercard:: MasterCard 标志的信用卡充值。
 
    若改用充值券：点击 **Or redeem a top-up voucher**，在 **Voucher code** 里输入 16 位充值卡密。
 
