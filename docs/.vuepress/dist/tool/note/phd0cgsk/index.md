@@ -1,0 +1,177 @@
+---
+url: /tool/note/phd0cgsk/index.md
+---
+## 概述
+
+giffgaff 是英国的移动虚拟运营商，借用 O2 的网络。实体卡激活后即可收短信、接打电话；月租免费，按实际用量计费，适合需要长期保留一个英国号码的场景。本文整理实体卡的激活流程、资费、保号规则，以及实体卡与 eSIM 的互转方法，链接一律以 giffgaff 官网与官方帮助中心为准。
+
+## 一、激活实体卡
+
+> \[!IMPORTANT]
+>
+> 激活前不要插卡
+> 用电脑浏览器（建议无痕模式）先完成网页激活，插卡放到最后一步。
+
+1. 打开 <https://www.giffgaff.com/activate>，输入卡片上的 6 位激活码，点击 **Activate your SIM**。
+
+2. 输入邮箱，点击 **Next**。
+
+3. 输入邮箱收到的验证码，点击 **Confirm**。
+
+4. 创建密码，点击 **Register**。
+
+5. 选择 **No, thanks**，点击 **Continue**。
+
+6. 网页下拉至最底部，选择 **Pay as you go**，点击 **Continue**。
+
+7. 选择 10 英镑，点击 **Pay now**，用带有 VISA 或 MasterCard 标志的信用卡充值。
+
+   若改用充值券：点击 **Or redeem a top-up voucher**，在 **Voucher code** 里输入 16 位充值卡密。
+
+   > \[!NOTE]
+   > 2026 年 8 月起，英国可能不再支持中国大陆发行的信用卡，此情况下用充值券充值。
+
+8. 填写英文姓名和地址，点击 **Continue**。地址可以用搜索引擎找「英国地址生成器」生成一个。
+
+   > \[!TIP]
+   > 如果点击继续后仍停留在当前页，再填写一遍，直到跳转到下一步。
+
+9. 输入信用卡信息，勾选 **I understand and agree**，点击 **Place order**。用充值券激活时不需要填信用卡信息。
+
+10. 页面上出现的号码就是你的手机号。日常使用时把号码前面的 `0` 换成英国区号 `+44`。
+
+11. 回到主页，显示余额即表示已激活；插卡等待几分钟，出现信号即可。如果未显示余额，说明还在激活中，一般 30 分钟至几小时。
+
+## 二、资费
+
+| 项目 | 费用 |
+|------|------|
+| 月租 | 免费 |
+| 收短信 | 免费 |
+| 发短信 | 0.3 英镑/条 |
+| 接电话 | 1 英镑/分钟 |
+| 打电话 | 1 英镑/分钟 |
+| 流量 | 0.2 英镑/MB |
+| 流量套餐（可选） | 12 英镑/1GB/月、24 英镑/5GB/月、36 英镑/10GB/月 |
+
+流量套餐在手机端登录 giffgaff App 购买：主页顶部 **My data** 里选择你所在的国家（例如中国）即可。
+
+在其他国家或地区的资费见官方页面：<https://www.giffgaff.com/roaming-charges>
+
+## 三、保号
+
+每 180 天内余额发生一次变动（消费或充值），有效期自动延长 180 天。以下任一操作都算：
+
+* 发一条短信
+* 用一次移动数据
+* 打一次电话（不含紧急服务和官方客服热线）
+* 充一次话费
+
+## 四、短信与通话格式
+
+规则是 `+` + 国家代码 + 号码。假设对方的英国号码是 8888888888：
+
+* 发短信：`00448888888888`
+* 打电话：`+448888888888`（在拨号键长按数字 0 会显示 `+`）
+
+> \[!WARNING]
+> 不建议联系 +86 号码。国内运营商通常会拦截境外电话和短信，还有概率触发反诈风控，导致 +86 号码被停号。
+
+## 五、查询本机号码与余额
+
+* 查询本机号码：编辑短信 **number** 发送到 **2020**，会收到官方短信告知本机号码。
+* 查询余额：登录官网 <https://www.giffgaff.com> 或 App 查看。
+
+## 六、收不到短信
+
+先确认有信号、能收到官方短信（例如登录官网时收到的验证码），能收到就说明号码本身正常。
+
+如果只是注册某个平台收不到短信，一般是代理 IP / VPN 的出口不干净，换一个 IP 再试。
+
+## 七、更换号码
+
+对系统分配的号码不满意，或者该号码已有使用记录，可以更换，新号码依旧是随机分配。
+
+1. 打开 <https://www.giffgaff.com/profile/details/getnumber>，点击 **Get a new giffgaff number**。
+2. 输入密码，再点击 **Change my number**。
+3. 系统跳转到个人信息与设置界面，等待显示新号码。
+
+> \[!NOTE]
+> 更换注意事项
+>
+> * 中国时间上午 11:30 至次日凌晨 4:30 才可以更换；
+> * 新号码和余额最多需要 4 小时才显示到账户中；
+> * 全程连接 Wi-Fi；
+> * 每个账户支持更换 2 次，第二次需间隔 24 小时。
+
+## 八、充值
+
+1. 登录官网 <https://www.giffgaff.com>，点击 **Add credit**。
+2. 选择金额和支付方式，点击 **Continue**，按提示操作。
+
+充值需使用带有 VISA 或 MasterCard 标志的信用卡。
+
+## 九、更改邮箱与密码
+
+### 更改邮箱
+
+* 方法一：登录 <https://www.giffgaff.com/auth/change-email> 直接修改。
+* 方法二：如果无法登录官网，点击页面上的 **Change**，输入自己的邮箱验证即可。
+
+### 更改密码
+
+* 方法一：登录官网，点击 **Security**，再点击 **Change password**。
+* 方法二：如果无法登录官网，打开 <https://www.giffgaff.com/auth/reset-password>，输入手机号码（号码前面带 `0`。）重置。
+
+## 十、eSIM
+
+激活 eSIM 后实体 SIM 卡作废；两种操作的可办理时间均为北京时间 12:30 至次日凌晨 4:30。
+
+### 实体卡转 eSIM
+
+准备：
+
+1. 一台支持 eSIM 的手机，例如外版 iPhone；
+2. 装好 [giffgaff App](https://apps.apple.com/cn/app/giffgaff/id571246020)，并连接 Wi-Fi。
+
+步骤：
+
+1. 登录 App，依次点击 **Account** > **SIM** > **Replace my SIM** > **Switch to a new eSIM**。
+2. 勾选 **I understand and accept this**，点击 **Start the switch**。
+3. 输入短信验证码，点击 **Confirm**。
+4. 勾选 **I understand and accept this**，点击 **Start the switch**。
+5. 点击 **Install eSIM**，弹出激活提示后点击**激活**，再点击**继续**。
+6. 套餐选择**语音和数据**，点击**继续**，点击**完成**，再点击 **Close**。
+7. 打开手机设置 → 蜂窝网络 → SIM 卡，打开**启动此号码**，等待有信号即可。一般 1 小时内激活完成，最慢不超过 24 小时。
+
+> \[!NOTE]
+> 上述步骤可能随 App 版本变化，以[官网说明](https://www.giffgaff.com/help/articles/how-do-i-get-an-esim-on-giffgaff)为准。
+
+### eSIM 转实体卡
+
+需要一个尚未激活的实体 SIM 卡。
+
+1. 网页打开官网，进入[个人资料和设置](https://www.giffgaff.com/profile/details)，找到 Replace my SIM，点击 **Activate your SIM**。
+2. 输入新卡片上的 6 位激活码。
+3. 点击 **Yes, I want to replace my SIM**。
+4. 再点击 **Yes I'm sure**，等待不到 1 小时，最多 24 小时会转好。
+
+> \[!NOTE]
+> 官方说明见 <https://help.giffgaff.com/en/articles/240706-can-i-switch-back-to-a-physical-sim-card-from-an-esim>。
+
+## 十一、打电话提示「设置了限制」
+
+在手机设置里关闭运营商的自动选择，改为手动选择中国移动。
+
+## 官方入口
+
+* 官网：<https://www.giffgaff.com>
+* 续费充值：<https://www.giffgaff.com/top-up>
+* 话费账单查询：<https://www.giffgaff.com/profile/usage-statement>
+* 换卡 / 转入空卡：<https://www.giffgaff.com/profile/details#simswap>
+* eSIM 帮助：<https://help.giffgaff.com/en/collections/626993-esim>
+* Wi-Fi Calling：<https://help.giffgaff.com/en/articles/258841-wifi-calling-and-volte>
+* 官方客服：<https://www.giffgaff.com/boiler-plate/contact>
+* 官方条款：<https://www.giffgaff.com/terms>
+
+本教程面向短期旅游等使用场景，请遵守当地法律法规。

@@ -121,7 +121,9 @@
 - [Plume 构建错误排查与修复](/tool/note/gshasgik/index.md)
 - [阅读荧光笔标记体系](/tool/note/ie84pc7r/index.md)
 - [OpenCode Token 消费规则](/tool/note/m7ef5mim/index.md)
+- [giffgaff 卡激活使用教程](/tool/note/phd0cgsk/index.md)
 - [VSCode 使用不同 GitHub 账户](/tool/note/rohvmzai/index.md)
+- [OpenCode Go 订阅接入 Codex](/tool/note/z08idcd8/index.md)
 
 ### Plume
 
