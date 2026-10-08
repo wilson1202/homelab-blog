@@ -15,7 +15,7 @@ Codex 已经不吃 `chat/completions`，只走 Responses 一条路。
 
 | 项 | 值 |
 |---|---|
-| base\_url | `https://opencode.ai/zen/go/v1`（**带 `/v1`**，`/responses` 由 Codex 自己拼） |
+| base_url | `https://opencode.ai/zen/go/v1`（**带 `/v1`**，`/responses` 由 Codex 自己拼） |
 | 实际请求 | `POST https://opencode.ai/zen/go/v1/responses` |
 | 认证 | `Authorization: Bearer <你的 Go key>` |
 | 会话头 | Codex 自带，不用手动配 |
@@ -154,7 +154,7 @@ schema 严格校验，报错会点名缺哪个字段（`failed to parse model_ca
 <|DSML| invoke name="apply_patch">
 ```
 
-文件根本建不出来。换回官方值（`tool_mode: null`、`use_responses_lite: false`）后，`apply_patch_tool_type: "freeform"` 可以正常保留，实测走 apply\_patch 建文件成功。问题不在 freeform，而在这两个「代码模式 / 精简响应」开关。
+文件根本建不出来。换回官方值（`tool_mode: null`、`use_responses_lite: false`）后，`apply_patch_tool_type: "freeform"` 可以正常保留，实测走 apply_patch 建文件成功。问题不在 freeform，而在这两个「代码模式 / 精简响应」开关。
 
 这份目录相对官方做了两处有意偏离：
 

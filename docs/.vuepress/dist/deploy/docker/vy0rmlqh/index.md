@@ -6,7 +6,7 @@ Docker 支持以下的 64 位 Debian 版本：
 * Debian Bookworm 12 （稳定版）
 * Debian Bullseye 11 （旧稳定版）
 
-支持的架构包括 x86\_64（amd64）、armhf、arm64 和 ppc64le。
+支持的架构包括 x86_64（amd64）、armhf、arm64 和 ppc64le。
 
 ## 卸载旧版本
 

@@ -52,12 +52,12 @@ url: /router/routeros/h0yt3eja/index.md
 
 |联网模式|内网 DNS |检测 DDoS |防火墙等级|配置脚本|
 |--|--|--|--|--|
-|PPPoE|否|否|初级|[ros\_firewall\_ipv4.pppoe.basic.conf](/src/router/routeros/firewall/ros_firewall_ipv4.pppoe.basic.conf)|
-||否|否|高级|[ros\_firewall\_ipv4.pppoe.advanced.conf](/src/router/routeros/firewall/ros_firewall_ipv4.pppoe.advanced.conf)|
-||是|是|高级|[ros\_firewall\_ipv4.pppoe.expert.conf](/src/router/routeros/firewall/ros_firewall_ipv4.pppoe.expert.conf)|
-|DHCP|否|否|初级|[ros\_firewall\_ipv4.dhcp.basic.conf](/src/router/routeros/firewall/ros_firewall_ipv4.dhcp.basic.conf)|
-||否|否|高级|[ros\_firewall\_ipv4.dhcp.advanced.conf](/src/router/routeros/firewall/ros_firewall_ipv4.dhcp.advanced.conf)|
-||是|是|高级|[ros\_firewall\_ipv4.dhcp.expert.conf](/src/router/routeros/firewall/ros_firewall_ipv4.dhcp.expert.conf)|
+|PPPoE|否|否|初级|[ros_firewall_ipv4.pppoe.basic.conf](/src/router/routeros/firewall/ros_firewall_ipv4.pppoe.basic.conf)|
+||否|否|高级|[ros_firewall_ipv4.pppoe.advanced.conf](/src/router/routeros/firewall/ros_firewall_ipv4.pppoe.advanced.conf)|
+||是|是|高级|[ros_firewall_ipv4.pppoe.expert.conf](/src/router/routeros/firewall/ros_firewall_ipv4.pppoe.expert.conf)|
+|DHCP|否|否|初级|[ros_firewall_ipv4.dhcp.basic.conf](/src/router/routeros/firewall/ros_firewall_ipv4.dhcp.basic.conf)|
+||否|否|高级|[ros_firewall_ipv4.dhcp.advanced.conf](/src/router/routeros/firewall/ros_firewall_ipv4.dhcp.advanced.conf)|
+||是|是|高级|[ros_firewall_ipv4.dhcp.expert.conf](/src/router/routeros/firewall/ros_firewall_ipv4.dhcp.expert.conf)|
 
 **需要注意的是，防火墙配置命令中的部分 IPv4 地址，需要根据实际情况进行调整。**
 
@@ -96,7 +96,7 @@ IPv4 黑洞路由 `blackhole route` 是一组静态路由，基于 [RFC6890 - Sp
 
 配置 IPv4 黑洞路由时，将以下命令一次性全部粘贴到 `CLI` 中执行即可。
 
-如果不便复制代码，请查阅文件 [ros\_blackhole\_ipv4.conf](/src/router/routeros/firewall/ros_blackhole_ipv4.conf) 。
+如果不便复制代码，请查阅文件 [ros_blackhole_ipv4.conf](/src/router/routeros/firewall/ros_blackhole_ipv4.conf) 。
 
 ```bash
 /ip route

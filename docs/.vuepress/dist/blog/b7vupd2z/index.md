@@ -326,7 +326,7 @@ This is a details block.
 
 :::
 
-假定无风险收益率为 $R\_f$，市场平均收益率为 $R\_m$，某股票贝塔系数为 $\beta$，则普通股资本成本为：$K\_s = R\_f + \beta \times (R\_m - R\_f)$
+假定无风险收益率为 $R_f$，市场平均收益率为 $R_m$，某股票贝塔系数为 $\beta$，则普通股资本成本为：$K_s = R_f + \beta \times (R_m - R_f)$
 
 * **default**: `==Default==` - ==Default==
 * **info**: `==Info=={.info}` - ==Info=={.info}

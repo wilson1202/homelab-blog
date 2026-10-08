@@ -11,7 +11,7 @@ Github：<https://github.com/pymumu/smartdns>
 
 ## 一、Linux 安装
 
-1. 标准 Linux 系统（X86 / X86\_64），下载配套安装包并上传后执行：
+1. 标准 Linux 系统（X86 / X86_64），下载配套安装包并上传后执行：
 
    ```bash
    tar zxf smartdns.1.yyyy.MM.dd-REL.x86_64-linux-all.tar.gz

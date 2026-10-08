@@ -78,7 +78,7 @@ RouterOS 默认开启了 `api` 、`ftp` 等系统服务，这些服务日常使�
 
 配置系统安全增强时，将以下命令一次性全部粘贴到 `CLI` 中执行即可。
 
-如果不便复制代码，请查阅文件 [ros\_sys\_hardened.conf](/src/router/routeros/system/ros_sys_hardened.conf) 。
+如果不便复制代码，请查阅文件 [ros_sys_hardened.conf](/src/router/routeros/system/ros_sys_hardened.conf) 。
 
 ```bash
 /ip settings

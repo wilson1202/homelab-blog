@@ -111,7 +111,7 @@ $ ping aliyun.com -4 -t
 
 然后，将之前测得的上（下）行带宽第一档位速率（也就是上下行带宽上限速率值，演示值为 `500Mbps/50Mbps` ）直接带入 `max-limit=下行带宽M/上行带宽M` 命令部分进行配置，命令如下。
 
-如果不便复制代码，请查阅文件 [ros\_qos\_cake.conf](/src/router/routeros/qos/ros_qos_cake.conf) 。
+如果不便复制代码，请查阅文件 [ros_qos_cake.conf](/src/router/routeros/qos/ros_qos_cake.conf) 。
 
 ```bash
 /queue type
@@ -160,7 +160,7 @@ add name=cake-qos comment="qosconf: simple queue with CAKE" bucket-size=0.05/0.0
 
 然后，将之前测得的上（下）行带宽第一档位速率（也就是上下行带宽上限速率值，演示值为 `500Mbps/50Mbps` ）直接带入 `max-limit=下行带宽M(上行带宽M)` 命令部分进行配置，命令如下。
 
-如果不便复制代码，请查阅文件 [ros\_qos\_cake.conf](/src/router/routeros/qos/ros_qos_cake.conf) 。
+如果不便复制代码，请查阅文件 [ros_qos_cake.conf](/src/router/routeros/qos/ros_qos_cake.conf) 。
 
 ```bash
 /queue type

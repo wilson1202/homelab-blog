@@ -9,7 +9,7 @@ Docker Engine-Community 支持以下的 Ubuntu 版本：
 * Disco 19.04
 * 其他更新的版本……
 
-Docker Engine - Community 支持上 x86\_64（或 amd64）armhf，arm64，s390x （IBM Z），和 ppc64le（IBM的Power）架构。
+Docker Engine - Community 支持上 x86_64（或 amd64）armhf，arm64，s390x （IBM Z），和 ppc64le（IBM的Power）架构。
 
 ## 使用官方安装脚本自动安装
 

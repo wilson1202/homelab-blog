@@ -79,7 +79,7 @@ chmod +x /usr/local/bin/rtp2httpd
 ```
 
 > \[!NOTE]
-> 官方 release 的 `rtp2httpd-<版本>-x86_64` 是**完全静态编译**（`ldd` 显示 not a dynamic executable）——任何 Linux 直接跑，**不需要 musl/编译**，版本自动跟随最新（asset 命名规则 = tag 去掉 `v` 前缀 + `-x86_64`）。无 .deb 包，x86\_64 静态二进制即 Debian 可用形态。
+> 官方 release 的 `rtp2httpd-<版本>-x86_64` 是**完全静态编译**（`ldd` 显示 not a dynamic executable）——任何 Linux 直接跑，**不需要 musl/编译**，版本自动跟随最新（asset 命名规则 = tag 去掉 `v` 前缀 + `-x86_64`）。无 .deb 包，x86_64 静态二进制即 Debian 可用形态。
 
 **方式 B：从官方镜像提取**
 

@@ -241,9 +241,9 @@ url: /router/routeros/s071nm6j/index.md
 
 |联网模式| IPv6 ULA |内网 DNS |检测 DDoS |防火墙等级|配置脚本|
 |--|--|--|--|--|--|
-|PPPoE|否|否|否|初级|[ros\_firewall\_ipv6.pppoe.basic.conf](/src/router/routeros/firewall/ros_firewall_ipv6.pppoe.basic.conf)|
-||否|否|否|高级|[ros\_firewall\_ipv6.pppoe.advanced.conf](/src/router/routeros/firewall/ros_firewall_ipv6.pppoe.advanced.conf)|
-||是|是|是|高级|[ros\_firewall\_ipv6.pppoe.expert.conf](/src/router/routeros/firewall/ros_firewall_ipv6.pppoe.expert.conf)|
+|PPPoE|否|否|否|初级|[ros_firewall_ipv6.pppoe.basic.conf](/src/router/routeros/firewall/ros_firewall_ipv6.pppoe.basic.conf)|
+||否|否|否|高级|[ros_firewall_ipv6.pppoe.advanced.conf](/src/router/routeros/firewall/ros_firewall_ipv6.pppoe.advanced.conf)|
+||是|是|是|高级|[ros_firewall_ipv6.pppoe.expert.conf](/src/router/routeros/firewall/ros_firewall_ipv6.pppoe.expert.conf)|
 
 **需要注意的是，防火墙配置命令中的部分 IPv6 ULA 地址，需要根据实际情况进行调整。**
 
@@ -270,7 +270,7 @@ Windows11 IPv6 连接处会显示 `Internet` ，表示此时 Windows 是可以�
 
 配置 IPv6 黑洞路由时，将以下命令一次性全部粘贴到 `CLI` 中执行即可。
 
-如果不便复制代码，请查阅文件 [ros\_blackhole\_ipv6.conf](/src/router/routeros/firewall/ros_blackhole_ipv6.conf) 。
+如果不便复制代码，请查阅文件 [ros_blackhole_ipv6.conf](/src/router/routeros/firewall/ros_blackhole_ipv6.conf) 。
 
 ```bash
 /ipv6 route

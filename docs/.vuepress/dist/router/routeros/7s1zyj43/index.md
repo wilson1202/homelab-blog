@@ -211,7 +211,7 @@ RouterOS 拨号时，参考之前的网络规划：
 
 RouterOS 拨号时，将以下命令一次性全部粘贴到 `CLI` 中执行即可。
 
-如果不便复制代码，请查阅文件 [ros\_define\_interfaces.pppoe.conf](/src/router/routeros/interfaces/ros_define_interfaces.pppoe.conf) 。
+如果不便复制代码，请查阅文件 [ros_define_interfaces.pppoe.conf](/src/router/routeros/interfaces/ros_define_interfaces.pppoe.conf) 。
 
 ```bash
 /interface list
@@ -267,7 +267,7 @@ add list=ONU comment="onuconf: ONU member" interface=ether1
 
 光猫拨号时，`ether1` 为 `WAN` ，将以下命令一次性全部粘贴到 `CLI` 中执行即可。
 
-如果不便复制代码，请查阅文件 [ros\_define\_interfaces.dhcp.conf](/src/router/routeros/interfaces/ros_define_interfaces.dhcp.conf) 。
+如果不便复制代码，请查阅文件 [ros_define_interfaces.dhcp.conf](/src/router/routeros/interfaces/ros_define_interfaces.dhcp.conf) 。
 
 ```bash
 /interface list

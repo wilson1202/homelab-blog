@@ -148,4 +148,4 @@ docker pull nginx     # ~60MB，压测真实速度
 
 ## 参考
 
-* [群晖 DSM 7.2 为 Container Manager（docker）设置代理\_群晖docker设置代理-CSDN博客](https://blog.csdn.net/caca_66/article/details/150264099)
+* [群晖 DSM 7.2 为 Container Manager（docker）设置代理_群晖docker设置代理-CSDN博客](https://blog.csdn.net/caca_66/article/details/150264099)

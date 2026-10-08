@@ -16,14 +16,14 @@ RouterOS 提供了强大的脚本能力，搭配系统的定时器功能，可�
 * 要使用 RouterOS 发送邮件功能，需要准备一个邮箱并开启 `SMTP` 服务，推荐使用 QQ 邮箱或 163 邮箱
 
 * 对于使用 **CHR 版本** RouterOS 的软路由
-  * 系统自动更新脚本，请查阅文件 [ros\_sys\_upgrade\_worker.conf](/src/router/routeros/upgrade/ros_sys_upgrade_worker.conf)
-  * 系统日志邮件脚本，请查阅文件 [ros\_email\_log\_worker.conf](/src/router/routeros/email/ros_email_log_worker.conf)
-  * 系统资源邮件脚本，请查阅文件 [ros\_email\_res\_worker.chr.conf](/src/router/routeros/email/ros_email_res_worker.chr.conf)
+  * 系统自动更新脚本，请查阅文件 [ros_sys_upgrade_worker.conf](/src/router/routeros/upgrade/ros_sys_upgrade_worker.conf)
+  * 系统日志邮件脚本，请查阅文件 [ros_email_log_worker.conf](/src/router/routeros/email/ros_email_log_worker.conf)
+  * 系统资源邮件脚本，请查阅文件 [ros_email_res_worker.chr.conf](/src/router/routeros/email/ros_email_res_worker.chr.conf)
 
 * 对于使用 **Mikrotik 原生** RouterOS 的硬路由
   * 系统自动更新脚本，与 CHR 版本相同
   * 系统日志邮件脚本，与 CHR 版本相同
-  * 系统资源邮件脚本，与 CHR 版本略有不同，请查阅文件 [ros\_email\_res\_worker.native.conf](/src/router/routeros/email/ros_email_res_worker.native.conf)
+  * 系统资源邮件脚本，与 CHR 版本略有不同，请查阅文件 [ros_email_res_worker.native.conf](/src/router/routeros/email/ros_email_res_worker.native.conf)
 
 ## 1.定时器和脚本初始化
 
@@ -62,7 +62,7 @@ RouterOS 的脚本将会创建 3 个，分别为：
 
 在 RouterOS 的命令行环境下，将以下命令一次性全部粘贴到 `CLI` 中执行，即可初始化定时器和脚本。
 
-如果不便复制代码，请查阅文件 [ros\_schedule\_script.pppoe.conf](/src/router/routeros/schedule/ros_schedule_script.pppoe.conf) 。
+如果不便复制代码，请查阅文件 [ros_schedule_script.pppoe.conf](/src/router/routeros/schedule/ros_schedule_script.pppoe.conf) 。
 
 ```bash
 /system scheduler
@@ -108,7 +108,7 @@ add comment="sysconf: system auto upgrade" dont-require-permissions=no name=sys-
 
 ![脚本待完善](/images/router/routeros/p07/wb_scripts_red.jpeg)
 
-首先设置系统自动更新脚本，复制 [ros\_sys\_upgrade\_worker.conf](/src/router/routeros/upgrade/ros_sys_upgrade_worker.conf) 中的脚本代码。
+首先设置系统自动更新脚本，复制 [ros_sys_upgrade_worker.conf](/src/router/routeros/upgrade/ros_sys_upgrade_worker.conf) 中的脚本代码。
 
 鼠标 **双击** 系统自动更新脚本 `sys-upgrade-worker` ，进入脚本配置界面，在 `Source` 处粘贴脚本代码。
 
@@ -162,7 +162,7 @@ add comment="sysconf: system auto upgrade" dont-require-permissions=no name=sys-
 
 ### 3.3.完善系统日志邮件脚本
 
-复制 [ros\_email\_log\_worker.conf](/src/router/routeros/email/ros_email_log_worker.conf) 中的脚本代码，并使用文本编辑器工具对脚本中有关 **邮箱部分** 参数进行修改。
+复制 [ros_email_log_worker.conf](/src/router/routeros/email/ros_email_log_worker.conf) 中的脚本代码，并使用文本编辑器工具对脚本中有关 **邮箱部分** 参数进行修改。
 
 * Windows 部分文本编辑器，会额外加空格且修改换行符，推荐使用 [Visual Studio Code](https://code.visualstudio.com/Download) 这类代码编辑器。
 
@@ -203,9 +203,9 @@ add comment="sysconf: system auto upgrade" dont-require-permissions=no name=sys-
 
 同样，根据所使用的 RouterOS 的类型，从以下两个系统资源邮件脚本中选择合适的版本，并复制其代码：
 
-* CHR 使用：[ros\_email\_res\_worker.chr.conf](/src/router/routeros/email/ros_email_res_worker.chr.conf)
+* CHR 使用：[ros_email_res_worker.chr.conf](/src/router/routeros/email/ros_email_res_worker.chr.conf)
 
-* 官方硬件使用：[ros\_email\_res\_worker.native.conf](/src/router/routeros/email/ros_email_res_worker.native.conf)
+* 官方硬件使用：[ros_email_res_worker.native.conf](/src/router/routeros/email/ros_email_res_worker.native.conf)
 
 与 **系统日志邮件脚本** 一样，需要修改 **邮箱部分** 参数。
 
