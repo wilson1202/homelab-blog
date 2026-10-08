@@ -7,7 +7,7 @@ settings:
 overrides:
   markdown-it: 14.3.1
   linkify-it: 5.0.2
-  katex: ^0.18.9
+  katex@0.19.0: ^0.18.9
 
 importers:
 
@@ -42,7 +42,7 @@ importers:
         specifier: ^14.1.1
         version: 14.1.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       katex:
-        specifier: ^0.18.9
+        specifier: ^0.18.10
         version: 0.18.10
       mermaid:
         specifier: ^12.1.0
@@ -899,7 +899,7 @@ packages:
     resolution: {integrity: sha512-1T20n+j5ZlwKbcgpxBSw86qfvD9SeNcv6OtFDdZOdg6ehWe+KY4mfan+FwUd/2RDBAuXeSiZ1OYHSIBJvQAQXQ==}
     peerDependencies:
       '@mathjax/src': ^4.1.1
-      katex: ^0.18.9
+      katex: ^0.16.38 || ^0.18.0
       vuepress: 2.0.0-rc.31
     peerDependenciesMeta:
       '@mathjax/src':
@@ -1206,6 +1206,10 @@ packages:
   commander@7.2.0:
     resolution: {integrity: sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==}
     engines: {node: '>= 10'}
+
+  commander@8.3.0:
+    resolution: {integrity: sha512-OkTL9umf+He2DZkUq8f8J9of7yL6RJKI24dVITBmNfZBmri9zYZQrKkuXiKhyfPSu8tUhnVBB1iKXevvnlR4Ww==}
+    engines: {node: '>= 12'}
 
   confbox@0.1.8:
     resolution: {integrity: sha512-RMtmw0iFkeR4YV+fUOSucriAQNb9g8zFR52MWCtl+cCZOFRNL6zeB395vPzFhEjjn4fMxXudmELnl/KF/WrK6w==}
@@ -1767,6 +1771,10 @@ packages:
 
   jsonfile@6.2.1:
     resolution: {integrity: sha512-zwOTdL3rFQ/lRdBnntKVOX6k5cKJwEc1HdilT71BWEu7J41gXIB2MRp+vxduPSwZJPWBxEzv4yH1wYLJGUHX4Q==}
+
+  katex@0.16.47:
+    resolution: {integrity: sha512-Eeo8Ys1doU1z+x8AZsPpQu+p/QcZBI5PeOo7QGQdy2x2m0MU/hYagBbGOmXwr5KVbEfVuWv9LpnQWeehogurjg==}
+    hasBin: true
 
   katex@0.18.10:
     resolution: {integrity: sha512-/B6p9eY9DX7aHBfpkHdpirDTZ5QH9xTwL9y837PWuzuv41O5jFdqNQwVQEQsimY0/iVNkwBY4+4hMfhQ7d4Dbw==}
@@ -3457,7 +3465,7 @@ snapshots:
 
   '@vscode/markdown-it-katex@1.1.2':
     dependencies:
-      katex: 0.18.10
+      katex: 0.16.47
 
   '@vue-macros/common@3.1.4(vue@3.5.43(typescript@6.0.3))':
     dependencies:
@@ -4241,6 +4249,8 @@ snapshots:
 
   commander@7.2.0: {}
 
+  commander@8.3.0: {}
+
   confbox@0.1.8: {}
 
   confbox@0.2.4: {}
@@ -4837,6 +4847,10 @@ snapshots:
     optionalDependencies:
       graceful-fs: 4.2.11
 
+  katex@0.16.47:
+    dependencies:
+      commander: 8.3.0
+
   katex@0.18.10:
     dependencies:
       commander: 15.0.0
@@ -5011,7 +5025,7 @@ snapshots:
       '@babel/runtime': 7.29.7
       '@vscode/markdown-it-katex': 1.1.2
       highlight.js: 11.12.0
-      katex: 0.18.10
+      katex: 0.16.47
       markdown-it: 14.3.1
       markdown-it-ins: 4.0.0
       markdown-it-mark: 4.0.0
@@ -5109,7 +5123,7 @@ snapshots:
       dompurify: 3.4.16
       elkjs: 0.9.3
       es-toolkit: 1.52.0
-      katex: 0.18.10
+      katex: 0.16.47
       khroma: 2.1.0
       marked: 16.4.2
       roughjs: 4.6.6
