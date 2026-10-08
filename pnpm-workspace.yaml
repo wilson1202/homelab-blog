@@ -3,12 +3,13 @@ allowBuilds:
 overrides:
   markdown-it: 14.3.1
   linkify-it: 5.0.2
+  katex: ^0.18.9
 shamefullyHoist: true
 minimumReleaseAgeExclude:
-  - '@vuepress-plume/plugin-fonts@1.0.0-rc.207 || 1.0.0-rc.209'
-  - '@vuepress-plume/plugin-search@1.0.0-rc.207 || 1.0.0-rc.209'
-  - vuepress-plugin-md-power@1.0.0-rc.207 || 1.0.0-rc.209
-  - vuepress-theme-plume@1.0.0-rc.207 || 1.0.0-rc.209
+  - '@vuepress-plume/plugin-fonts@1.0.0-rc.207 || 1.0.0-rc.209 || 1.0.0-rc.213'
+  - '@vuepress-plume/plugin-search@1.0.0-rc.207 || 1.0.0-rc.209 || 1.0.0-rc.213'
+  - vuepress-plugin-md-power@1.0.0-rc.207 || 1.0.0-rc.209 || 1.0.0-rc.213
+  - vuepress-theme-plume@1.0.0-rc.207 || 1.0.0-rc.209 || 1.0.0-rc.213
   - '@vuepress/helper@2.0.0-rc.134'
   - '@vuepress/highlighter-helper@2.0.0-rc.134'
   - '@vuepress/plugin-cache@2.0.0-rc.134'
