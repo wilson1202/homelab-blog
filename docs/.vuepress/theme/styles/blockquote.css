@@ -1,0 +1,34 @@
+:root {
+  /* 亮色主题*/
+  --blockquote-border-color: rgba(200, 200, 200, 0.5);
+}
+
+[data-theme="dark"] {
+   /* 暗黑主题 */
+  --blockquote-border-color: rgba(150, 150, 150, 0.5);
+}
+
+.vp-doc blockquote {
+  border-left: 2px solid var(--blockquote-border-color); /* 细浅灰色竖条 */
+  padding: 0 0 0 1.2rem; /* 更紧凑的内边距 */
+  margin: 8px 0; /* 减少外边距 */
+  color: #757575; /* 灰色文字 */
+  background: none;
+  border-radius: 0;
+  opacity: 0.9; /* 轻微透明效果 */
+  /* font-size: 0.95em;  */
+  /* line-height: 1.5;  */
+}
+
+/* 移除伪元素 */
+.vp-doc blockquote::before {
+  display: none;
+}
+
+/* 移动端适配 */
+@media (max-width: 640px) {
+  .vp-doc blockquote {
+    margin: 6px 0; /* 移动端外边距更小 */
+    padding-left: 1rem; /* 移动端左侧内边距减小 */
+  }
+}

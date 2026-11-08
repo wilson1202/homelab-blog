@@ -1,0 +1,48 @@
+/* 明亮模式 */
+:root {
+  --vp-nav-bg-color: rgba(255, 255, 255, 0.4);
+}
+
+.vp-nav {
+  background-color: var(--vp-nav-bg-color) !important;
+  backdrop-filter: blur(16px) saturate(180%) brightness(1.05);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(1.05);
+}
+
+/* 暗黑模式 */
+[data-theme="dark"] {
+  --vp-nav-bg-color: rgba(24, 24, 27, 0.5);
+}
+
+[data-theme="dark"] .vp-nav {
+  background-color: var(--vp-nav-bg-color) !important;
+  backdrop-filter: blur(16px) saturate(180%) brightness(1.1);
+  -webkit-backdrop-filter: blur(16px) saturate(180%) brightness(1.1);
+}
+
+/* 用 @supports 条件判断禁用移动端 backdrop-filter */
+@media (max-width: 768px) {
+  .vp-nav {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    background-color: rgba(255, 255, 255, 0.92) !important; /* fallback */
+  }
+
+  [data-theme="dark"] .vp-nav {
+    background-color: rgba(24, 24, 27, 0.95) !important;
+  }
+}
+
+/* 搜索框透明 */
+.vp-navbar-search .DocSearch-Button {
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(10px);
+}
+
+
+/* 侧边栏 sidebar 颜色保持不变 */
+@media (min-width: 960px) {
+    .vp-navbar.has-sidebar .title {
+        background-color: var(--vp-sidebar-bg-color) !important;
+    }
+}

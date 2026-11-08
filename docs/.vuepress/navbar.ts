@@ -7,62 +7,39 @@
 import { defineNavbarConfig } from 'vuepress-theme-plume'
 
 export default defineNavbarConfig([
-  // { text: '首页', link: '/' },
-  // { text: '博客', link: '/blog/' },
-  // { text: ' 标签', link: '/blog/tags/' },
-  // { text: '归档', link: '/blog/archives/' },
+  // { text: '首页', link: '/', icon: 'lets-icons:home-duotone' },
+  { text: '博客', link: '/blog/', icon: 'solar:book-2-bold' },
+  // { text: '分类', link: '/blog/categories/', icon: 'mingcute:classify-2-fill' },
+  // { text: '标签', link: '/blog/tags/', icon: 'mingcute:tag-2-fill' },
+  // { text: '归档', link: '/blog/archives/', icon: 'mingcute:box-2-fill' },
 
   {
-    text: '路由器',
-    icon: 'material-symbols:router',
+    text: '笔记',
+    icon: 'mingcute:book-3-fill',
     items: [
-      { text: 'RouterOS', link: '/router/routeros/README.md', icon: 'simple-icons:mikrotik' },
-      { text: 'iKuai', link: '/router/ikuai/README.md', icon: 'selfhst:ikuai' },
-      { text: 'OpenWrt', link: '/router/openwrt/README.md', icon: 'thesvg-color:openwrt' },
+      { text: '中级会计', link: '/notes/中级会计/README.md', icon: 'emojione-monotone:letter-m' },
+      { text: 'CTA', link: '/notes/CTA/README.md', icon: 'emojione-monotone:letter-c' },
+      { text: 'CPA', link: '/notes/CPA/README.md', icon: 'emojione-monotone:letter-c' },
     ],
   },
 
-  {
-    text: '虚拟机',
-    icon: 'carbon:virtual-machine',
-    items: [
-      { text: 'ESXi', link: '/vm/esxi/README.md', icon: 'selfhst:vmware-esx' },
-      { text: 'PVE', link: '/vm/pve/README.md', icon: 'selfhst:proxmox' },
-    ],
-  },
+  // {
+  //   text: '政策',
+  //   icon: 'mingcute:building-4-fill',
+  //   items: [
+  //     { text: '房地产', link: '/notes/房地产/' }
+  //   ]
+  // },
 
   {
-    text: '操作系统',
-    icon: 'ix:operating-system',
+    text: '时光',
+    icon: 'streamline-logos:douban-logo-solid',  
     items: [
-      { text: 'Debian', link: '/os/debian/README.md', icon: 'logos:debian' },
-      { text: 'Ubuntu', link: '/os/ubuntu/README.md', icon: 'logos:ubuntu' },
-      { text: 'Windows', link: '/os/windows/README.md', icon: 'logos:microsoft-windows-icon' },
-      { text: 'DSM', link: '/os/dsm/README.md', icon: 'cbi:synology-dsm' },
-      { text: 'QTS', link: '/os/qts/README.md', icon: 'selfhst:qnap' },
-      { text: 'Unraid', link: '/os/unraid/README.md', icon: 'selfhst:unraid' },
-      { text: 'fnOS', link: '/os/fnos/README.md', icon: 'selfhst:fnos' },
-    ],
-  },
-
-  {
-    text: '服务部署',
-    icon: 'fa-solid:server',
-    items: [
-      { text: 'Docker', link: '/deploy/docker/README.md', icon: 'selfhst:docker' },
-      { text: 'Native', link: '/deploy/native/README.md', icon: 'emojione:package' },
-    ],
-  },
-
-  {
-    text: '工具收藏',
-    icon: 'fa6-solid:screwdriver-wrench',
-    items: [
-      { text: '导航', link: '/tool/nav/README.md', icon: 'token-branded:nav' },
-      { text: '收藏', link: '/tool/github/README.md', icon: 'akar-icons:github-fill' },
-      { text: '笔记', link: '/tool/note/README.md', icon: 'twemoji:memo' },
-      { text: '配置', link: '/tool/plume/README.md', icon: 'selfhst:vue-js' },
-    ],
-  },
-
+      { text: '说说', link: '/times/说说/1.shuoshuo.md', icon: 'fa6-brands:weibo' },
+      { text: '读书', link: '/times/豆瓣/1.book.md', icon: 'ic:twotone-menu-book' },
+      { text: '电影', link: '/times/豆瓣/2.movie.md', icon: 'si:movie-duotone' },
+      { text: '音乐', link: '/times/豆瓣/3.song.md', icon: 'bi:music-player-fill' },
+      { text: '游戏', link: '/times/豆瓣/4.game.md', icon: 'icon-park-twotone:gamepad' },
+    ]
+  }
 ])

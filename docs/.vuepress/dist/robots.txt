@@ -1,0 +1,3 @@
+Sitemap: https://powersen.cn/sitemap.xml
+User-agent:*
+Disallow:

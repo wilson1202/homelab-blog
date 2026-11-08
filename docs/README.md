@@ -1,23 +1,22 @@
 ---
-home: true
+pageLayout: home
+
+externalLinkIcon: false
+
 config:
-  - type: banner
-    banner: /homelab.jpg
+  -
+    type: banner
+    banner: https://api.powersen.cn/wallpaper/bing
     bannerMask:
       light: 0.1
-      dark: 0.45
+      dark: 0.3
     hero:
-      name: Homelab
-      tagline: 家庭网络与虚拟化实验室
-      text: 路由器、虚拟机、网络调优与自托管服务的折腾笔记。
+      name: Powersen
+      tagline: 勿意 勿必 勿固 勿我
+      text: 破心中之贼，行脚下之路，则山海可越，星河可及！！！
       actions:
-        - text: 网址导航
-          link: /tool/nav/README.md
+        -
           theme: brand
-        - text: 笔记
-          link: /tool/note/README.md
-          theme: alt
-pageLayout: home
-title: Home
+          text: 博客
+          link: /blog/
 ---
-

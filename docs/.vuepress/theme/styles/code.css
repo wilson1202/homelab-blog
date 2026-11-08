@@ -1,0 +1,20 @@
+:root {
+  /* 亮色主题：黑色 */
+  --vp-code-filepath-color: 	#000000; 
+}
+
+[data-theme="dark"] {
+   /* 暗黑主题：米黄色 */
+  --vp-code-filepath-color: 	#d8c3a5;
+}
+
+
+.vp-doc :not(pre) > code.filepath {
+  background: none !important;
+  background-color: transparent !important;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  color: var(--vp-code-filepath-color) !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+}

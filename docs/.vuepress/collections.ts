@@ -26,204 +26,47 @@
  */
 import { defineCollection, defineCollections } from 'vuepress-theme-plume'
 
-// const blog = defineCollection({
-//   type: 'post',
-//   dir: 'blog',
-//   title: 'Blog',
-//   link: '/blog/',
-// })
+const blog = defineCollection({
+  // post 类型，这里用于实现 博客功能
+  type: 'post',
+  // 文档集合所在目录，相对于 `docs`
+  dir: 'blog',
+  // 文档标题，它将用于在页面的面包屑导航中显示
+  title: 'Blog',
+  // 文章列表页的链接，如果 `linkPrefix` 未定义，它也将作为 相关的文章的 permalink 的前缀
+  link: '/blog/',
+  //   linkPrefix: '/article/', // 相关文章的链接前缀
+  //   postList: true, // 是否启用文章列表页
+  //   tags: true, // 是否启用标签页
+  //   archives: true, // 是否启用归档页
+  //   categories: true, // 是否启用分类页
+  //   postCover: 'right', // 文章封面位置
+  //   pagination: 15, // 每页显示文章数量
+})
 
-// 路由器
-const routerosDoc = defineCollection({
+const zjkjDoc = defineCollection({
+  // doc 类型，该类型带有侧边栏
   type: 'doc',
-  dir: 'router/routeros',
-  linkPrefix: '/router/routeros/',
-  title: 'RouterOS',
+  // 文档集合所在目录，相对于 `docs`
+  dir: 'notes/中级会计',
+  // `dir` 所指向的目录中的所有 markdown 文件，其 permalink 需要以 `linkPrefix` 配置作为前缀
+  // 如果 前缀不一致，则无法生成侧边栏。
+  // 所以请确保  markdown 文件的 permalink 都以 `linkPrefix` 开头
+  linkPrefix: '/zjkj',
+  // 文档标题，它将用于在页面的面包屑导航中显示
+  title: '中级会计',
+  // 手动配置侧边栏结构
+  // sidebar: ['', 'foo', 'bar'],
   // 根据文件结构自动生成侧边栏
   sidebar: 'auto',
 })
 
-const ikuaiDoc = defineCollection({
-  type: 'doc',
-  dir: 'router/ikuai/',
-  linkPrefix: '/router/ikuai/',
-  title: 'iKuai',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const openwrtDoc = defineCollection({
-  type: 'doc',
-  dir: 'router/openwrt/',
-  linkPrefix: '/router/openwrt/',
-  title: 'OpenWrt',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-// 虚拟机
-const esxiDoc = defineCollection({
-  type: 'doc',
-  dir: 'vm/esxi/',
-  linkPrefix: '/vm/esxi/',
-  title: 'ESXi',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const pveDoc = defineCollection({
-  type: 'doc',
-  dir: 'vm/pve/',
-  linkPrefix: '/vm/pve/',
-  title: 'Proxmox VE',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-// 操作系统
-const debianDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/debian/',
-  linkPrefix: '/os/debian/',
-  title: 'Debian',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const ubuntuDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/ubuntu/',
-  linkPrefix: '/os/ubuntu/',
-  title: 'Ubuntu',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const windowsDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/windows/',
-  linkPrefix: '/os/windows/',
-  title: 'Windows',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const dsmDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/dsm/',
-  linkPrefix: '/os/dsm/',
-  title: 'DSM',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const qtsDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/qts/',
-  linkPrefix: '/os/qts/',
-  title: 'QTS',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const unraidDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/unraid/',
-  linkPrefix: '/os/unraid/',
-  title: 'Unraid',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const fnosDoc = defineCollection({
-  type: 'doc',
-  dir: 'os/fnos/',
-  linkPrefix: '/os/fnos/',
-  title: 'fnOS',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-
-// 服务部署
-const dockerDoc = defineCollection({
-  type: 'doc',
-  dir: 'deploy/docker/',
-  linkPrefix: '/deploy/docker/',
-  title: 'Docker',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const nativeDoc = defineCollection({
-  type: 'doc',
-  dir: 'deploy/native/',
-  linkPrefix: '/deploy/native/',
-  title: 'Native',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-// 工具收藏
-const navDoc = defineCollection({
-  type: 'doc',
-  dir: 'tool/nav/',
-  linkPrefix: '/tool/nav/',
-  title: 'Navigation',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const githubDoc = defineCollection({
-  type: 'doc',
-  dir: 'tool/github/',
-  linkPrefix: '/tool/github/',
-  title: 'GitHub',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const noteDoc = defineCollection({
-  type: 'doc',
-  dir: 'tool/note/',
-  linkPrefix: '/tool/note/',
-  title: 'Note',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-const plumeDoc = defineCollection({
-  type: 'doc',
-  dir: 'tool/plume/',
-  linkPrefix: '/tool/plume/',
-  title: 'Plume',
-  // 根据文件结构自动生成侧边栏
-  sidebar: 'auto',
-})
-
-export default defineCollections([
-  // blog,
-  // 路由器
-  routerosDoc,
-  ikuaiDoc,
-  openwrtDoc,
-  // 虚拟机
-  esxiDoc,
-  pveDoc,
-  // 操作系统
-  debianDoc,
-  ubuntuDoc,
-  windowsDoc,
-  dsmDoc,
-  qtsDoc,
-  unraidDoc,
-  fnosDoc,
-  // 服务部署
-  dockerDoc,
-  nativeDoc,
-  // 工具收藏
-  navDoc,
-  githubDoc,
-  noteDoc,
-  plumeDoc,
+/**
+ * 导出所有的 collections
+ * (blog 为博客示例，如果不需要博客功能，请删除)
+ * (zjkjDoc 为参考示例，如果不需要它，请删除)
+ */
+export default defineCollection([
+  blog,
+  zjkjDoc,
 ])

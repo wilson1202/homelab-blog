@@ -1,0 +1,80 @@
+
+:root {
+    --icon-pager-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 32'%3E%3Cstyle%3Epath {stroke-dasharray: 20 5;animation: 500s linear infinite reverse move-stroke;}path.line2 {stroke-dasharray: 6 4;animation-duration: 450s;opacity: 0.7;}path.line3 {stroke-dasharray: 4 6;animation-duration: 450s;opacity: 0.3;}@keyframes move-stroke {from {stroke-dashoffset: 0;}to {stroke-dashoffset: 1500;}}%3C/style%3E%3Cg fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M17 2L3 16M17 30L3 16'/%3E%3Cpath d='M21 6L11 16M21 26L11 16' class='line2'/%3E%3Cpath d='M25 10L19 16M25 22L19 16' class='line3'/%3E%3C/g%3E%3C/svg%3E");
+    --icon-pager-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 32'%3E%3Cstyle%3Epath {stroke-dasharray: 20 5;animation: 500s linear infinite reverse move-stroke;}path.line2 {stroke-dasharray: 6 4;animation-duration: 450s;opacity: 0.7;}path.line3 {stroke-dasharray: 4 6;animation-duration: 450s;opacity: 0.3;}@keyframes move-stroke {from {stroke-dashoffset: 0;}to {stroke-dashoffset: 1500;}}%3C/style%3E%3Cg fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 2l14 14M11 30l14 -14'/%3E%3Cpath d='M7 6l10 10M7 26l10 -10' class='line2'/%3E%3Cpath d='M3 10l6 6M3 22l6 -6' class='line3'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* 上一页logo - 遮罩版本 */
+.pager-link.prev {
+    position: relative;
+    margin-right: auto;
+    text-align: left;
+    padding-left: 60px;
+}
+
+.pager-link.prev::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translate(50%, -50%);
+    width: 28px;
+    height: 32px;
+    color: var(--vp-c-text-3); /* 控制图标颜色 */
+    transition: color 0.2s;
+    background-color: currentColor; /* 关键：使用当前文字颜色作为背景 */
+    -webkit-mask-image: var(--icon-pager-prev);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    -webkit-mask-position: center;
+    mask-image: var(--icon-pager-prev);
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+}
+
+/* 下一页logo - 遮罩版本 */
+.pager-link.next {
+    position: relative;
+    margin-left: auto;
+    text-align: right;
+    padding-right: 60px;
+}
+
+.pager-link.next::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 28px;
+    height: 32px;
+    color: var(--vp-c-text-3); /* 控制图标颜色 */
+    transition: color 0.2s;
+    background-color: currentColor; /* 关键：使用当前文字颜色作为背景 */
+    -webkit-mask-image: var(--icon-pager-next);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-size: contain;
+    -webkit-mask-position: center;
+    mask-image: var(--icon-pager-next);
+    mask-repeat: no-repeat;
+    mask-size: contain;
+    mask-position: center;
+}
+
+
+
+/* 文章底部，上一页、下一页格式 */
+/* .title {
+    display: block;
+    font-size: 17px !important;
+    font-weight: 700 !important;
+    line-height: 20px;
+    color: var(--vp-c-brand-1);
+    transition: color var(--vp-t-color);
+} */
+
+/* .code-block-title .code-block-title-bar .title {
+    position: relative;
+    padding: 11px 12px;
+} */

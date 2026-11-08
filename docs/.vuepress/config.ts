@@ -12,23 +12,95 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
+import { pwaPlugin } from '@vuepress/plugin-pwa'
+import metingPlugin from 'vuepress-plugin-meting2'
+
+const siteTitle = 'Powersen'
+const siteDescription = "This is Powersen's personal blog & notebook."
+const siteLang = 'zh-CN'
+
+// 定义主题颜色
+const lightThemeColor = '#fcfcfc' // 明亮模式颜色
+const darkThemeColor = '#1a1a1a'  // 暗黑模式颜色
 
 export default defineUserConfig({
   base: '/',
-  lang: 'zh-CN',
-  title: 'Homelab',
-  description: '家庭网络与虚拟化实验室 · 路由器 / 虚拟机 / 自托管服务折腾笔记',
+  lang: siteLang,
+  title: siteTitle,
+  description: siteDescription,
+
+  plugins: [
+    pwaPlugin({
+      showInstall: true,
+      manifest: {
+        name: siteTitle,
+        short_name: siteTitle,
+        description: siteDescription,
+        lang: siteLang,
+        background_color: '#ffffff',
+        theme_color: darkThemeColor, // 默认使用明亮模式颜色
+        orientation: 'portrait-primary',
+        start_url: '/',
+        display: 'standalone', // 改为 standalone 以获得更好的 PWA 体验
+        icons: [
+          {
+            src: 'favicons/android-chrome-512x512.png',
+            type: 'image/png',
+            sizes: '512x512'
+          },
+          {
+            src: 'favicons/android-chrome-192x192.png',
+            type: 'image/png',
+            sizes: '192x192'
+          }
+        ],
+      },
+      update: 'hint',
+      favicon: 'favicons/favicon.ico',
+    }),
+
+    // 音乐播放器插件
+    metingPlugin({
+      metingOptions: {
+        global: true, // 开启关闭全局播放器
+        server: "netease", // 音乐服务提供者 netease,tencent
+        api: "https://api.injahow.cn/meting/?server=:server&type=:type&id=:id&auth=:auth&r=:r",
+        type: "playlist",
+        mid: "3080704436",
+        aplayerOptions: {
+          // lrcType: 2, // 不显示歌词
+          lrcDisplay: 'toggle', // 切换歌词显示
+          loop: 'all',
+          order: 'random',
+          preload: 'auto',
+          volume: 0.5,
+          mutex: true,
+        },
+      },
+    }),
+  ],
 
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/avatar.png' }],
+    // 配置站点图标
+    ['link', { rel: 'icon', type: 'image/png', href: 'favicons/favicon-32x32.png' }],
+    ['script', { src: 'https://umami.powersen.cn/script.js', 'data-website-id': '2cf893e9-bd26-4919-b1d3-335ee18e23b4' }],
+    // 添加响应式的 theme-color meta 标签
+    ['meta', { name: 'theme-color', content: lightThemeColor, media: '(prefers-color-scheme: light)' }],
+    ['meta', { name: 'theme-color', content: darkThemeColor, media: '(prefers-color-scheme: dark)' }],
+    // 兼容性 meta 标签
+    ['meta', { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' }],
+    ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
+    ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black-translucent' }],
+    ['link', { rel: 'apple-touch-icon', href: 'favicons/apple-touch-icon.png' }],
+    ['link', { rel: 'mask-icon', href: 'favicons/safari-pinned-tab.svg', color: lightThemeColor }],
   ],
 
   bundler: viteBundler(),
-  shouldPrefetch: false,
+  shouldPrefetch: false, // 站点较大，页面数量较多时，不建议启用
 
   theme: plumeTheme({
     /* 添加您的部署域名, 有助于 SEO, 生成 sitemap */
-    // hostname: 'https://powersen.cn',
+    hostname: 'https://powersen.cn',
 
     /* 文档仓库配置，用于 editLink */
     // docsRepo: '',
@@ -45,50 +117,42 @@ export default defineUserConfig({
      * 编译缓存，加快编译速度
      * @see https://theme-plume.vuejs.press/config/basic/#cache
      */
-    // cache: 'filesystem',
-
-    /**
-     * 文章版权信息
-     * @see https://theme-plume.vuejs.press/guide/features/copyright/
-     */
-    copyright: 'CC-BY-4.0', // 是否启用文章版权信息 'CC-BY-4.0'
+    cache: 'filesystem',
 
     /**
      * 为 markdown 文件自动添加 frontmatter 配置
      * @see https://theme-plume.vuejs.press/config/basic/#autofrontmatter
      */
-    autoFrontmatter: {
-      permalink: true,  // 是否生成永久链接
-      createTime: true, // 是否生成创建时间
-      title: true,      // 是否生成标题
-    },
+    // autoFrontmatter: {
+    //   permalink: true,  // 是否生成永久链接
+    //   createTime: true, // 是否生成创建时间
+    //   title: true,      // 是否生成标题
+    // },
 
     /* 本地搜索, 默认启用 */
-    search: { provider: 'local' },
+    // search: { provider: 'local' },
 
     /**
      * Algolia DocSearch
      * 启用此搜索需要将 本地搜索 search 设置为 false
      * @see https://theme-plume.vuejs.press/config/plugins/search/#algolia-docsearch
      */
-    // search: {
-    //   provider: 'algolia',
-    //   appId: 'AJ60JVPY1F',
-    //   apiKey: '64761...77',
-    //   indices: ['powersen'],
-    // },
+    search: {
+      provider: 'algolia',
+      appId: 'AJ60JVPY1F',
+      apiKey: '6476161cdbd1c2613d2bc3bdda1a1277',
+      indices: ['powersen'],
+    },
 
     /**
      * Shiki 代码高亮
      * @see https://theme-plume.vuejs.press/config/plugins/code-highlight/
      */
-    codeHighlighter: {
-      // twoslash: true, // 启用 twoslash
-      // whitespace: true, // 启用 空格/Tab 高亮
-      lineNumbers: false, // 启用行号
-      collapsedLines: true, // 启用折叠代码块，https://theme-plume.vuejs.press/guide/code/features/#%E6%8A%98%E5%8F%A0%E4%BB%A3%E7%A0%81%E5%9D%97
-      themes: { light: 'github-light', dark: 'github-dark' },
-    },
+    // codeHighlighter: {
+    //   twoslash: true, // 启用 twoslash
+    //   whitespace: true, // 启用 空格/Tab 高亮
+    //   lineNumbers: true, // 启用行号
+    // },
 
     /* 文章字数统计、阅读时间，设置为 false 则禁用 */
     // readingTime: true,
@@ -107,7 +171,7 @@ export default defineUserConfig({
       youtube: true,      // 启用嵌入 youtube视频 语法 @[youtube](video_id)
     //   artPlayer: true,    // 启用嵌入 artPlayer 本地视频 语法 @[artPlayer](url)
     //   audioReader: true,  // 启用嵌入音频朗读功能 语法 @[audioReader](url)
-      icon: {
+      icon: { 
         provider: 'iconify'  // 图标提供者，支持 iconify、iconfont、fontawesome,
         // assets: 'https://at.alicdn.com/t/c/font_4954043_01c55ayfadj8.css' // 示例地址
       },        // 启用内置图标语法  ::icon-name::
@@ -153,18 +217,18 @@ export default defineUserConfig({
      * 评论 comments
      * @see https://theme-plume.vuejs.press/guide/features/comments/
      */
-    // comment: {
-    //   provider: 'Twikoo', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
-    //   comment: true,
-    //   envId: 'https://powersen-twikoo.netlify.app/.netlify/functions/twikoo', // Twikoo 环境 ID
-    //   // repo: '',
-    //   // repoId: '',
-    //   // category: '',
-    //   // categoryId: '',
-    //   // mapping: 'pathname',
-    //   // reactionsEnabled: true,
-    //   // inputPosition: 'top',
-    // },
+    comment: {
+      provider: 'Twikoo', // "Artalk" | "Giscus" | "Twikoo" | "Waline"
+      comment: true,
+      envId: 'https://powersen-twikoo.netlify.app/.netlify/functions/twikoo', // Twikoo 环境 ID
+      // repo: '',
+      // repoId: '',
+      // category: '',
+      // categoryId: '',
+      // mapping: 'pathname',
+      // reactionsEnabled: true,
+      // inputPosition: 'top',
+    },
 
     /**
      * 资源链接替换
@@ -177,11 +241,5 @@ export default defineUserConfig({
      * @see https://theme-plume.vuejs.press/guide/features/encryption/
      */
     // encrypt: {},
-    // 
-    /**
-     * LLMs txt
-     * @see https://theme-plume.vuejs.press/guide/features/llmstxt/
-     */
-    llmstxt: true,
   }),
 })
