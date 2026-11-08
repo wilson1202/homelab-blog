@@ -15,6 +15,7 @@ import collections from './collections'
 import navbar from './navbar'
 
 /**
+ * 配置主题
  * @see https://theme-plume.vuejs.press/config/theme/
  */
 export default defineThemeConfig({
@@ -25,12 +26,21 @@ export default defineThemeConfig({
   // ],
 
   /**
+   * 配置博主个人资料
    * @see https://theme-plume.vuejs.press/config/theme/#profile
    */
   profile: {
     avatar: '/avatar.png',
     name: 'Homelab',
     description: '家庭网络与虚拟化实验室 · 路由器 / 虚拟机 / 自托管服务折腾笔记',
+  },
+
+  /**
+   * 配置公告
+   * @see https://theme-plume.vuejs.press/config/theme/#bulletin
+   */
+  bulletin: {
+    enablePage: false,
   },
 
   navbar,
