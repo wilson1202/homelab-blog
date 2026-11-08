@@ -1,30 +1,20 @@
+import { defineAsyncComponent, h } from 'vue'
 import { defineClientConfig } from 'vuepress/client'
+import { Layout } from 'vuepress-theme-plume/client'
+import PageContextMenu from 'vuepress-theme-plume/features/PageContextMenu.vue'
 import RepoCard from 'vuepress-theme-plume/features/RepoCard.vue'
-// import NpmBadge from 'vuepress-theme-plume/features/NpmBadge.vue'
-// import NpmBadgeGroup from 'vuepress-theme-plume/features/NpmBadgeGroup.vue'
-// import Swiper from 'vuepress-theme-plume/features/Swiper.vue'
-// import CustomComponent from './theme/components/Custom.vue'
-// import './theme/styles/custom.css'
-import Layout from './layouts/Layout.vue'
-import idouban from './theme/components/idouban.vue'
-import ShuoshuoList from './theme/components/ShuoshuoList.vue'
-import './theme/styles/index.css'
+
+import './theme/styles/_index.css' // import your custom styles / 导入自定义样式
 
 export default defineClientConfig({
-  enhance({ app }) {
-    // built-in components
-    app.component('RepoCard', RepoCard)
-    // app.component('NpmBadge', NpmBadge)
-    // app.component('NpmBadgeGroup', NpmBadgeGroup)
-    // app.component('Swiper', Swiper) // you should install `swiper`
-
-    // your custom components
-    // app.component('CustomComponent', CustomComponent)
-    app.component('idouban', idouban)
-    app.component('ShuoshuoList', ShuoshuoList)
-  },
-
   layouts: {
-    Layout,
+    Layout: h(Layout, null, {
+      // 将 PageContextMenu 添加到 doc-title-after 插槽，即文章标题的右侧
+      'doc-title-after': () => h(PageContextMenu),
+    }),
+  },
+  enhance({ app }) {
+    // do something...
+    app.component('RepoCard', RepoCard)
   },
 })

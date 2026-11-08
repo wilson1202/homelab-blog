@@ -1,0 +1,1 @@
+export const bulletinData = {"/":{"id":"4505230f"}}

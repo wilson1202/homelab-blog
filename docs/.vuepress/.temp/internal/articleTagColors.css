@@ -1,0 +1,33 @@
+.vp-tag-11qs3jp {
+  --vp-tag-color: rgb(21, 115, 42);
+  --vp-tag-hover-color: rgb(13, 72, 26);
+  --vp-tag-bg: rgba(21, 115, 42, 0.14);
+}
+
+[data-theme="dark"] .vp-tag-11qs3jp {
+  --vp-tag-color: rgb(32, 175, 63);
+  --vp-tag-hover-color: rgb(42, 216, 79);
+  --vp-tag-bg: rgba(32, 175, 63, 0.14);
+}
+.vp-tag-ypnci2 {
+  --vp-tag-color: rgb(88, 108, 21);
+  --vp-tag-hover-color: rgb(53, 66, 12);
+  --vp-tag-bg: rgba(88, 108, 21, 0.14);
+}
+
+[data-theme="dark"] .vp-tag-ypnci2 {
+  --vp-tag-color: rgb(133, 164, 31);
+  --vp-tag-hover-color: rgb(167, 206, 39);
+  --vp-tag-bg: rgba(133, 164, 31, 0.14);
+}
+.vp-tag-w58114 {
+  --vp-tag-color: rgb(109, 69, 219);
+  --vp-tag-hover-color: rgb(81, 38, 200);
+  --vp-tag-bg: rgba(109, 69, 219, 0.14);
+}
+
+[data-theme="dark"] .vp-tag-w58114 {
+  --vp-tag-color: rgb(163, 138, 233);
+  --vp-tag-hover-color: rgb(197, 181, 241);
+  --vp-tag-bg: rgba(163, 138, 233, 0.14);
+}

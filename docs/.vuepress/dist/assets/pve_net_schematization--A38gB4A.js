@@ -1,0 +1,1 @@
+var e=`/images/router/routeros/p01/pve_net_schematization.jpeg`;export{e as t};
