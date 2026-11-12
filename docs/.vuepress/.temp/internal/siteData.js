@@ -1,1 +1,0 @@
-export const siteData = JSON.parse("{\"base\":\"/\",\"lang\":\"zh-CN\",\"title\":\"Homelab\",\"description\":\"家庭网络与虚拟化实验室 · 路由器 / 虚拟机 / 自托管服务折腾笔记\",\"head\":[[\"link\",{\"rel\":\"icon\",\"type\":\"image/png\",\"href\":\"/avatar.png\"}]],\"locales\":{\"/\":{\"lang\":\"zh-CN\",\"title\":\"Homelab\",\"description\":\"家庭网络与虚拟化实验室 · 路由器 / 虚拟机 / 自托管服务折腾笔记\"}}}")
