@@ -12,6 +12,7 @@
 import { viteBundler } from '@vuepress/bundler-vite'
 import { defineUserConfig } from 'vuepress'
 import { plumeTheme } from 'vuepress-theme-plume'
+import { fileListPlugin } from 'vuepress-plugin-filelist'
 
 export default defineUserConfig({
   base: '/',
@@ -24,6 +25,7 @@ export default defineUserConfig({
   ],
 
   bundler: viteBundler(),
+  plugins: [fileListPlugin()],
   shouldPrefetch: false,
 
   theme: plumeTheme({

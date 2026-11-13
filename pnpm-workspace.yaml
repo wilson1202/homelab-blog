@@ -1,15 +1,26 @@
+packages:
+  - '.'
+
+# 允许构建的包
 allowBuilds:
   esbuild: true
 
+# 依赖版本覆盖（锁定 vuepress 版本）
 overrides:
   markdown-it: 14.3.1
   linkify-it: 5.0.2
   katex: ^0.18.9
+  vuepress: 2.0.0-rc.31
+  '@vuepress/bundler-vite': 2.0.0-rc.31
 
-shamefullyHoist: true
-
+# 供应链安全策略：最低发布年龄白名单
 minimumReleaseAgeExclude:
   - '@vuepress-plume/*'
   - '@vuepress/*'
   - 'vuepress-plugin-md-power'
   - 'vuepress-theme-plume'
+  - 'vuepress-plugin-filelist'
+  - 'vuepress@2.0.0-rc.31'
+  - 'vitepress-plugin-filelist'
+
+shamefullyHoist: true
