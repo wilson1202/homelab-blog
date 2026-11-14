@@ -32,6 +32,6 @@
     "markmap-lib": "^0.18.13",
     "markmap-toolbar": "^0.18.13",
     "markmap-view": "^0.18.13",
-    "vuepress-plugin-filelist": "0.13.7"
+    "vuepress-plugin-filelist": "0.13.8"
   }
 }
